@@ -1,0 +1,117 @@
+//
+routing:
+su is the first admin
+login->
+  if admin
+  edit users->
+    ->add
+    ->edit
+      ->if other is not admin, unless you are su
+    ->delete
+      ->if other is not admin, unless you are su
+  
+  stats->
+    ->games
+    ->users
+  games->
+    ->tic-tac-toe
+    ->math
+    ->hangman
+
+//
+helper functions
+  -sum of string
+  -product of string
+  -make a user
+  -print stats
+  -check password
+  -menu
+    games
+    user
+
+-simple encrypt
+  -get sum of password
+  -get product of password
+  -shift letters forward by letter + product%sum
+  -return new word
+
+-simple decrypt
+  -get sum of password
+  -get product of password
+  -shift letters backwards by letter + product%sum
+  -return new word
+
+//
+main
+-users
+  -new user
+    -make a unique uid
+    -encrypt password
+    -set all values to 0
+
+  -no users
+    -make an admin please
+  -admin
+  -non admin
+
+  -admin
+    -user
+      -games
+      -stats
+    -add user
+    -edit user
+    -delete user
+
+-games
+  -hangman
+    -read word dict
+      choose a word
+    -play game
+      6 chances
+      -letters
+        check if input is anywhere in the word
+      -words
+        check if input is the same as the word
+
+  -math quiz
+    -difficulty
+      easy
+        two value
+      medium
+        three
+      hard
+        five
+
+    -multiply, divide, subtract, add
+    -save time
+    -check if input is the same
+    -calc time
+    -store time
+
+  -tic-tac-toe
+    -arr[3][3]
+      012
+      345
+      678
+    -check system
+      -check horizontal
+        012, 345, 678
+      -check vertical
+        036, 147, 258
+      -check diagonal
+        048, 246
+
+    -computer
+      -ai will randomly cycle through possible wins, defined above
+
+//
+FILES
+-login usertype = 0,1,2 | 0 is user, 1 is admin, 2 is su
+  uid usertype password
+
+-tic-tac-toe
+  uid win loss scores
+-math
+  uid win loss times
+-hangman
+  uid win loss scores
