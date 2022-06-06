@@ -2,11 +2,7 @@
 
 //functions
 int login(int *userID)
-{
-  tempUserData userData[10];
-  readUsers(userData);
-  getchar();
-  
+{  
   system("clear");
   int userCount = checkUserCount();
   char username[256];
@@ -145,7 +141,6 @@ static int readUsers(tempUserData userData[])
     if (feof(fp))
       break;
     
-    printf("u%i %s %i %s\n", userData[x].uid, userData[x].username, userData[x].usertype, userData[x].password);
     x++;
   }
   fclose(fp);
