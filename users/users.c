@@ -4,7 +4,7 @@
 int login(int *userID)
 {
   system("clear");
-  int userCount = checkUsers();
+  int userCount = checkUserCount();
   char username[256];
   char password[256];
   char passwordFails=0;
@@ -99,18 +99,13 @@ static int checkPassword(char username[], char password[], int *uid)
   }
 }
 
-static int checkUsers()
+int checkUserCount()
 {
   FILE *fp;
   fp = fopen("./users/user_data", "r");
   int userCount;
 
   if (fp == NULL)//if file does not exist
-  {
-    makeUserDB();
-    return 0;
-  }
-  else if (feof(fp)==1)//if file has no data//is separated from null check because of seg fault
   {
     makeUserDB();
     return 0;
@@ -174,7 +169,7 @@ static int makeUser(int usertype, int *userID)
 {
   //storing temp data to write later
   //new usercount
-  int userCount=checkUsers()+1;
+  int userCount=checkUserCount()+1;
   tempUserData userData[userCount];
   readUsers(userData);
   
@@ -182,8 +177,8 @@ static int makeUser(int usertype, int *userID)
   fp = fopen("./users/user_data", "w");
   
   //setup uid and usertype
-  userData[userCount-1].uid = userCount;
-  *userID = userCount;
+  userData[userCount-1].uid = userCount-1;
+  *userID = userCount-1;
   userData[userCount-1].usertype = usertype;
 
   //setup username and password

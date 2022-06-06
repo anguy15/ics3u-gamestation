@@ -23,16 +23,16 @@ void printUserFile();
 //return if logged in, and return the user id in userID[]
 int login(int *userID);
 
+//checks the user count
+//return user count
+int checkUserCount();
+
 //    LOCAL
 //returns 1 if it works
 static int makeUserDB();
 
 //return 1 if it is correct
 static int checkPassword(char username[], char password[], int *uid);
-
-//checks the user count
-//return user count
-static int checkUsers();
 
 //reads all usersdata to a struct
 //returns a 0 if it fails, returns the amount read if it doesn't

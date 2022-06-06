@@ -60,6 +60,7 @@ static int quizGame(int difficulty, char gameMode)
   for (int x=0; x<arrLen; x++)
   {
     values[x] = rand()%(arrLen*arrLen)+1;
+    //calculate answer depending on game mode
     switch (gameMode)
     {
       case '+':
@@ -87,6 +88,7 @@ static int quizGame(int difficulty, char gameMode)
         break;
     }
   }
+  //round answers to int
   answerCheck = round(answerExact);
   
   //print values
@@ -102,6 +104,7 @@ static int quizGame(int difficulty, char gameMode)
   scanf("%i", &userInput);
   getchar();
 
+  //check if they were correct
   if (userInput == answerCheck)
   {
     printf("You won!\n");

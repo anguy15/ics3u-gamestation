@@ -2,33 +2,24 @@
 #include <time.h>
 #include <stdlib.h>
 
+//users
 #include "users/users.h"
+#include "users/stats.h"
 
 //game includes
 #include "games/math_quiz/math_quiz.h"
 
 //prototypes
-void readStats(userID);
 
 int main(void) {
   srand(time(0));
   int userID=0;
   login(&userID);
 
-  readStats(userID);
+  readUserStats(userID);
   
   //mathQuiz();
   
   return(0);
 }
 
-void readStats(userID)
-{
-  FILE *fp;
-  fp = fopen("games_stats", "r");
-
-  if (fp == NULL)
-  {
-    
-  }
-}
