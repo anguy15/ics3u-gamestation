@@ -1,16 +1,15 @@
 #include "users.h"
 
 //functions
-int login(char userID[])
+int login(int *userID)
 {
   system("clear");
   int userCount = checkUsers();
   char username[256];
   char password[256];
-  
   if (userCount == 0)
   {
-    makeUser(2);
+    makeUser(2, userID);
   }
   else
   {
@@ -24,7 +23,7 @@ int login(char userID[])
       printf("Password: ");
       scanf("%s", password);
       
-    }while(checkPassword(username, password)==0);
+    }while(checkPassword(username, password, userID)==0);
   }
   return(1);
 }
@@ -39,7 +38,7 @@ static int makeUserDB()
   fclose(fp);
 }
 
-static int checkPassword(char username[], char password[])
+static int checkPassword(char username[], char password[], int *uid)
 {
   FILE *fp;
   fp = fopen("./users/user_data", "r");
@@ -47,12 +46,15 @@ static int checkPassword(char username[], char password[])
   int userFound=0;
 
   fscanf(fp, "%s", buffer);
+  getchar();
   while (!feof(fp) && userFound==0)
   {
     //read uid
-    fscanf(fp, "%s", buffer);
+    fscanf(fp, "%i", &uid);
+    getchar();
     //read username
     fscanf(fp, "%s", buffer);
+    getchar();
     
     if (strcmp(buffer, username)==0)
     {
@@ -61,8 +63,10 @@ static int checkPassword(char username[], char password[])
 
     //read usertype
     fscanf(fp, "%s", buffer);
+    getchar();
     //read password
     fscanf(fp, "%s", buffer);
+    getchar();
   }
   
   if (strcmp(buffer, password)==0)
@@ -109,7 +113,7 @@ static int readUsers(tempUserData userData[])
   while (!feof(fp))
   {
     //read uid
-    fscanf(fp, "%s", userData[x].uid);
+    fscanf(fp, "%i", &userData[x].uid);
     //read username
     fscanf(fp, "%s", userData[x].username);
     //read usertype
@@ -118,7 +122,7 @@ static int readUsers(tempUserData userData[])
     fscanf(fp, "%s", userData[x].password);
     x++;
   }
-
+  fclose(fp);
   return(x);
 }
 
@@ -132,7 +136,7 @@ static int writeUsers(tempUserData userData[], int userCount)
   while (x!=userCount)
   {
     //read uid
-    fprintf(fp, "%s ", userData[x].uid);
+    fprintf(fp, "%i ", userData[x].uid);
     //read username
     fprintf(fp, "%s ", userData[x].username);
     //read usertype
@@ -142,10 +146,11 @@ static int writeUsers(tempUserData userData[], int userCount)
     x++;
   }
 
+  fclose(fp);
   return(x);
 }
 
-static int makeUser(int usertype)
+static int makeUser(int usertype, int *userID)
 {
   //storing temp data to write later
   //new usercount
@@ -157,16 +162,20 @@ static int makeUser(int usertype)
   fp = fopen("./users/user_data", "w");
   
   //setup uid and usertype
-  sprintf(userData[userCount-1].uid, "%i", userCount);
+  userData[userCount-1].uid = userCount;
+  *userID = userCount;
   userData[userCount-1].usertype = usertype;
 
   //setup username and password
   printf("Username (no spaces):");
   scanf("%s", userData[userCount-1].username);
+  getchar();
 
   printf("Password (no spaces):");
   scanf("%s", userData[userCount-1].password);
+  getchar();
 
+  //write all data back to file
   writeUsers(userData, userCount);
   
   fclose(fp);

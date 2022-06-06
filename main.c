@@ -4,8 +4,10 @@
 
 
 int main(void) {
-  char userID[256];
-  login(userID);
+  int userID=0;
+  login(&userID);
+
+  printf("%i", userID);
   
   return(0);
 }

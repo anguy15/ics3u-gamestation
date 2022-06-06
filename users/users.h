@@ -8,7 +8,7 @@
 //    variables
 typedef struct
 {
-  char uid[256];
+  int uid;
   char username[256];
   int usertype;
   char password[256];
@@ -17,13 +17,13 @@ typedef struct
 //    prototypes
 
 //return if logged in, and return the user id in userID[]
-int login(char userID[]);
+int login(int *userID);
 
 //returns 1 if it works
 static int makeUserDB();
 
 //return 1 if it is correct
-static int checkPassword(char username[], char password[]);
+static int checkPassword(char username[], char password[], int *uid);
 
 //checks the user count
 //return user count
@@ -39,6 +39,6 @@ static int writeUsers(tempUserData readUsers[], int userCount);
 
 //return 1 if it works
 //take type of user, 0,1,2, normal user,admin,super user
-static int makeUser(int usertype);
+static int makeUser(int usertype, int *userID);
 
 #endif
