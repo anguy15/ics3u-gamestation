@@ -7,6 +7,8 @@ int login(int *userID)
   int userCount = checkUsers();
   char username[256];
   char password[256];
+  char passwordFails=0;
+  
   if (userCount == 0)
   {
     makeUser(2, userID);
@@ -15,6 +17,11 @@ int login(int *userID)
   {
     do
     {
+      system("clear");
+      if (passwordFails!=0) 
+      {
+        printf("%i times failed\n", passwordFails);
+      }  
       //get username
       printf("Username: ");
       scanf("%s", username);
@@ -22,10 +29,26 @@ int login(int *userID)
       //get password
       printf("Password: ");
       scanf("%s", password);
-      
+
+      passwordFails++;
     }while(checkPassword(username, password, userID)==0);
   }
   return(1);
+}
+
+void printUserFile()
+{
+  FILE *fp;
+  fp = fopen("./users/user_data", "r");
+  char temp[256];
+  
+  while (!feof(fp))
+  {
+    fscanf(fp, "%s", temp);
+    if (!feof(fp))
+      printf("%s\n", temp);
+  }
+  fclose(fp);
 }
 
 static int makeUserDB()
@@ -64,7 +87,9 @@ static int checkPassword(char username[], char password[], int *uid)
     fscanf(fp, "%s", buffer);
   }
   fclose(fp);
-  if (strcmp(buffer, password)==0)
+  
+  //return whether the password was correct
+  if (strcmp(buffer, password)==0 && userFound == 1)
   {
     return 1;
   }

@@ -16,6 +16,9 @@ typedef struct
 
 //    prototypes
 
+//debugging
+void printUserFile();
+
 //return if logged in, and return the user id in userID[]
 int login(int *userID);
 
