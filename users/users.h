@@ -16,12 +16,14 @@ typedef struct
 
 //    prototypes
 
+//    GLOBAL
 //debugging
 void printUserFile();
 
 //return if logged in, and return the user id in userID[]
 int login(int *userID);
 
+//    LOCAL
 //returns 1 if it works
 static int makeUserDB();
 

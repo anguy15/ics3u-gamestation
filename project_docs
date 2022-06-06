@@ -83,10 +83,7 @@ main
         five
 
     -multiply, divide, subtract, add
-    -save time
     -check if input is the same
-    -calc time
-    -store time
 
   -tic-tac-toe
     -arr[3][3]
@@ -112,6 +109,6 @@ FILES
 -tic-tac-toe
   uid win loss scores
 -math
-  uid win loss times
+  uid win loss
 -hangman
   uid win loss scores
