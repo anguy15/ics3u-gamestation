@@ -3,7 +3,7 @@
 void readUserStats(int userID)
 {
   FILE *fp;
-  fp = fopen("games_stats", "r");
+  fp = fopen("./users/games_stats", "r");
   int userCount=0;
 
   userCount = checkUserCount()+1;
@@ -34,7 +34,7 @@ void readUserStats(int userID)
 void readStats(userStats tempUserStats[])
 {
   FILE *fp;
-  fp = fopen("./users/user_data", "r");
+  fp = fopen("./users/games_stats", "r");
   int x=0;
 
   while (!feof(fp))
@@ -43,6 +43,10 @@ void readStats(userStats tempUserStats[])
     //math
     fscanf(fp, "%i", &tempUserStats[x].mathWins);
     fscanf(fp, "%i", &tempUserStats[x].mathLosses);
+
+    if (feof(fp))
+      break;
+    
     x++;
   }
   fclose(fp);
@@ -51,7 +55,7 @@ void readStats(userStats tempUserStats[])
 
 void writeStats(userStats allUserStats[], int userCount)
 {
-  FILE *fp = fopen("games_stats", "w");
+  FILE *fp = fopen("./users/games_stats", "w");
   int x=0;
   
   while (x!=userCount-1)

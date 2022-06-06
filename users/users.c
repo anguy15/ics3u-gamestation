@@ -3,6 +3,10 @@
 //functions
 int login(int *userID)
 {
+  tempUserData userData[10];
+  readUsers(userData);
+  getchar();
+  
   system("clear");
   int userCount = checkUserCount();
   char username[256];
@@ -124,7 +128,9 @@ static int readUsers(tempUserData userData[])
   FILE *fp;
   fp = fopen("./users/user_data", "r");
   int x=0;
+  int numOfUsers;
 
+  fscanf(fp, "%i", &numOfUsers);
   while (!feof(fp))
   {
     //read uid
@@ -135,6 +141,11 @@ static int readUsers(tempUserData userData[])
     fscanf(fp, "%i", &userData[x].usertype);
     //read password
     fscanf(fp, "%s", userData[x].password);
+
+    if (feof(fp))
+      break;
+    
+    printf("u%i %s %i %s\n", userData[x].uid, userData[x].username, userData[x].usertype, userData[x].password);
     x++;
   }
   fclose(fp);
@@ -171,7 +182,10 @@ static int makeUser(int usertype, int *userID)
   //new usercount
   int userCount=checkUserCount()+1;
   tempUserData userData[userCount];
-  readUsers(userData);
+  if (userCount != 1)//there are users
+  {
+    readUsers(userData);
+  }
   
   FILE *fp;
   fp = fopen("./users/user_data", "w");
