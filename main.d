@@ -1,1 +1,1 @@
-main.o main.d : main.c main.h
+main.o main.d : main.c users/users.h

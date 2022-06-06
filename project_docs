@@ -107,7 +107,7 @@ main
 //
 FILES
 -login usertype = 0,1,2 | 0 is user, 1 is admin, 2 is su
-  uid usertype password
+  uid username usertype password
 
 -tic-tac-toe
   uid win loss scores
