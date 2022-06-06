@@ -46,15 +46,12 @@ static int checkPassword(char username[], char password[], int *uid)
   int userFound=0;
 
   fscanf(fp, "%s", buffer);
-  getchar();
   while (!feof(fp) && userFound==0)
   {
     //read uid
-    fscanf(fp, "%i", &uid);
-    getchar();
+    fscanf(fp, "%i", uid);
     //read username
     fscanf(fp, "%s", buffer);
-    getchar();
     
     if (strcmp(buffer, username)==0)
     {
@@ -63,20 +60,18 @@ static int checkPassword(char username[], char password[], int *uid)
 
     //read usertype
     fscanf(fp, "%s", buffer);
-    getchar();
     //read password
     fscanf(fp, "%s", buffer);
-    getchar();
   }
-  
+  fclose(fp);
   if (strcmp(buffer, password)==0)
   {
-    fclose(fp);
     return 1;
   }
-  
-  fclose(fp);
-  return 0;
+  else
+  {
+    return 0;
+  }
 }
 
 static int checkUsers()
