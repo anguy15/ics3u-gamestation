@@ -9,12 +9,12 @@ int login(int *userID)
   char password[256];
   char passwordFails=0;
   
-  if (userCount == 0)
+  if (userCount == 0)//no user exists
   {
-    makeUser(2, userID);
+    makeUser(2, userID);//make a admin user
     return 0;
   }
-  else
+  else//a user exists
   {
     do
     {

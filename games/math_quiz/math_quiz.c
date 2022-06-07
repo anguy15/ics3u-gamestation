@@ -1,6 +1,6 @@
 #include "math_quiz.h"
 
-int mathQuiz()
+int playMathQuiz()
 {
   system("clear");
   int gameMode=0;

@@ -18,10 +18,20 @@ int main(void) {
   
   // login(&userID);
 
-  // readUserStats(userID);
-
-  // playTicTacToe();
-  // mathQuiz();
+  // menu
+  
+    // edit users//call users/users.h func
+      // add
+      // edit
+      // delete
+    
+    // stats//call users/stats.h func
+      // readUserStats(userID);
+  
+    // games//call game menu games/games.h
+      // playTicTacToe();
+      // playMathQuiz();
+      playHangman();
   
   return(0);
 }

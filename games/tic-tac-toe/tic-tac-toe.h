@@ -2,7 +2,6 @@
 #define tic_tac_toe_h
 
 #include <stdio.h>
-#include <stdlib.h>
 
 //variables
 typedef struct
