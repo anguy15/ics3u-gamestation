@@ -4,6 +4,7 @@
 //    needed libraries
 #include <stdio.h>
 #include <stdlib.h>
+#include "encryption/simple_crypt.h"
 
 //    variables
 typedef struct

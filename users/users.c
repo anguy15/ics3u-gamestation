@@ -89,6 +89,7 @@ static int checkPassword(char username[], char password[], int *uid)
   fclose(fp);
   
   //return whether the password was correct
+  encryptStr(password);
   if (strcmp(buffer, password)==0 && userFound == 1)
   {
     return 1;
@@ -198,6 +199,8 @@ static int makeUser(int usertype, int *userID)
   printf("Password (no spaces):");
   scanf("%s", userData[userCount-1].password);
   getchar();
+
+  encryptStr(userData[userCount-1].password);
 
   //write all data back to file
   writeUsers(userData, userCount);
