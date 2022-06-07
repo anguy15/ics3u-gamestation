@@ -20,8 +20,8 @@ int main(void) {
 
   // readUserStats(userID);
 
-  playTicTacToe();
-  //mathQuiz();
+  // playTicTacToe();
+  // mathQuiz();
   
   return(0);
 }

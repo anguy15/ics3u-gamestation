@@ -1,14 +1,17 @@
 #include "tic-tac-toe.h"
 
-void playTicTacToe()
+int playTicTacToe()
 {
   system("clear");
   int gameboard[3][3]={0};//[vertical pos][horizontal pos]
   
   //X: 0,1,2
-  //Y: 3,4,5
-  //diagonal: 6(top left),7(top right)
-  int winFlags[2][8]={0};//flags for user wins
+  //Y: 0,1,2
+  //diagonal: 0(top left),1(top right)
+  //[player][x,y,d][type]
+  int winFlags[2][3][3]={0};//flags for user wins
+  winnerInformation winnerInfo;
+  winnerInfo.type = -1;//setup the loop to detect when a winner has won
   
   resetGameBoard(gameboard);
   do
@@ -17,12 +20,21 @@ void playTicTacToe()
     for (int i=0; i<2; i++)
     {
       getUserInputs(gameboard, winFlags, i);
-      if (checkWinFlags())
+      
+      winnerInfo.type = checkWinFlags(winFlags);//setup the win check
+      if (winnerInfo.type!=-1)
+      {
+        winnerInfo.winner=i;
+        break;
+      }
     }
-  }while(1);
+  }while(winnerInfo.type == -1);
+
+  printf("Player %i won!", winnerInfo.winner+1);
+  return winnerInfo.winner;
 }
 
-static void getUserInputs(int gameBoard[3][3], int winFlags[2][8], int player)
+static void getUserInputs(int gameBoard[3][3], int winFlags[2][3][3], int player)
 {
   int userXChoice, userYChoice;
   
@@ -87,42 +99,53 @@ static void getUserInputs(int gameBoard[3][3], int winFlags[2][8], int player)
   //write valid inputs
   gameBoard[userYChoice][userXChoice]=player+1;
   //setup flags for x and y
-  winFlags[player][userXChoice]++;
-  winFlags[player][userYChoice+3]++;
+  winFlags[player][0][userXChoice]++;
+  winFlags[player][1][userYChoice]++;
   //setup flags from diagonals
   if ((userYChoice == 0 && userXChoice == 0) || (userYChoice == 2 && userXChoice == 2))
   {
-    winFlags[player][7]++;//either corner connected with the top right diagonal
+    winFlags[player][2][1]++;//either corner connected with the top right diagonal
   }
   else if ((userYChoice == 0 && userXChoice == 2) || (userYChoice == 2 && userXChoice == 0))
   {
-    winFlags[player][6]++;//either corner connected with the top left diagonal
+    winFlags[player][2][0]++;//either corner connected with the top left diagonal
   }
   else if ((userYChoice == 1 && userXChoice == 1))//center placed
   {
-    winFlags[player][7]++;
-    winFlags[player][6]++;
+    winFlags[player][2][0]++;
+    winFlags[player][2][1]++;
   }
-  
 }
 
-static void checkWinFlags(const int winFlags[2][8])
+static int checkWinFlags(const int winFlags[2][3][3])
 {
   for (int x=0; x<2; x++)
   {
-    for (int y=0; y<8; y++)
-      printf("%i:%i  ",y,winFlags[x][y]);
-    printf("\n");
+    for (int y=0; y<3; y++)
+    {
+      for (int t=0; t<3; t++)
+      {
+        if(winFlags[x][y][t]>=3)
+        {
+          return y;//true
+        }
+      }
+    }
   }
-  getchar();
+  return -1;//false
 }
 
-static void printDebugWinFlags(const int winFlags[2][8])
+static void printDebugWinFlags(const int winFlags[2][3][3])
 {
   for (int x=0; x<2; x++)
   {
-    for (int y=0; y<8; y++)
-      printf("%i:%i  ",y,winFlags[x][y]);
+    for (int y=0; y<3; y++)
+    {
+      for (int t=0; t<3; t++)
+      {
+        printf("%i:%i  ",y,winFlags[x][y][t]);
+      }
+    }
     printf("\n");
   }
   getchar();
