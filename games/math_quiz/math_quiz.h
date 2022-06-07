@@ -8,7 +8,8 @@
 
 //  GLOBALS
 //main game
-void mathQuiz();
+//returns the win 1 or loss 0
+int mathQuiz();
 
 //LOCALS
 //takes difficulty and quiz type

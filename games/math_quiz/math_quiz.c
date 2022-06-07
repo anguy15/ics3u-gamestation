@@ -1,6 +1,6 @@
 #include "math_quiz.h"
 
-void mathQuiz()
+int mathQuiz()
 {
   system("clear");
   int gameMode=0;
@@ -17,17 +17,17 @@ void mathQuiz()
   switch (gameMode)
   {
     case 1:
-      quizGame(difficulty, '+');
+      return(quizGame(difficulty, '+'));
       break;
     case 2:
-      quizGame(difficulty, '-');
+      return(quizGame(difficulty, '-'));
       break;
     
     case 3:
-      quizGame(difficulty, '*');
+      return(quizGame(difficulty, '*'));
       break;
     case 4:
-      quizGame(difficulty, '/');
+      return(quizGame(difficulty, '/'));
       break;
   }
 }
@@ -108,9 +108,11 @@ static int quizGame(int difficulty, char gameMode)
   if (userInput == answerCheck)
   {
     printf("You won!\n");
+    return(1);
   }
   else
   {
     printf("You lost!\nThe answer was %i\n", answerCheck);
+    return(0);
   }
 }
