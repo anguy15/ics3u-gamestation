@@ -2,11 +2,12 @@
 
 void readUserStats(int userID)
 {
+  system("clear");
   FILE *fp;
   fp = fopen("./users/games_stats", "r");
   int userCount=0;
 
-  userCount = checkUserCount()+1;
+  userCount = checkUserCount();
   //sets all data to zero
   userStats tempUserStats[userCount];
 
@@ -24,14 +25,12 @@ void readUserStats(int userID)
   else//found the file
   {
     readStats(tempUserStats);
-    for (int x=0; x<userCount; x++)
-    {
-      printf("%i, %i\n", tempUserStats[x].mathWins, tempUserStats[x].mathLosses);
-    }
+    printf("Math Quiz:\n\t%-10s%-10s\n", "Wins", "Losses");
+    printf("\t%-10i%-10i\n", tempUserStats[userID].mathWins, tempUserStats[userID].mathLosses);
   }
 }
 
-void readStats(userStats tempUserStats[])
+int readStats(userStats tempUserStats[])
 {
   FILE *fp;
   fp = fopen("./users/games_stats", "r");

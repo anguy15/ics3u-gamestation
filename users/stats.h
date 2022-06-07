@@ -15,8 +15,13 @@ typedef struct
 
 //  GLOBALS
 //take user id
+//outputs the user's stats
 void readUserStats(int userID);
-void readStats(userStats allUserStats[]);
+//reads all stats
+//takes a struct to write stats to
+int readStats(userStats allUserStats[]);
+//writes all stats
+//takes stats struct, and amount of users
 void writeStats(userStats allUserStats[], int userCount);
 
 //  LOCALS
