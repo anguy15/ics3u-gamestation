@@ -8,16 +8,19 @@
 
 //game includes
 #include "games/math_quiz/math_quiz.h"
+#include "games/tic-tac-toe/tic-tac-toe.h"
 
 //prototypes
 
 int main(void) {
   srand(time(0));
   int userID=0;
-  login(&userID);
-
-  readUserStats(userID);
   
+  // login(&userID);
+
+  // readUserStats(userID);
+
+  playTicTacToe();
   //mathQuiz();
   
   return(0);

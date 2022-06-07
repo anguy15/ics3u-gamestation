@@ -12,6 +12,7 @@ int login(int *userID)
   if (userCount == 0)
   {
     makeUser(2, userID);
+    return 0;
   }
   else
   {
@@ -25,15 +26,19 @@ int login(int *userID)
       //get username
       printf("Username: ");
       scanf("%s", username);
+      getchar();
   
       //get password
       printf("Password: ");
       scanf("%s", password);
-
+      getchar();
+      
       passwordFails++;
     }while(checkPassword(username, password, userID)==0);
+  
+    return(1);
   }
-  return(1);
+  return(0);
 }
 
 void printUserFile()
