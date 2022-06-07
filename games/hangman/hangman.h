@@ -27,7 +27,7 @@ int playHangman();
 
 //  LOCAL
 //finds a random word from text file
-static void chooseWord(hangmanGameInfo hangmanInfo);
+static int chooseWord(hangmanGameInfo hangmanInfo);
 
 //makes a new word node
 static struct wordList *makeWordNode();
@@ -35,6 +35,9 @@ static struct wordList *makeWordNode();
 //get user's inputs
 static void getUserInputs(hangmanGameInfo hangmanInfo);
 static void getGuessLetter(hangmanGameInfo hangmanInfo, int userGuessLetter[]);
+static void getGuessWord(hangmanGameInfo hangmanInfo, int userGuessLetter[], char userGuessWord[]);
+
+static void checkCorrectGuess(hangmanGameInfo hangmanInfo, int userGuessLetter[]);
 
 static void drawGame(hangmanGameInfo hangmanInfo, int userGuessLetter[]);
 

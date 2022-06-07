@@ -3,7 +3,8 @@
 int playHangman()
 {
   hangmanGameInfo hangmanInfo = {0};
-  chooseWord(hangmanInfo);
+  hangmanInfo.wordGenLen = chooseWord(hangmanInfo);
+  hangmanInfo.userCorrectCount=0;
   printf("%s", hangmanInfo.wordGen);
 
   do
@@ -16,7 +17,7 @@ int playHangman()
 
 static void getUserInputs(hangmanGameInfo hangmanInfo)
 {
-  int userXChoice;
+  int userGuessType;
   int inputFlag=0;
   int userGuessLetter[50]={0};
   char userGuessWord[50];
@@ -30,30 +31,44 @@ static void getUserInputs(hangmanGameInfo hangmanInfo)
 
     //reset flags
     inputFlag=0;
+    userGuessType=-1;
 
-    //user choices
-    // get Guess Type
-    do
-    {
-      if (!=0)
-      {
-        printf("Invalid Guess Type\n\n");
-      }
+    // //user choices
+    // // get Guess Type
+    // do
+    // {
+    //   if (inputFlag!=0)
+    //   {
+    //     printf("Invalid Guess Type\n\n");
+    //   }
 
-      printf("1. Letters\n2. Word\n");
-      printf("Which Guess Type: ");
-      scanf("%i", &userXChoice);
-      getchar();
+    //   printf("1. Letters\n2. Word\n");
+    //   printf("Which Guess Type: ");
+    //   scanf("%i", &userGuessType);
+    //   getchar();
       
-    }while();
+    // }while(userGuessType<0);
 
     //get guess
-    // getGuessLetter(hangmanInfo, userGuessLetter);
+    getGuessLetter(hangmanInfo, userGuessLetter);
     getGuessWord(hangmanInfo, userGuessLetter, userGuessWord);
+
+    //debugs
+    // for(int x=0; x<26; x++)
+    //   printf("%i", userGuessLetter[x]);
+    // printf("\n%s", userGuessWord);getchar();
+
+    // checkCorrectGuess(hangmanInfo, userGuessLetter);
+    
     drawGame(hangmanInfo, userGuessLetter);
     
     // inputFlag++;
   }while(1);
+}
+
+static void checkCorrectGuess(hangmanGameInfo hangmanInfo, int userGuessLetter[])
+{
+  
 }
 
 static void getGuessLetter(hangmanGameInfo hangmanInfo, int userGuessLetter[])
@@ -68,14 +83,6 @@ static void getGuessLetter(hangmanGameInfo hangmanInfo, int userGuessLetter[])
       printf("Invalid Guess Letter\n\n");
     }
     inputFlag=0;
-
-    for (int x=0; x<26; x++)
-    {
-      if (userGuessLetter[x]==1)
-      {
-        printf("-%i-", x+97);
-      }
-    }
     
     printf("Which Letter: ");
     scanf("%c", &userLChoice);
@@ -111,7 +118,7 @@ static void getGuessWord(hangmanGameInfo hangmanInfo, int userGuessLetter[], cha
       }
     }
     
-    printf("Which Letter: ");
+    printf("Guess a Word: ");
     scanf("%s", userWChoice);
     getchar();
     
@@ -125,16 +132,37 @@ static void getGuessWord(hangmanGameInfo hangmanInfo, int userGuessLetter[], cha
 static void drawGame(hangmanGameInfo hangmanInfo, int userGuessLetter[])
 {
   system("clear");
+
+  int y=0;
   
+  for (int x=0; x<hangmanInfo.wordGenLen; x++)
+  {
+    if (hangmanInfo.userCorrectGuesses[y]==x)
+    {
+      printf("%c", hangmanInfo.wordGen[x]);
+      y++;
+    }
+    else
+    {
+      printf("_");
+    }
+  }
+  printf("\n");
+  
+  //user's guesses
+  printf("Letters you have guessed:\n");
   for (int x=0; x<26; x++)
   {
-    printf("%i ", userGuessLetter[x]);
+    if (userGuessLetter[x]==1)
+    {
+      printf("%c ", x+97);
+    }
   }
   printf("\n");
   
 }
 
-static void chooseWord(hangmanGameInfo hangmanInfo)
+static int chooseWord(hangmanGameInfo hangmanInfo)
 {
   FILE *fp;
   fp = fopen("./games/hangman/hangmanList.txt", "r");
@@ -174,7 +202,7 @@ static void chooseWord(hangmanGameInfo hangmanInfo)
 
   //save generated word
   strcpy(hangmanInfo.wordGen, CURR->word);
-  hangmanInfo.wordGenLen = strlen(hangmanInfo.wordGen);
+  return strlen(hangmanInfo.wordGen);
 }
 
 static struct wordList *makeWordNode()
