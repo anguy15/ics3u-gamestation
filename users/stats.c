@@ -42,6 +42,12 @@ int readStats(userStats tempUserStats[])
     //math
     fscanf(fp, "%i", &tempUserStats[x].mathWins);
     fscanf(fp, "%i", &tempUserStats[x].mathLosses);
+    //tic-tac-toe
+    fscanf(fp, "%i", &tempUserStats[x].tttWins);
+    fscanf(fp, "%i", &tempUserStats[x].tttLosses);
+    //hangman
+    fscanf(fp, "%i", &tempUserStats[x].hangmanWins);
+    fscanf(fp, "%i", &tempUserStats[x].hangmanLosses);
 
     if (feof(fp))
       break;

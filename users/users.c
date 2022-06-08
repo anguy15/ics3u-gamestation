@@ -72,37 +72,28 @@ static int makeUserDB()
   fclose(fp);
 }
 
-static int checkPassword(tempUserData *tempUserData, char username[], char password[])
+static int checkPassword(tempUserData *userData, char username[], char password[])
 {
-  FILE *fp;
-  fp = fopen("./users/user_data", "r");
-  char buffer[256];
-  int userFound=0;
-  int x=0;
+  int userCount = checkUserCount();
+  tempUserData tempUserData[userCount];
+  readUsers(tempUserData);
 
-  fscanf(fp, "%s", buffer);
-  while (!feof(fp) && userFound==0)
+  for (int x=0; x<userCount; x++)
   {
-    //read uid
-    fscanf(fp, "%i", &tempUserData->uid);
-    //read username
-    fscanf(fp, "%s", tempUserData->username);
-    
-    if (strcmp(tempUserData->username, username)==0)
+    if (strcmp(tempUserData[x].username,username)==0)
     {
-      userFound=1;
+      strcpy(userData->password, tempUserData[x].password);
+      break;
     }
-
-    //read usertype
-    fscanf(fp, "%i", &tempUserData->usertype);
-    //read password
-    fscanf(fp, "%s", tempUserData->password);
+    else if (x==userCount-1)
+    {
+      return(0);//no username
+    }
   }
-  fclose(fp);
   
   //return whether the password was correct
   encryptStr(password);
-  if (strcmp(tempUserData->password, password)==0 && userFound == 1)
+  if (strcmp(userData->password, password)==0)
   {
     return 1;
   }
@@ -151,6 +142,7 @@ static int readUsers(tempUserData userData[])
     //read password
     fscanf(fp, "%s", userData[x].password);
 
+    //dont x++ if feof
     if (feof(fp))
       break;
     

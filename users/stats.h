@@ -11,6 +11,11 @@ typedef struct
   int mathWins;
   int mathLosses;
   //tic-tac-toe
+  int tttWins;
+  int tttLosses;
+  //hangman
+  int hangmanWins;
+  int hangmanLosses;
 }userStats;
 
 //  GLOBALS
@@ -19,10 +24,10 @@ typedef struct
 void readUserStats(int userID);
 //reads all stats
 //takes a struct to write stats to
-int readStats(userStats allUserStats[]);
+static int readStats(userStats allUserStats[]);
 //writes all stats
 //takes stats struct, and amount of users
-void writeStats(userStats allUserStats[], int userCount);
+static void writeStats(userStats allUserStats[], int userCount);
 
 //  LOCALS
 
