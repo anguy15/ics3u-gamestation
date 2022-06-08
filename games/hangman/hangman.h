@@ -9,10 +9,12 @@
 typedef struct
 {
   char wordGen[50];
+  char wordGenCorrect[50];
   int wordGenLen;
 
   int userCorrectCount;
   int userCorrectGuesses[50];
+  int incorrectGuesses;
 }hangmanGameInfo;
 
 struct wordList
@@ -27,18 +29,21 @@ int playHangman();
 
 //  LOCAL
 //finds a random word from text file
-static int chooseWord(hangmanGameInfo hangmanInfo);
+static int chooseWord(hangmanGameInfo *hangmanInfo);
 
 //makes a new word node
 static struct wordList *makeWordNode();
 
 //get user's inputs
-static void getUserInputs(hangmanGameInfo hangmanInfo);
-static void getGuessLetter(hangmanGameInfo hangmanInfo, int userGuessLetter[]);
-static void getGuessWord(hangmanGameInfo hangmanInfo, int userGuessLetter[], char userGuessWord[]);
+//return win or loss
+static int mainGame(hangmanGameInfo *hangmanInfo);
+static char getGuessLetter(hangmanGameInfo *hangmanInfo, int userGuessLetterArr[]);
+static void getGuessWord(hangmanGameInfo *hangmanInfo, int userGuessLetterArr[], char userGuessWord[]);
+//checks inputs
+//returns 0 for fail, 1 for correct
+static int checkCorrectGuess(hangmanGameInfo *hangmanInfo, char guessLetter);
 
-static void checkCorrectGuess(hangmanGameInfo hangmanInfo, int userGuessLetter[]);
-
-static void drawGame(hangmanGameInfo hangmanInfo, int userGuessLetter[]);
+static void drawGame(hangmanGameInfo hangmanInfo, int userGuessLetterArr[]);
+static void setupCorrectGuesses(hangmanGameInfo *hangmanInfo);
 
 #endif
