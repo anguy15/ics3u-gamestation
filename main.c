@@ -24,6 +24,7 @@ int main(void) {
   // printf("%i %s %i", userData.uid, userData.username, userData.usertype);
   
   // readUserStats(userData);
+  // updateStats(userStats);
   
   // mainMenu(&userData);
   

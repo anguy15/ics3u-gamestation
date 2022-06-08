@@ -24,7 +24,7 @@ typedef struct
 //outputs the user's stats
 void readUserStats(userData userData);
 //updates a specific user's stats
-void updateUserStats(userData userData);
+void updateUserStats(userStats userData);
 
 //  LOCALS
 //reads all stats

@@ -25,7 +25,7 @@ void readUserStats(userData userData)
       tempUserStats[x].hangmanLosses = 0;
       tempUserStats[x].userID = x;
       
-      writeStats(tempUserStats, userCount+1);
+      writeStats(tempUserStats, userCount);
     }
   }
   else//found the file
@@ -43,19 +43,31 @@ void readUserStats(userData userData)
     //hangman
     printf("Hangman:\n\t%-20s%-10s%-10s\n", "Username", "Wins", "Losses");
     printf("\t%-20s%-10i%-10i\n", userData.username, tempUserStats[userData.uid].hangmanWins, tempUserStats[userData.uid].hangmanLosses);
+    fclose(fp);
   }
 }
 
-void updateStats(userData newUserData)
+void updateStats(userStats newUserData)
 {
+  //read all stats
   int userCount = checkUserCount();
-  userData userData[userCount];
-  getUserInfo(userData);
+  userStats userData[userCount];
+  readStats(userData);
+
+  //setup new stats
+  //math
+  userData[newUserData.userID].mathWins=newUserData.mathWins;
+  userData[newUserData.userID].mathLosses=newUserData.mathLosses;
   
-  strcpy(userData[newUserData.uid].username,newUserData.username);
-  userData[newUserData.uid].uid,newUserData.uid;
-  userData[newUserData.uid].usertype=newUserData.usertype;
+  //tic tac toe
+  userData[newUserData.userID].tttWins=newUserData.tttWins;
+  userData[newUserData.userID].tttLosses=newUserData.tttLosses;
   
+  //hangman
+  userData[newUserData.userID].hangmanWins=newUserData.hangmanWins;
+  userData[newUserData.userID].hangmanLosses=newUserData.hangmanLosses;
+
+  //save stats
   writeStats(userData, userCount);
 }
       
@@ -93,7 +105,7 @@ static void writeStats(userStats allUserStats[], int userCount)
   int x=0;
 
   //write all stats
-  while (x!=userCount-1)
+  while (x!=userCount)
   {
     fprintf(fp, "%i ", allUserStats[x].userID);
     //math
