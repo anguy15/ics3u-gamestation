@@ -24,7 +24,8 @@ int main(void) {
 
   // readUserStats(userData);
 
-  mainMenu(&userData, &userStats);
+  // mainMenu(&userData, &userStats);
+  addUser(1);getchar();
 
   return(0);
 }

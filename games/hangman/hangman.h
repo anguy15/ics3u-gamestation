@@ -8,19 +8,19 @@
 //variables
 typedef struct
 {
-  char wordGen[50];
-  char wordGenCorrect[50];
+  char wordGen[256];
+  char wordGenCorrect[256];
   int wordGenLen;
 
   int userCorrectCount;
-  int userCorrectGuesses[50];
+  int userCorrectGuesses[256];
   int incorrectGuesses;
 }hangmanGameInfo;
 
 struct wordList
 {
   struct wordlist *NEXT;
-  char word[50];
+  char word[256];
 };
 
 //  GLOBAL

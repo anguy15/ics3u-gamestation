@@ -61,6 +61,8 @@ main
       -games
       -stats
     -add user
+      -update games_stats file
+      -update user_data file
     -edit user
     -delete user
 

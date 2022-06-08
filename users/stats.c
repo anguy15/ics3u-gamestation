@@ -7,7 +7,7 @@ void readUserStats(userData userData)
   fp = fopen("./users/games_stats", "r");
   int userCount=0;
 
-  userCount = checkUserCount();
+  userCount = getUserCount();
   //sets all data to zero
   userStats tempUserStats[userCount];
 
@@ -46,36 +46,28 @@ void readUserStats(userData userData)
   }
 }
 
-void updateStats(userData newUserData)
+void updateStats(userStats newUserStats)
 {
-  int userCount = checkUserCount();
-<<<<<<< Updated upstream
-  userData userData[userCount];
-  getUserInfo(userData);
+  int userCount = getUserCount();
 
-  strcpy(userData[newUserData.uid].username,newUserData.username);
-  userData[newUserData.uid].uid,newUserData.uid;
-  userData[newUserData.uid].usertype=newUserData.usertype;
-
-  userStats userData[userCount];
-  readStats(userData);
+  userStats userStats[userCount];
+  readStats(userStats);
 
   //setup new stats
   //math
-  userData[newUserData.uid].mathWins=newUserData.mathWins;
-  userData[newUserData.uid].mathLosses=newUserData.mathLosses;
+  userStats[newUserStats.uid].mathWins=newUserStats.mathWins;
+  userStats[newUserStats.uid].mathLosses=newUserStats.mathLosses;
 
   //tic tac toe
-  userData[newUserData.uid].tttWins=newUserData.tttWins;
-  userData[newUserData.uid].tttLosses=newUserData.tttLosses;
+  userStats[newUserStats.uid].tttWins=newUserStats.tttWins;
+  userStats[newUserStats.uid].tttLosses=newUserStats.tttLosses;
 
   //hangman
-  userData[newUserData.uid].hangmanWins=newUserData.hangmanWins;
-  userData[newUserData.uid].hangmanLosses=newUserData.hangmanLosses;
+  userStats[newUserStats.uid].hangmanWins=newUserStats.hangmanWins;
+  userStats[newUserStats.uid].hangmanLosses=newUserStats.hangmanLosses;
 
   //save stats
->>>>>>> Stashed changes
-  writeStats(userData, userCount);
+  writeStats(userStats, userCount);
 }
 
 void printAllStats()
@@ -95,7 +87,7 @@ void printAllStats()
     printf("%i ", userStats[x].tttLosses);
     //hangman
     printf("%i ", userStats[x].hangmanWins);
-    printf("%i\n",uUserStats[x].hangmanLosses);
+    printf("%i\n",userStats[x].hangmanLosses);
   }
 }
 

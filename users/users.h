@@ -29,10 +29,10 @@ typedef struct
 void printUserFile();
 
 //return an updated array of user data
-void getUserInfo(userData userData[]);
+void getAllUserInfo(userData userData[]);
 
 //updates the data of specific user
-void updateUserData(userData newUserData);
+void updateUserData(tempUserData newUserData);
 
 //return if logged in, and return the user id in userData.userID[]
 int login(userData *userData);
@@ -42,9 +42,6 @@ int login(userData *userData);
 int checkUserCount();
 
 //    LOCAL
-//returns 1 if it works
-static int makeUserDB();
-
 //return 1 if it is correct
 static int checkPassword(tempUserData *tempUserData, char username[], char password[]);
 
