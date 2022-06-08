@@ -15,6 +15,13 @@ typedef struct
   char password[256];
 }tempUserData;
 
+typedef struct
+{
+  int uid;
+  char username[256];
+  int usertype;
+}userData;
+
 //    prototypes
 
 //    GLOBAL
@@ -33,7 +40,7 @@ int checkUserCount();
 static int makeUserDB();
 
 //return 1 if it is correct
-static int checkPassword(char username[], char password[], int *uid);
+static int checkPassword(tempUserData *tempUserData, char username[], char password[]);
 
 //reads all usersdata to a struct
 //returns a 0 if it fails, returns the amount read if it doesn't

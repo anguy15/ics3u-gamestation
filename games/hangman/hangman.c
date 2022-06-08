@@ -6,9 +6,7 @@ int playHangman()
   hangmanInfo.wordGenLen = chooseWord(&hangmanInfo);
   hangmanInfo.userCorrectCount=0;
   hangmanInfo.incorrectGuesses=0;
-  printf("%s", hangmanInfo.wordGen);
   setupCorrectGuesses(&hangmanInfo);
-  getchar();
 
   switch (mainGame(&hangmanInfo))
   {
@@ -30,7 +28,8 @@ static int mainGame(hangmanGameInfo *hangmanInfo)
   int userGuessLetterArr[50]={0};
   char userGuessWord[50];
   int winCond=0;
-  
+
+  //main game loop
   do
   {
     if (inputFlag!=0)
@@ -46,6 +45,7 @@ static int mainGame(hangmanGameInfo *hangmanInfo)
     // get Guess Type
     do
     {
+      drawGame(*hangmanInfo, userGuessLetter);
       if (inputFlag!=0)
       {
         printf("Invalid Guess Type\n\n");
@@ -73,6 +73,7 @@ static int mainGame(hangmanGameInfo *hangmanInfo)
         getGuessWord(hangmanInfo, userGuessLetter, userGuessWord);
         if (strcmp(hangmanInfo->wordGen,userGuessWord)==0)
         {
+          drawGame(*hangmanInfo, userGuessLetter);
           return(1);//player won
         }
         break;
@@ -80,6 +81,7 @@ static int mainGame(hangmanGameInfo *hangmanInfo)
     //check if the user won
     if (strcmp(hangmanInfo->wordGen,hangmanInfo->wordGenCorrect)==0)
     {
+      drawGame(*hangmanInfo, userGuessLetter);
       return(1);//player won
     }
 
@@ -115,6 +117,7 @@ static char getGuessLetter(hangmanGameInfo *hangmanInfo, int userGuessLetterArr[
   drawGame(*hangmanInfo, userGuessLetterArr);
   int inputFlag=0;
   char userLChoice=0;
+  //loop until valid letter given, not already chosen
   do
   {
     if (inputFlag!=0)
@@ -141,7 +144,7 @@ static void getGuessWord(hangmanGameInfo *hangmanInfo, int userGuessLetterArr[],
   drawGame(*hangmanInfo, userGuessLetterArr);
   int inputFlag=0;
   char userWChoice[50]={0};
-  
+  //loop until word is possibly a valid word
   do
   {
     if (inputFlag!=0)
@@ -155,7 +158,7 @@ static void getGuessWord(hangmanGameInfo *hangmanInfo, int userGuessLetterArr[],
     getchar();
     
     inputFlag++;
-  }while(strlen(userWChoice)<1);
+  }while(strlen(userWChoice)<2);
 
   //write choice to array
   strcpy(guessWord, userWChoice);
@@ -172,8 +175,6 @@ static void setupCorrectGuesses(hangmanGameInfo *hangmanInfo)
 static void drawGame(hangmanGameInfo hangmanInfo, int userGuessLetterArr[])
 {
   system("clear");
-  
-  printf("%i", hangmanInfo.incorrectGuesses);
   
   printf("%s", hangmanInfo.wordGenCorrect);
   printf("\n");

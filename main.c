@@ -7,8 +7,7 @@
 #include "users/stats.h"
 
 //game includes
-#include "games/math_quiz/math_quiz.h"
-#include "games/tic-tac-toe/tic-tac-toe.h"
+#include "games/games.h"
 
 //prototypes
 
@@ -16,8 +15,27 @@ int main(void) {
   srand(time(0));
   int userID=0;
   
-  // login(&userID);
+  login(&userID);
 
+  
+  
+  return(0);
+}
+
+void mainMenu(int userID)
+{
+  // switch (checkAdmin(userID))
+  // {
+  //   case 1:
+  //     adminMenu();
+  //     break;
+
+  //   case 2:
+  //     playerMenu();
+  //     break;
+  // }
+  
+  
   // menu
   
     // edit users//call users/users.h func
@@ -28,11 +46,24 @@ int main(void) {
     // stats//call users/stats.h func
       // readUserStats(userID);
   
-    // games//call game menu games/games.h
+    // gamesmenu//call game menu games/games.h
       // playTicTacToe();
       // playMathQuiz();
-      playHangman();
-  
-  return(0);
+      // playHangman();
 }
 
+void adminMenu(int userID)
+{
+  //stats
+  //edit users
+  //add games
+  //change password
+}
+
+void playerMenu(int userID)
+{
+  //stats
+  //mystats
+  //games
+  //change password
+}

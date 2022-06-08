@@ -8,6 +8,7 @@ int login(int *userID)
   char username[256];
   char password[256];
   char passwordFails=0;
+  tempUserData tempUserData = {0};
   
   if (userCount == 0)//no user exists
   {
@@ -34,7 +35,7 @@ int login(int *userID)
       getchar();
       
       passwordFails++;
-    }while(checkPassword(username, password, userID)==0);
+    }while(checkPassword(&tempUserData, username, password)==0);
   
     return(1);
   }
@@ -66,36 +67,37 @@ static int makeUserDB()
   fclose(fp);
 }
 
-static int checkPassword(char username[], char password[], int *uid)
+static int checkPassword(tempUserData *tempUserData, char username[], char password[])
 {
   FILE *fp;
   fp = fopen("./users/user_data", "r");
   char buffer[256];
   int userFound=0;
+  int x=0;
 
   fscanf(fp, "%s", buffer);
   while (!feof(fp) && userFound==0)
   {
     //read uid
-    fscanf(fp, "%i", uid);
+    fscanf(fp, "%i", &tempUserData->uid);
     //read username
-    fscanf(fp, "%s", buffer);
+    fscanf(fp, "%s", tempUserData->username);
     
-    if (strcmp(buffer, username)==0)
+    if (strcmp(tempUserData->username, username)==0)
     {
       userFound=1;
     }
 
     //read usertype
-    fscanf(fp, "%s", buffer);
+    fscanf(fp, "%i", &tempUserData->usertype);
     //read password
-    fscanf(fp, "%s", buffer);
+    fscanf(fp, "%s", tempUserData->password);
   }
   fclose(fp);
   
   //return whether the password was correct
   encryptStr(password);
-  if (strcmp(buffer, password)==0 && userFound == 1)
+  if (strcmp(tempUserData->password, password)==0 && userFound == 1)
   {
     return 1;
   }
