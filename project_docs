@@ -1,0 +1,110 @@
+//      INCLUDE TREE      //
+main
+  users
+    users
+      encryption
+    stats
+  games
+    math
+    tic-tac-toe
+    hangman
+
+//new routing format
+pipe information: '|'
+subsection: '->'
+choice: '-'
+dependencies: '(<name>)'
+
+main
+  login | menu -> 
+    ->users(admin/su)
+      -add
+      -edit
+        user
+        admin(su)
+      -delete
+        user
+        admin(su)
+
+    ->games(player)
+      -math
+      -tic-tac-toe
+      -hangman
+
+    ->stats
+      -leaderboard
+      -user
+
+//
+
+//
+main
+-users
+  -new user
+    -make a unique uid
+    -encrypt password
+    -set all values to 0
+
+  -no users
+    -make an admin please
+  -admin
+  -non admin
+
+  -admin
+    -user
+      -games
+      -stats
+    -add user
+    -edit user
+    -delete user
+
+-games
+  -hangman
+    -read word dict
+      choose a word
+    -play game
+      6 chances
+      -letters
+        check if input is anywhere in the word
+      -words
+        check if input is the same as the word
+
+  -math quiz
+    -difficulty
+      easy
+        two value
+      medium
+        three
+      hard
+        five
+
+    -multiply, divide, subtract, add
+    -check if input is the same
+
+  -tic-tac-toe
+    -arr[3][3]
+      012
+      345
+      678
+    -check system
+      -check horizontal
+        012, 345, 678
+      -check vertical
+        036, 147, 258
+      -check diagonal
+        048, 246
+
+    -computer
+      -ai will randomly cycle through possible wins, defined above
+
+//
+FILES
+-login usertype = 0,1,2 | 0 is user, 1 is admin, 2 is su
+  uid username usertype password
+
+-tic-tac-toe
+  uid win loss scores
+-math
+  uid win loss
+-hangman
+  uid win loss scores
