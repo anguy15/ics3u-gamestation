@@ -1,7 +1,7 @@
 #include "users.h"
 
 //functions
-int login(int *userID)
+int login(userData *userData)
 {  
   system("clear");
   int userCount = checkUserCount();
@@ -12,7 +12,7 @@ int login(int *userID)
   
   if (userCount == 0)//no user exists
   {
-    makeUser(2, userID);//make a admin user
+    makeUser(2, userData);//make a admin user
     return 0;
   }
   else//a user exists
@@ -36,6 +36,11 @@ int login(int *userID)
       
       passwordFails++;
     }while(checkPassword(&tempUserData, username, password)==0);
+
+    //copy temp data to program data
+    userData->uid = tempUserData.uid;
+    strcpy(userData->username, tempUserData.username);
+    userData->usertype = tempUserData.usertype;
   
     return(1);
   }
@@ -179,7 +184,7 @@ static int writeUsers(tempUserData userData[], int userCount)
   return(x);
 }
 
-static int makeUser(int usertype, int *userID)
+static int makeUser(int usertype, userData *permUserData)
 {
   //storing temp data to write later
   //new usercount
@@ -195,7 +200,6 @@ static int makeUser(int usertype, int *userID)
   
   //setup uid and usertype
   userData[userCount-1].uid = userCount-1;
-  *userID = userCount-1;
   userData[userCount-1].usertype = usertype;
 
   //setup username and password
@@ -211,6 +215,12 @@ static int makeUser(int usertype, int *userID)
 
   //write all data back to file
   writeUsers(userData, userCount);
+
+  //copy user info to program data
+  permUserData->uid = userData[userCount-1].uid;
+  strcpy(permUserData->username, userData[userCount-1].username);
+  permUserData->usertype = userData[userCount-1].usertype;
+  
   
   fclose(fp);
   return(0);

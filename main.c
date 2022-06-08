@@ -10,30 +10,37 @@
 #include "games/games.h"
 
 //prototypes
+void mainMenu(userData *userData);
+void adminMenu(userData *userData);
+void playerMenu(userData *userData);
 
 int main(void) {
   srand(time(0));
-  int userID=0;
+  userData userData;
   
-  login(&userID);
+  login(&userData);
 
-  
+  // debug
+  // printf("%i %s %i", userData.uid, userData.username, userData.usertype);
+
+  mainMenu(&userData);
   
   return(0);
 }
 
-void mainMenu(int userID)
+void mainMenu(userData *userData)
 {
-  // switch (checkAdmin(userID))
-  // {
-  //   case 1:
-  //     adminMenu();
-  //     break;
+  switch (userData->usertype)
+  {
+    case 0:
+      playerMenu(userData);
+      break;
 
-  //   case 2:
-  //     playerMenu();
-  //     break;
-  // }
+    case 1:
+    case 2:
+      adminMenu(userData);
+      break;
+  }
   
   
   // menu
@@ -52,7 +59,7 @@ void mainMenu(int userID)
       // playHangman();
 }
 
-void adminMenu(int userID)
+void adminMenu(userData *userData)
 {
   //stats
   //edit users
@@ -60,7 +67,7 @@ void adminMenu(int userID)
   //change password
 }
 
-void playerMenu(int userID)
+void playerMenu(userData *userData)
 {
   //stats
   //mystats
