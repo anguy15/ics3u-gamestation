@@ -26,6 +26,9 @@ void readUserStats(userData userData);
 //updates a specific user's stats
 void updateUserStats(userData userData);
 
+//prints add user stats
+void printAllStats();
+
 //  LOCALS
 //reads all stats
 //takes a struct to write stats to

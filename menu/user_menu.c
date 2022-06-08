@@ -2,7 +2,7 @@
 
 void userMenu(userData *userData, userStats *userStats)
 {
-  //stats
+  printAllStats();
   //mystats
   //games
   // gameMenu(userData, userStats);

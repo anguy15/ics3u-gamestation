@@ -2,7 +2,7 @@
 
 void adminMenu(userData *userData, userStats *userStats)
 {
-  //stats
+  printAllStats();
   //edit users
   //edit self
 }

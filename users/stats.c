@@ -78,6 +78,27 @@ void updateStats(userData newUserData)
   writeStats(userData, userCount);
 }
 
+void printAllStats()
+{
+  int userCount=getUserCount();
+  userStats userStats[userCount];
+  readStats(userStats);
+
+  for (int x=0; x<userCount; x++)
+  {
+    printf("%i ", userStats[x].uid);
+    //math
+    printf("%i ", userStats[x].mathWins);
+    printf("%i ", userStats[x].mathLosses);
+    //tic tac toe
+    printf("%i ", userStats[x].tttWins);
+    printf("%i ", userStats[x].tttLosses);
+    //hangman
+    printf("%i ", userStats[x].hangmanWins);
+    printf("%i\n",uUserStats[x].hangmanLosses);
+  }
+}
+
 static int readStats(userStats tempUserStats[])
 {
   FILE *fp;
