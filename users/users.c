@@ -12,7 +12,9 @@ int login(userData *userData)
   
   if (userCount == 0)//no user exists
   {
-    makeUser(2, userData);//make a admin user
+    makeUser(2);//make a admin user
+    getUserData(userData);
+    
     return 0;
   }
   else//a user exists
@@ -53,9 +55,11 @@ void addUser(int usertype)
 {
   //update user file
   userData tempUserData;
+  tempUserData.uid = getUserCount();
   
   //add the new user
-  makeUser(usertype, &tempUserData);
+  makeUser(usertype);
+  getUserData(&tempUserData);
   
   //update stats file
 }
@@ -117,13 +121,28 @@ void updateUserData(tempUserData newUserData)
 void getAllUserInfo(userData userData[])
 {
   int userCount = getUserCount();
-  tempUserData tempUserData[userCount];
+  tempUserData tempUserData[userCount];//required to bypass the password reads
   readUsers(tempUserData);
   for (int x=0; x<userCount; x++)
   {
     userData[x].uid=tempUserData[x].uid;
     strcpy(userData[x].username,tempUserData[x].username);
     userData[x].usertype=tempUserData[x].usertype;
+  }
+}
+
+void getUserData(userData *userData)
+{
+  int userCount = getUserCount();
+  tempUserData tempUserData[userCount];
+  readUsers(tempUserData);
+  for (int x=0; x<userCount; x++)
+  {
+    if (x==userData->uid)
+    {
+      strcpy(userData->username,tempUserData[x].username);
+      userData->usertype=tempUserData[x].usertype;
+    }
   }
 }
 
@@ -221,12 +240,12 @@ static int writeUsers(tempUserData userData[], int userCount)
   return(x);
 }
 
-static int makeUser(int usertype, userData *permUserData)
+static int makeUser(int usertype)
 {
   //storing temp data to write later
   //new usercount
   int userCount=getUserCount();
-  tempUserData userData[userCount];
+  tempUserData userData[userCount+1];
   if (userCount != 0)//there are users
   {
     readUsers(userData);
@@ -247,14 +266,8 @@ static int makeUser(int usertype, userData *permUserData)
 
   encryptStr(userData[userCount].password);
 
-
   //write all data back to file
   writeUsers(userData, userCount+1);
-
-  //copy user info to program data
-  permUserData->uid = userData[userCount].uid;
-  strcpy(permUserData->username, userData[userCount].username);
-  permUserData->usertype = userData[userCount].usertype;
   
   return(0);
 }

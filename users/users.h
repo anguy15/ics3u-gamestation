@@ -31,6 +31,9 @@ void printUserFile();
 //return an updated array of user data
 void getAllUserInfo(userData userData[]);
 
+//return user data
+void getUserData(userData *userData);
+
 //updates the data of specific user
 void updateUserData(tempUserData newUserData);
 
@@ -55,6 +58,6 @@ static int writeUsers(tempUserData readUsers[], int userCount);
 
 //return 1 if it works
 //take type of user, 0,1,2, normal user,admin,super user
-static int makeUser(int usertype, userData *userData);
+static int makeUser(int usertype);
 
 #endif
