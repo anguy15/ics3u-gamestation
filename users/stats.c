@@ -24,7 +24,7 @@ void readUserStats(userData userData)
       tempUserStats[x].hangmanWins = 0;
       tempUserStats[x].hangmanLosses = 0;
       tempUserStats[x].uid = x;
-      
+
       writeStats(tempUserStats, userCount+1);
     }
   }
@@ -33,7 +33,7 @@ void readUserStats(userData userData)
     //read all stats
     readStats(tempUserStats);
 
-    //print specific user stats 
+    //print specific user stats
     //math
     printf("Math Quiz:\n\t%-20s%-10s%-10s\n", "Username", "Wins", "Losses");
     printf("\t%-20s%-10i%-10i\n", userData.username, tempUserStats[userData.uid].mathWins, tempUserStats[userData.uid].mathLosses);
@@ -52,12 +52,11 @@ void updateStats(userData newUserData)
 <<<<<<< Updated upstream
   userData userData[userCount];
   getUserInfo(userData);
-  
+
   strcpy(userData[newUserData.uid].username,newUserData.username);
   userData[newUserData.uid].uid,newUserData.uid;
   userData[newUserData.uid].usertype=newUserData.usertype;
-  
-=======
+
   userStats userData[userCount];
   readStats(userData);
 
@@ -65,11 +64,11 @@ void updateStats(userData newUserData)
   //math
   userData[newUserData.uid].mathWins=newUserData.mathWins;
   userData[newUserData.uid].mathLosses=newUserData.mathLosses;
-  
+
   //tic tac toe
   userData[newUserData.uid].tttWins=newUserData.tttWins;
   userData[newUserData.uid].tttLosses=newUserData.tttLosses;
-  
+
   //hangman
   userData[newUserData.uid].hangmanWins=newUserData.hangmanWins;
   userData[newUserData.uid].hangmanLosses=newUserData.hangmanLosses;
@@ -78,7 +77,7 @@ void updateStats(userData newUserData)
 >>>>>>> Stashed changes
   writeStats(userData, userCount);
 }
-      
+
 static int readStats(userStats tempUserStats[])
 {
   FILE *fp;
@@ -100,7 +99,7 @@ static int readStats(userStats tempUserStats[])
 
     if (feof(fp))
       break;
-    
+
     x++;
   }
   fclose(fp);

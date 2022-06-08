@@ -20,7 +20,7 @@ void gameMenu(userData *userData, userStats *userStats);
 
 int main(void) {
   srand(time(0));
-  
+
   userData userData;
   userStats userStats;
   login(&userData);
@@ -28,11 +28,11 @@ int main(void) {
 
   // debug
   // printf("%i %s %i", userData.uid, userData.username, userData.usertype);
-  
+
   // readUserStats(userData);
-  
+
   mainMenu(&userData, &userStats);
-  
+
   return(0);
 }
 
@@ -49,18 +49,18 @@ void mainMenu(userData *userData, userStats *userStats)
       adminMenu(userData, userStats);
       break;
   }
-  
-  
+
+
   // menu
-  
+
     // edit users//call users/users.h func
       // add
       // edit
       // delete
-    
+
     // stats//call users/stats.h func
       // readUserStats(uid);
-  
+
     // gamesmenu//call game menu games/games.h
       // playTicTacToe();
       // playMathQuiz();
