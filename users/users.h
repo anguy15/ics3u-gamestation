@@ -28,6 +28,12 @@ typedef struct
 //debugging
 void printUserFile();
 
+//return an updated array of user data
+void getUserInfo(userData userData[]);
+
+//updates the data of specific user
+void updateUserData(userData newUserData);
+
 //return if logged in, and return the user id in userData.userID[]
 int login(userData *userData);
 

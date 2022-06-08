@@ -1,6 +1,6 @@
 #include "stats.h"
 
-void readUserStats(int userID)
+void readUserStats(userData userData)
 {
   system("clear");
   FILE *fp;
@@ -16,21 +16,50 @@ void readUserStats(int userID)
     //write for all users
     for (int x=0; x<userCount; x++)
     {
+      //setup all variables as 0
       tempUserStats[x].mathWins = 0;
       tempUserStats[x].mathLosses = 0;
+      tempUserStats[x].tttWins = 0;
+      tempUserStats[x].tttLosses = 0;
+      tempUserStats[x].hangmanWins = 0;
+      tempUserStats[x].hangmanLosses = 0;
       tempUserStats[x].userID = x;
-      writeStats(tempUserStats, userCount);
+      
+      writeStats(tempUserStats, userCount+1);
     }
   }
   else//found the file
   {
+    //read all stats
     readStats(tempUserStats);
-    printf("Math Quiz:\n\t%-10s%-10s\n", "Wins", "Losses");
-    printf("\t%-10i%-10i\n", tempUserStats[userID].mathWins, tempUserStats[userID].mathLosses);
+
+    //print specific user stats 
+    //math
+    printf("Math Quiz:\n\t%-20s%-10s%-10s\n", "Username", "Wins", "Losses");
+    printf("\t%-20s%-10i%-10i\n", userData.username, tempUserStats[userData.uid].mathWins, tempUserStats[userData.uid].mathLosses);
+    //tic tac toe
+    printf("Tic-Tac-Toe:\n\t%-20s%-10s%-10s\n", "Username", "Wins", "Losses");
+    printf("\t%-20s%-10i%-10i\n", userData.username, tempUserStats[userData.uid].tttWins, tempUserStats[userData.uid].tttLosses);
+    //hangman
+    printf("Hangman:\n\t%-20s%-10s%-10s\n", "Username", "Wins", "Losses");
+    printf("\t%-20s%-10i%-10i\n", userData.username, tempUserStats[userData.uid].hangmanWins, tempUserStats[userData.uid].hangmanLosses);
   }
 }
 
-int readStats(userStats tempUserStats[])
+void updateStats(userData newUserData)
+{
+  int userCount = checkUserCount();
+  userData userData[userCount];
+  getUserInfo(userData);
+  
+  strcpy(userData[newUserData.uid].username,newUserData.username);
+  userData[newUserData.uid].uid,newUserData.uid;
+  userData[newUserData.uid].usertype=newUserData.usertype;
+  
+  writeStats(userData, userCount);
+}
+      
+static int readStats(userStats tempUserStats[])
 {
   FILE *fp;
   fp = fopen("./users/games_stats", "r");
@@ -58,16 +87,24 @@ int readStats(userStats tempUserStats[])
   return(x);
 }
 
-void writeStats(userStats allUserStats[], int userCount)
+static void writeStats(userStats allUserStats[], int userCount)
 {
   FILE *fp = fopen("./users/games_stats", "w");
   int x=0;
-  
+
+  //write all stats
   while (x!=userCount-1)
   {
     fprintf(fp, "%i ", allUserStats[x].userID);
+    //math
     fprintf(fp, "%i ", allUserStats[x].mathWins);
-    fprintf(fp, "%i\n", allUserStats[x].mathLosses);
+    fprintf(fp, "%i ", allUserStats[x].mathLosses);
+    //tic tac toe
+    fprintf(fp, "%i ", allUserStats[x].tttWins);
+    fprintf(fp, "%i ", allUserStats[x].tttLosses);
+    //hangman
+    fprintf(fp, "%i ", allUserStats[x].hangmanWins);
+    fprintf(fp, "%i\n", allUserStats[x].hangmanLosses);
     x++;
   }
   fclose(fp);

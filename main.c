@@ -22,8 +22,10 @@ int main(void) {
 
   // debug
   // printf("%i %s %i", userData.uid, userData.username, userData.usertype);
-
-  mainMenu(&userData);
+  
+  // readUserStats(userData);
+  
+  // mainMenu(&userData);
   
   return(0);
 }

@@ -41,6 +41,8 @@ int login(userData *userData)
     userData->uid = tempUserData.uid;
     strcpy(userData->username, tempUserData.username);
     userData->usertype = tempUserData.usertype;
+    
+    
   
     return(1);
   }
@@ -60,6 +62,52 @@ void printUserFile()
       printf("%s\n", temp);
   }
   fclose(fp);
+}
+
+int checkUserCount()
+{
+  FILE *fp;
+  fp = fopen("./users/user_data", "r");
+  int userCount;
+
+  if (fp == NULL)//if file does not exist
+  {
+    makeUserDB();
+    return 0;
+  }
+  else//we find the user count
+  {
+    fscanf(fp, "%i", &userCount);
+  }
+
+  fclose(fp);
+  return userCount;
+}
+
+void updateUserData(tempUserData newUserData)
+{
+  int userCount = checkUserCount();
+  tempUserData userData[userCount];  
+  readUsers(userData);
+  
+  strcpy(userData[newUserData.uid].username,newUserData.username);
+  userData[newUserData.uid].uid,newUserData.uid;
+  userData[newUserData.uid].usertype=newUserData.usertype;
+  
+  writeUsers(userData, userCount);
+}
+
+void getUserInfo(userData userData[])
+{
+  int userCount = checkUserCount();
+  tempUserData tempUserData[userCount];
+  readUsers(tempUserData);
+  for (int x=0; x<userCount; x++)
+  {
+    userData[x].uid=tempUserData[x].uid;
+    strcpy(userData[x].username,tempUserData[x].username);
+    userData[x].usertype=tempUserData[x].usertype;
+  }
 }
 
 static int makeUserDB()
@@ -82,6 +130,7 @@ static int checkPassword(tempUserData *userData, char username[], char password[
   {
     if (strcmp(tempUserData[x].username,username)==0)
     {
+      strcpy(userData->username, tempUserData[x].username);
       strcpy(userData->password, tempUserData[x].password);
       break;
     }
@@ -101,26 +150,6 @@ static int checkPassword(tempUserData *userData, char username[], char password[
   {
     return 0;
   }
-}
-
-int checkUserCount()
-{
-  FILE *fp;
-  fp = fopen("./users/user_data", "r");
-  int userCount;
-
-  if (fp == NULL)//if file does not exist
-  {
-    makeUserDB();
-    return 0;
-  }
-  else//we find the user count
-  {
-    fscanf(fp, "%i", &userCount);
-  }
-
-  fclose(fp);
-  return userCount;
 }
 
 static int readUsers(tempUserData userData[])
