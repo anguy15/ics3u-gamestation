@@ -1,7 +1,7 @@
 #include "users.h"
 
 //functions
-int login(userData *userData)
+int login(userData *currentUserData)
 {  
   system("clear");
   int userCount = getUserCount();
@@ -12,7 +12,10 @@ int login(userData *userData)
   
   if (userCount == 0)//no user exists
   {
-    makeUser(2, userData);//make a admin user
+    addUser(2);//make a admin user
+    currentUserData->uid=0;
+    getUserData(currentUserData);
+    
     return 0;
   }
   else//a user exists
@@ -38,9 +41,9 @@ int login(userData *userData)
     }while(checkPassword(&tempUserData, username, password)==0);
 
     //copy temp data to program data
-    userData->uid = tempUserData.uid;
-    strcpy(userData->username, tempUserData.username);
-    userData->usertype = tempUserData.usertype;
+    currentUserData->uid = tempUserData.uid;
+    strcpy(currentUserData->username, tempUserData.username);
+    currentUserData->usertype = tempUserData.usertype;
     
     
   
@@ -53,11 +56,29 @@ void addUser(int usertype)
 {
   //update user file
   userData tempUserData;
+  userStats userStats;
+  int userCount = getUserCount();
+  tempUserData.uid = userCount;
   
   //add the new user
-  makeUser(usertype, &tempUserData);
+  makeUser(usertype);
+  getUserData(&tempUserData);
   
   //update stats file
+  //setup add
+  userStats.uid = userCount;
+  userStats.playerFlag = (tempUserData.usertype==0);//if it is a play then playerflag is one
+  //math
+  userStats.mathWins = 0;
+  userStats.mathLosses = 0;
+  //tictactoe
+  userStats.tttWins = 0;
+  userStats.tttLosses = 0;
+  //hangman
+  userStats.hangmanWins = 0;
+  userStats.hangmanLosses = 0;
+  
+  addUserStats(userStats, userCount);
 }
 
 void printUserFile()
@@ -83,12 +104,12 @@ int getUserCount()
 
   if (fp == NULL)//if file does not exist
   {
-    FILE *fp;
-    fp = fopen("./users/user_data", "w");
+    FILE *fptr;
+    fptr = fopen("./users/user_data", "w");
   
-    fprintf(fp, "0\n");
+    fprintf(fptr, "0\n");
     
-    fclose(fp);
+    fclose(fptr);
     return 0;
   }
   else//we find the user count
@@ -114,10 +135,10 @@ void updateUserData(tempUserData newUserData)
   writeUsers(userData, userCount);
 }
 
-void getAllUserInfo(userData userData[])
+void getAllUsersInfo(userData userData[])
 {
   int userCount = getUserCount();
-  tempUserData tempUserData[userCount];
+  tempUserData tempUserData[userCount];//required to bypass the password reads
   readUsers(tempUserData);
   for (int x=0; x<userCount; x++)
   {
@@ -127,45 +148,43 @@ void getAllUserInfo(userData userData[])
   }
 }
 
-static int checkPassword(tempUserData *userData, char username[], char password[])
+void getUserData(userData *currentUserData)
+{
+  int userCount = getUserCount();
+  tempUserData tempUserData[userCount];
+  readUsers(tempUserData);
+  for (int x=0; x<userCount; x++)
+  {
+    if (x==currentUserData->uid)
+    {
+      strcpy(currentUserData->username,tempUserData[x].username);
+      currentUserData->usertype=tempUserData[x].usertype;
+    }
+  }
+}
+
+static int checkPassword(tempUserData *currentUserData, char username[], char password[])
 {
   int userCount = getUserCount();
   tempUserData tempUserData[userCount];
   readUsers(tempUserData);
   int userFound=0;
-  int userMatches[userCount];
-  //set usermatches to 0
-  for(int x=0; x<userCount; x++)
-  {
-    userMatches[x]=0;
-  }
-
-  for (int x=0; x<userCount; x++)
-  {
-    if (strcmp(tempUserData[x].username,username)==0)
-    {
-      userMatches[x]=1;
-    }
-  }
   
   //return whether the password was correct
   encryptStr(password);
   for (int x=0; x<userCount; x++)
   {
-    if (userMatches[x]==1)
+    if (strcmp(tempUserData[x].username,username)==0)
     {
       if (strcmp(tempUserData[x].password, password)==0)
       {
-        strcpy(userData->username, tempUserData[x].username);
-        strcpy(userData->password, tempUserData[x].password);
+        strcpy(currentUserData->username, tempUserData[x].username);
+        strcpy(currentUserData->password, tempUserData[x].password);
         return 1;
-      }
-      else
-      {
-        return 0;
       }
     }
   }
+  return 0;//no found user/password
 }
 
 static int readUsers(tempUserData userData[])
@@ -206,14 +225,18 @@ static int writeUsers(tempUserData userData[], int userCount)
   fprintf(fp, "%i\n", userCount);
   while (x!=userCount)
   {
-    //read uid
-    fprintf(fp, "%i ", userData[x].uid);
-    //read username
-    fprintf(fp, "%s ", userData[x].username);
-    //read usertype
-    fprintf(fp, "%i ", userData[x].usertype);
-    //read password
-    fprintf(fp, "%s\n", userData[x].password);
+    //if the user has not been deleted
+    if (userData[x].usertype!=-1)
+    {
+      //read uid
+      fprintf(fp, "%i ", userData[x].uid);
+      //read username
+      fprintf(fp, "%s ", userData[x].username);
+      //read usertype
+      fprintf(fp, "%i ", userData[x].usertype);
+      //read password
+      fprintf(fp, "%s\n", userData[x].password);
+    }
     x++;
   }
 
@@ -221,40 +244,34 @@ static int writeUsers(tempUserData userData[], int userCount)
   return(x);
 }
 
-static int makeUser(int usertype, userData *permUserData)
+static int makeUser(int usertype)
 {
   //storing temp data to write later
   //new usercount
   int userCount=getUserCount();
-  tempUserData userData[userCount];
+  tempUserData tempUserData[userCount+1];
   if (userCount != 0)//there are users
   {
-    readUsers(userData);
+    readUsers(tempUserData);
   }
   
   //setup uid and usertype
-  userData[userCount].uid = userCount;
-  userData[userCount].usertype = usertype;
-
+  tempUserData[userCount].uid = userCount;
+  tempUserData[userCount].usertype = usertype;
+  
   //setup username and password
   printf("Username (no spaces): ");
-  scanf("%s", userData[userCount].username);
+  scanf("%s", tempUserData[userCount].username);
   getchar();
 
   printf("Password (no spaces): ");
-  scanf("%s", userData[userCount].password);
+  scanf("%s", tempUserData[userCount].password);
   getchar();
 
-  encryptStr(userData[userCount].password);
-
+  encryptStr(tempUserData[userCount].password);
 
   //write all data back to file
-  writeUsers(userData, userCount+1);
-
-  //copy user info to program data
-  permUserData->uid = userData[userCount].uid;
-  strcpy(permUserData->username, userData[userCount].username);
-  permUserData->usertype = userData[userCount].usertype;
+  writeUsers(tempUserData, userCount+1);
   
   return(0);
 }

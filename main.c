@@ -17,6 +17,7 @@ int main(void) {
   userData userData;
   userStats userStats;
   login(&userData);
+  //set same id for stats as data
   userStats.uid = userData.uid;
 
   // debug
@@ -25,7 +26,7 @@ int main(void) {
   // readUserStats(userData);
 
   // mainMenu(&userData, &userStats);
-  addUser(1);getchar();
+  addUser(0);
 
   return(0);
 }
