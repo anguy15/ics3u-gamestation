@@ -69,6 +69,8 @@ void updateUserStats(userStats newUserStats, int userCount)
   readStats(userStats);
 
   //setup new stats
+  userStats[newUserStats.uid].uid=newUserStats.uid;
+  userStats[newUserStats.uid].playerFlag=newUserStats.playerFlag;
   //math
   userStats[newUserStats.uid].mathWins=newUserStats.mathWins;
   userStats[newUserStats.uid].mathLosses=newUserStats.mathLosses;

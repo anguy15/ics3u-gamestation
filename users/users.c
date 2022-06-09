@@ -67,7 +67,7 @@ void addUser(int usertype)
   //update stats file
   //setup add
   userStats.uid = userCount;
-  userStats.playerFlag = userCount;
+  userStats.playerFlag = (tempUserData.usertype==0);//if it is a play then playerflag is one
   //math
   userStats.mathWins = 0;
   userStats.mathLosses = 0;
