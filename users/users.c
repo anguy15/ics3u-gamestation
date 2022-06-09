@@ -143,6 +143,7 @@ void editUser(int uid)
   writeUsers(tempUserData, userCount);
 }
 
+//debugger
 void printUserFile()
 {
   FILE *fp;
@@ -183,7 +184,7 @@ int getUserCount()
   return userCount;
 }
 
-void getAllUsersInfo(userData userData[])
+void getAllUsersData(userData userData[])
 {
   int userCount = getUserCount();
   tempUserData tempUserData[userCount];//required to bypass the password reads
@@ -322,13 +323,4 @@ static int makeUser(int usertype)
   writeUsers(tempUserData, userCount+1);
   
   return(0);
-}
-
-void clearInput()
-{
-  char buff;
-  while (buff!='\n')
-  {
-    scanf("%c", &buff);
-  }
 }

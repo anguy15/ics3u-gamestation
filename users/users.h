@@ -13,7 +13,7 @@
 void printUserFile();
 
 //return an updated array of user data
-void getAllUsersInfo(userData userData[]);
+void getAllUsersData(userData userData[]);
 
 //return user data
 void getUserData(userData *userData);

@@ -1,8 +1,10 @@
-//INCLUDE FILES
-//SHOULD FIX THAT
-//NEVER USE RELATIVE PATHS
-//FIX IN CC MAKE SOURCE PATHS
-//BUT I DONT UNDERSTAND HOW
+//NOTES
+//almost the same
+  editUsers and makeUser
+  getAllUsersData and getUserData
+
+//todo
+  update the readusers from stats null case, not properly setting up file
 
 //      INCLUDE TREE      //
 main

@@ -9,6 +9,11 @@
 #include "games/games.h"
 
 //prototypes
+
+//tools
+void clearInput();
+
+//menu
 static void mainMenu(userData *userData, userStats *userStats);
 
 //LOCALS
@@ -61,18 +66,17 @@ static void mainMenu(userData *userData, userStats *userStats)
 
 static void adminMenu(userData *userData, userStats *userStats)
 {
-  printAllStats();
+  printAllStats(*userData);
+  // printUserStats(*userData);
   //edit users
-  
   //edit self
 }
 
 static void userMenu(userData *userData, userStats *userStats)
 {
-  // printAllStats();
-  // readUserStats(*userData);
-  //games
-  gameMenu(userData, userStats);
+  printAllStats(*userData);
+  // printUserStats(*userData);
+  // gameMenu(userData, userStats);
   //edit self
 }
 
@@ -111,5 +115,14 @@ static void gameMenu(userData *userData, userStats *userStats)
     case 3:
       playTicTacToe();
       break;
+  }
+}
+
+void clearInput()
+{
+  char buff;
+  while (buff!='\n')
+  {
+    scanf("%c", &buff);
   }
 }

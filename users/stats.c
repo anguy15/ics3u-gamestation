@@ -2,7 +2,8 @@
 #include <stdio.h>
 
 //functions
-void readUserStats(userData currentUserData)
+
+void printUserStats(userData currentUserData, int printType)
 {
   system("clear");
   FILE *fp;
@@ -17,7 +18,7 @@ void readUserStats(userData currentUserData)
 
   if (fp == NULL)//file does not exist
   {
-    getAllUsersInfo(tempUserData);
+    getAllUsersData(tempUserData);
     //write for all users
     for (int x=0; x<userCount; x++)
     {
@@ -42,22 +43,42 @@ void readUserStats(userData currentUserData)
       writeStats(tempUserStats, userCount);
     }
   }
-  else//found the file
+  else if (printType==1)//print 1
   {
     //read all stats
     readStats(tempUserStats);
 
-    //print specific user stats
-    //math
-    printf("Math Quiz:\n\t%-20s%-10s%-10s\n", "Username", "Wins", "Losses");
-    printf("\t%-20s%-10i%-10i\n", currentUserData.username, tempUserStats[currentUserData.uid].mathWins, tempUserStats[currentUserData.uid].mathLosses);
-    //tic tac toe
-    printf("Tic-Tac-Toe:\n\t%-20s%-10s%-10s\n", "Username", "Wins", "Losses");
-    printf("\t%-20s%-10i%-10i\n", currentUserData.username, tempUserStats[currentUserData.uid].tttWins, tempUserStats[currentUserData.uid].tttLosses);
-    //hangman
-    printf("Hangman:\n\t%-20s%-10s%-10s\n", "Username", "Wins", "Losses");
-    printf("\t%-20s%-10i%-10i\n", currentUserData.username, tempUserStats[currentUserData.uid].hangmanWins, tempUserStats[currentUserData.uid].hangmanLosses);
+    printStatTable(currentUserData, tempUserStats[currentUserData.uid], 0);
+    for (int x=1; x<=info_game_count; x++)
+    {
+      printStatTable(currentUserData, tempUserStats[currentUserData.uid], x);
+    }
   }
+  else if (printType==0)//print all
+  {
+    //read all file
+    getAllUsersData(tempUserData);
+    //read all stats
+    readStats(tempUserStats);
+
+    printStatTable(currentUserData, tempUserStats[0], 0);//tempUserStats array index does not matter
+    for (int x=1; x<=info_game_count; x++)
+    {
+      printf("%i\n", x);
+      for (int y=0; y<userCount; y++)
+      {
+        printStatTable(tempUserData[y], tempUserStats[y], x);
+      }
+    }
+    //plans
+    //make sorted index for <game>
+    //print <game>
+  }
+}
+
+void printAllStats(userData currentUserData)
+{
+  printUserStats(currentUserData, 0);
 }
 
 void addUserStats(userStats newUserStats, int userCount)
@@ -89,28 +110,30 @@ void updateUserStats(userStats newUserStats, int userCount)
   writeStats(userStats, userCount);
 }
 
-void printAllStats()
+static void printStatTable(userData currentUserData, userStats currentUserStats, int table)
 {
-  int userCount=getUserCount();
-  userStats userStats[userCount];
-  readStats(userStats);
-
-  for (int x=0; x<userCount; x++)
+  switch (table)
   {
-    printf("%i ", userStats[x].uid);
-    //math
-    printf("%i ", userStats[x].mathWins);
-    printf("%i ", userStats[x].mathLosses);
-    //tic tac toe
-    printf("%i ", userStats[x].tttWins);
-    printf("%i ", userStats[x].tttLosses);
-    //hangman
-    printf("%i ", userStats[x].hangmanWins);
-    printf("%i\n",userStats[x].hangmanLosses);
+    case 0:
+      //header
+      printf("\t%-20s%-10s%-10s\n", "Username", "Wins", "Losses");
+      break;
+    
+    case 1:
+      //hangman
+      printf("\t%-20s%-10i%-10i\n", currentUserData.username, currentUserStats.hangmanWins, currentUserStats.hangmanLosses);
+      break;
+    
+    case 2:
+      //math
+      printf("\t%-20s%-10i%-10i\n", currentUserData.username, currentUserStats.mathWins, currentUserStats.mathLosses);
+      break;
+
+    case 3:
+      //tic tac toe
+      printf("\t%-20s%-10i%-10i\n", currentUserData.username, currentUserStats.tttWins, currentUserStats.tttLosses);
+      break;
   }
-  //plans
-  //make sorted index for <game>
-  //print <game>
 }
 
 static int readStats(userStats tempUserStats[])
@@ -119,7 +142,7 @@ static int readStats(userStats tempUserStats[])
   fp = fopen("./data/games_stats", "r");
   int x=0;
 
-  if (fp == NULL)
+  if (fp == NULL)//setup a file if it does not exist
   {
     FILE *fptr;
     fptr = fopen("./data/games_stats", "w");
@@ -129,7 +152,7 @@ static int readStats(userStats tempUserStats[])
     fclose(fptr);
     return 0;
   }
-  else
+  else//read entire file and save data
   {
     while (!feof(fp))
     {
