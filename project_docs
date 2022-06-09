@@ -23,25 +23,24 @@ subsection: '->'
 choice: '-'
 dependencies: '(<name>)'
 
-main
-  login | menu -> 
-    ->users(admin/su)
-      -add
-      -edit
-        user
-        admin(su)
-      -delete
-        user
-        admin(su)
+main=login | menu -> 
+  ->users(admin/su)
+    -add
+    -edit
+      user
+      admin(su)
+    -delete
+      user
+      admin(su)
 
-    ->games(player)
-      -math
-      -tic-tac-toe
-      -hangman
+  ->games(player)
+    -math
+    -tic-tac-toe
+    -hangman
 
-    ->stats
-      -leaderboard
-      -user
+  ->stats
+    -leaderboard
+    -user
 
 //
 
