@@ -19,9 +19,6 @@ void getAllUsersInfo(userData userData[]);
 //return user data
 void getUserData(userData *userData);
 
-//updates the data of specific user
-void updateUserData(tempUserData newUserData);
-
 //adds a user
 void addUser(int usertype);
 
@@ -36,6 +33,8 @@ int login(userData *userData);
 int checkUserCount();
 
 //    LOCAL
+static void clearInput();
+
 //return 1 if it is correct
 static int checkPassword(tempUserData *tempUserData, char username[], char password[]);
 

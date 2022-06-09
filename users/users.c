@@ -30,12 +30,12 @@ int login(userData *currentUserData)
       //get username
       printf("Username: ");
       scanf("%s", username);
-      getchar();
+      clearInput();
   
       //get password
       printf("Password: ");
       scanf("%s", password);
-      getchar();
+      clearInput();
       
       passwordFails++;
     }while(checkPassword(&tempUserData, username, password)==0);
@@ -104,14 +104,14 @@ void editUser(int uid)
     case 1:
       printf("Enter a username (no spaces): ");
       scanf("%s", tempUserData[uid].username);
-      getchar();
+      clearInput();
       break;
     
     case 2:
       printf("Enter a password (no spaces): ");
       scanf("%s", tempUserData[uid].password);
       encryptStr(tempUserData[uid].password);
-      getchar();
+      clearInput();
       break;
 
     
@@ -130,7 +130,7 @@ void editUser(int uid)
         printf("Enter a admin level: ");
         scanf("%i", &tempUserData[uid].usertype);
         tempUserData[uid].usertype--;
-        getchar();
+        clearInput();
 
         invalidInputFlag=1;
       }while(tempUserData[uid].usertype!=1 && tempUserData[uid].usertype!=0);
@@ -179,20 +179,6 @@ int getUserCount()
 
   fclose(fp);
   return userCount;
-}
-
-void updateUserData(tempUserData newUserData)
-{
-  int userCount = getUserCount();
-  tempUserData userData[userCount];  
-  readUsers(userData);
-  
-  strcpy(userData[newUserData.uid].username,newUserData.username);
-  strcpy(userData[newUserData.uid].password,newUserData.password);
-  userData[newUserData.uid].uid,newUserData.uid;
-  userData[newUserData.uid].usertype=newUserData.usertype;
-  
-  writeUsers(userData, userCount);
 }
 
 void getAllUsersInfo(userData userData[])
@@ -322,11 +308,11 @@ static int makeUser(int usertype)
   //setup username and password
   printf("Username (no spaces): ");
   scanf("%s", tempUserData[userCount].username);
-  getchar();
+  clearInput();
 
   printf("Password (no spaces): ");
   scanf("%s", tempUserData[userCount].password);
-  getchar();
+  clearInput();
 
   encryptStr(tempUserData[userCount].password);
 
@@ -334,4 +320,13 @@ static int makeUser(int usertype)
   writeUsers(tempUserData, userCount+1);
   
   return(0);
+}
+
+static void clearInput()
+{
+  char buff;
+  while (buff!='\n')
+  {
+    scanf("%c", &buff);
+  }
 }

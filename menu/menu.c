@@ -1,8 +1,5 @@
 #include "menu.h"
 
-#include "admin_menu.h"
-#include "user_menu.h"
-
 void mainMenu(userData *userData, userStats *userStats)
 {
   switch (userData->usertype)
@@ -16,4 +13,23 @@ void mainMenu(userData *userData, userStats *userStats)
       adminMenu(userData, userStats);
       break;
   }
+}
+
+#include "admin_menu.h"
+
+void adminMenu(userData *userData, userStats *userStats)
+{
+  printAllStats();
+  //edit users
+ 
+  //edit self
+}
+
+void userMenu(userData *userData, userStats *userStats)
+{
+  printAllStats();
+  //mystats
+  //games
+  // gameMenu(userData, userStats);
+  //edit self
 }
