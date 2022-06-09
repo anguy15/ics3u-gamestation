@@ -1,6 +1,5 @@
 #include "simple_crypt.h"
 
-
 void encryptStr(char string[])
 {
   int shift = sumOfString(string);

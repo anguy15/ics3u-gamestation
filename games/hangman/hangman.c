@@ -1,5 +1,9 @@
 #include "hangman.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
+//functions
 int playHangman()
 {
   hangmanGameInfo hangmanInfo = {0};
@@ -56,7 +60,7 @@ static int mainGame(hangmanGameInfo *hangmanInfo)
       scanf("%i", &userGuessType);
       getchar();
       
-    }while(userGuessType<0);
+    }while(userGuessType<0||userGuessType>2);
 
     //get guess
     switch (userGuessType)
@@ -92,7 +96,7 @@ static int mainGame(hangmanGameInfo *hangmanInfo)
     
     drawGame(*hangmanInfo, userGuessLetter);
 
-    inputFlag++;
+    inputFlag=1;
   }while(hangmanInfo->incorrectGuesses!=5);//5 incorrect guesses
   
   return(0);
@@ -131,7 +135,7 @@ static char getGuessLetter(hangmanGameInfo *hangmanInfo, int userGuessLetterArr[
     getchar();
     userLChoice = tolower(userLChoice);
     
-    inputFlag++;
+    inputFlag=1;
   }while(userGuessLetterArr[userLChoice-97]!=0 && userLChoice<97 && userLChoice>122);//make sure they havent inputted an invalid input or a previously guessed input
 
   //write choice to array
@@ -157,7 +161,7 @@ static void getGuessWord(hangmanGameInfo *hangmanInfo, int userGuessLetterArr[],
     scanf("%s", userWChoice);
     getchar();
     
-    inputFlag++;
+    inputFlag=1;
   }while(strlen(userWChoice)<2);
 
   //write choice to array
@@ -177,6 +181,12 @@ static void drawGame(hangmanGameInfo hangmanInfo, int userGuessLetterArr[])
   system("clear");
   
   printf("%s", hangmanInfo.wordGenCorrect);
+
+  for (int x=0; x<26; x++)
+  {
+    // printf("%i ", userGuessLetterArr[x]);
+  }
+  
   printf("\n");
 }
 

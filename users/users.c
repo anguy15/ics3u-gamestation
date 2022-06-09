@@ -1,4 +1,6 @@
 #include "users.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 //functions
 int login(userData *currentUserData)
@@ -144,7 +146,7 @@ void editUser(int uid)
 void printUserFile()
 {
   FILE *fp;
-  fp = fopen("./users/user_data", "r");
+  fp = fopen("./data/user_data", "r");
   char temp[256];
   
   while (!feof(fp))
@@ -159,13 +161,13 @@ void printUserFile()
 int getUserCount()
 {
   FILE *fp;
-  fp = fopen("./users/user_data", "r");
+  fp = fopen("./data/user_data", "r");
   int userCount;
 
   if (fp == NULL)//if file does not exist
   {
     FILE *fptr;
-    fptr = fopen("./users/user_data", "w");
+    fptr = fopen("./data/user_data", "w");
   
     fprintf(fptr, "0\n");
     
@@ -236,7 +238,7 @@ static int checkPassword(tempUserData *currentUserData, char username[], char pa
 static int readUsers(tempUserData userData[])
 {
   FILE *fp;
-  fp = fopen("./users/user_data", "r");
+  fp = fopen("./data/user_data", "r");
   int x=0;
   int numOfUsers;
 
@@ -265,7 +267,7 @@ static int readUsers(tempUserData userData[])
 static int writeUsers(tempUserData userData[], int userCount)
 {
   FILE *fp;
-  fp = fopen("./users/user_data", "w");
+  fp = fopen("./data/user_data", "w");
   int x=0;
 
   fprintf(fp, "%i\n", userCount);
@@ -322,7 +324,7 @@ static int makeUser(int usertype)
   return(0);
 }
 
-static void clearInput()
+void clearInput()
 {
   char buff;
   while (buff!='\n')

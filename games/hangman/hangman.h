@@ -1,11 +1,13 @@
 #ifndef hangman_h
 #define hangman_h
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-
 //variables
+struct wordList
+{
+  struct wordlist *NEXT;
+  char word[256];
+};
+
 typedef struct
 {
   char wordGen[256];
@@ -16,12 +18,6 @@ typedef struct
   int userCorrectGuesses[256];
   int incorrectGuesses;
 }hangmanGameInfo;
-
-struct wordList
-{
-  struct wordlist *NEXT;
-  char word[256];
-};
 
 //  GLOBAL
 //returns loss or win

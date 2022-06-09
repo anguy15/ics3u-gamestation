@@ -1,7 +1,5 @@
 #ifndef stats_h
 #define stats_h
-
-#include <stdio.h>
 #include "users_info.h"
 
 //  GLOBALS

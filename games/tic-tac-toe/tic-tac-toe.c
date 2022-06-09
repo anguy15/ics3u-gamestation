@@ -1,5 +1,22 @@
 #include "tic-tac-toe.h"
+#include <stdio.h>
 
+//variables
+typedef struct
+{
+  int XFlag;
+  int YFlag;
+  int InputFlag;
+}userErrorFlags;
+
+typedef struct
+{
+  int winner;
+  int type;
+}winnerInformation;
+
+
+//functions
 int playTicTacToe()
 {
   system("clear");
@@ -71,7 +88,7 @@ static void getUserInputs(int gameBoard[3][3], int winFlags[2][3][3], int player
       scanf("%i", &userXChoice);
       getchar();
       
-      userFlags.XFlag++;
+      userFlags.XFlag=1;
     }while(userXChoice<1 || userXChoice>3);
     userXChoice--;
 
@@ -89,11 +106,11 @@ static void getUserInputs(int gameBoard[3][3], int winFlags[2][3][3], int player
       scanf("%i", &userYChoice);
       getchar();
       
-      userFlags.YFlag++;
+      userFlags.YFlag=1;
     }while(userYChoice<1 || userYChoice>3);
     userYChoice--;
     
-    userFlags.InputFlag++;
+    userFlags.InputFlag=1;
   }while(gameBoard[userYChoice][userXChoice]!=0);
   
   //write valid inputs

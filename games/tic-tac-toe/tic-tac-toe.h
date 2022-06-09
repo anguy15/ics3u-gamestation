@@ -1,9 +1,8 @@
 #ifndef tic_tac_toe_h
 #define tic_tac_toe_h
 
-#include <stdio.h>
-
-//variables
+//LOCAL VARIABLES IN FILE
+/*
 typedef struct
 {
   int XFlag;
@@ -16,6 +15,7 @@ typedef struct
   int winner;
   int type;
 }winnerInformation;
+*/
 
 //  GLOBALS
 //return who won

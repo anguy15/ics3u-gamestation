@@ -1,10 +1,12 @@
 #include "stats.h"
+#include <stdio.h>
 
+//functions
 void readUserStats(userData currentUserData)
 {
   system("clear");
   FILE *fp;
-  fp = fopen("./users/games_stats", "r");
+  fp = fopen("./data/games_stats", "r");
   int userCount=0;
 
   userCount = getUserCount();
@@ -106,18 +108,21 @@ void printAllStats()
     printf("%i ", userStats[x].hangmanWins);
     printf("%i\n",userStats[x].hangmanLosses);
   }
+  //plans
+  //make sorted index for <game>
+  //print <game>
 }
 
 static int readStats(userStats tempUserStats[])
 {
   FILE *fp;
-  fp = fopen("./users/games_stats", "r");
+  fp = fopen("./data/games_stats", "r");
   int x=0;
 
   if (fp == NULL)
   {
     FILE *fptr;
-    fptr = fopen("./users/games_stats", "w");
+    fptr = fopen("./data/games_stats", "w");
   
     fprintf(fptr, "0\n");
     
@@ -153,7 +158,7 @@ static int readStats(userStats tempUserStats[])
 
 static void writeStats(userStats allUserStats[], int userCount)
 {
-  FILE *fp = fopen("./users/games_stats", "w");
+  FILE *fp = fopen("./data/games_stats", "w");
   int x=0;
 
   //write all stats

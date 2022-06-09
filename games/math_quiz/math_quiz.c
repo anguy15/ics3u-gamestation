@@ -1,5 +1,11 @@
 #include "math_quiz.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
 
+
+//functions
 int playMathQuiz()
 {
   system("clear");
@@ -59,7 +65,7 @@ static int quizGame(int difficulty, char gameMode)
   //calculate value
   for (int x=0; x<=arrLen; x++)
   {
-    values[x] = rand()%(arrLen*arrLen)+1;
+    values[x] = rand()%(arrLen*arrLen)+2;
     //calculate answer depending on game mode
     switch (gameMode)
     {

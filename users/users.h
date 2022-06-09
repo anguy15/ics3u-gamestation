@@ -2,10 +2,9 @@
 #define users_h
 
 //    needed libraries
-#include <stdio.h>
-#include <stdlib.h>
 #include "encryption/simple_crypt.h"
 #include "users_info.h"
+#include "stats.h"
 
 //    prototypes
 
@@ -32,8 +31,10 @@ int login(userData *userData);
 //return user count
 int checkUserCount();
 
+//clears the stdin
+void clearInput();
+
 //    LOCAL
-static void clearInput();
 
 //return 1 if it is correct
 static int checkPassword(tempUserData *tempUserData, char username[], char password[]);
