@@ -8,10 +8,10 @@
 //  GLOBALS
 //take user id
 //outputs the user's stats
-//3 cases:
-//case 1: no file is found, make a file
-//case 2: print one user
-//case 3: print all users
+//3 cases: (<missing file>)|(printType)
+//case 0: no file is found, make a file
+//case 1: print one user
+//case 2: print all users
 void printUserStats(userData userData, int printType);
 //outputs all user stats
 void printAllStats(userData currentUserData);

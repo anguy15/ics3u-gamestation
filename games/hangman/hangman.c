@@ -58,7 +58,7 @@ static int mainGame(hangmanGameInfo *hangmanInfo)
       printf("1. Letters\n2. Word\n");
       printf("Which Guess Type: ");
       scanf("%i", &userGuessType);
-      getchar();
+      clearInput();
       
     }while(userGuessType<0||userGuessType>2);
 
@@ -132,7 +132,7 @@ static char getGuessLetter(hangmanGameInfo *hangmanInfo, int userGuessLetterArr[
     
     printf("Which Letter: ");
     scanf("%c", &userLChoice);
-    getchar();
+    clearInput();
     userLChoice = tolower(userLChoice);
     
     inputFlag=1;
@@ -159,7 +159,7 @@ static void getGuessWord(hangmanGameInfo *hangmanInfo, int userGuessLetterArr[],
     
     printf("Guess a Word: ");
     scanf("%s", userWChoice);
-    getchar();
+    clearInput();
     
     inputFlag=1;
   }while(strlen(userWChoice)<2);

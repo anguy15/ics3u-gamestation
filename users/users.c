@@ -27,7 +27,7 @@ int login(userData *currentUserData)
       system("clear");
       if (passwordFails!=0) 
       {
-        printf("%i times failed\n", passwordFails);
+        printf("Incorrect password or username\n%i times failed\n", passwordFails);
       }  
       //get username
       printf("Username: ");
@@ -94,10 +94,16 @@ void editUser(int uid)
 
   int userChoice=0;
   int invalidInputFlag=0;
-  //get new data
-  printf("1. Username\n2. Password\n3. Admin Level\n");
-  printf("What would you like to edit: ");
-  scanf("%i", &userChoice);
+
+  do
+  {
+    //get new data
+    printf("1. Username\n2. Password\n3. Admin Level\n");
+    printf("What would you like to edit: ");
+    scanf("%i", &userChoice);
+    clearInput();
+  }while(userChoice<1 || userChoice>3);
+  
 
   system("clear");
   //setup new data

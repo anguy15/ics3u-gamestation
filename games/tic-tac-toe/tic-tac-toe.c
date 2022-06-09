@@ -86,7 +86,7 @@ static void getUserInputs(int gameBoard[3][3], int winFlags[2][3][3], int player
       
       printf("Which column would you like: ");
       scanf("%i", &userXChoice);
-      getchar();
+      clearInput();
       
       userFlags.XFlag=1;
     }while(userXChoice<1 || userXChoice>3);
@@ -104,7 +104,7 @@ static void getUserInputs(int gameBoard[3][3], int winFlags[2][3][3], int player
       
       printf("Which row would you like: ");
       scanf("%i", &userYChoice);
-      getchar();
+      clearInput();
       
       userFlags.YFlag=1;
     }while(userYChoice<1 || userYChoice>3);

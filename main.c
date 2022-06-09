@@ -66,18 +66,18 @@ static void mainMenu(userData *userData, userStats *userStats)
 
 static void adminMenu(userData *userData, userStats *userStats)
 {
-  printAllStats(*userData);
+  // printAllStats(*userData);
   // printUserStats(*userData);
   //edit users
-  //edit self
+  // editUser(userData->uid);
 }
 
 static void userMenu(userData *userData, userStats *userStats)
 {
-  printAllStats(*userData);
-  // printUserStats(*userData);
+  // printAllStats(*userData);
+  // printUserStats(*userData, 1);
   // gameMenu(userData, userStats);
-  //edit self
+  // editUser(userData->uid);
 }
 
 static void gameMenu(userData *userData, userStats *userStats)
