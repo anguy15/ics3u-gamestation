@@ -8,6 +8,7 @@
 typedef struct
 {
   int uid;
+  int playerFlag;
   //math
   int mathWins;
   int mathLosses;

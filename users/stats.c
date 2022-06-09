@@ -1,6 +1,6 @@
 #include "stats.h"
 
-void readUserStats(userData userData)
+void readUserStats(userData currentUserData)
 {
   system("clear");
   FILE *fp;
@@ -8,11 +8,14 @@ void readUserStats(userData userData)
   int userCount=0;
 
   userCount = getUserCount();
-  //sets all data to zero
+  //temporary storage for data prints
   userStats tempUserStats[userCount];
+  //required for getting userflags through ids
+  userData tempUserData[userCount];
 
   if (fp == NULL)//file does not exist
   {
+    getAllUsersInfo(tempUserData);
     //write for all users
     for (int x=0; x<userCount; x++)
     {
@@ -24,8 +27,18 @@ void readUserStats(userData userData)
       tempUserStats[x].hangmanWins = 0;
       tempUserStats[x].hangmanLosses = 0;
       tempUserStats[x].uid = x;
+      //setting a flag for if the user is a player, dependent on whether they are admin
+      printf("%i", tempUserData[x].usertype);
+      if (tempUserData[x].usertype==0)
+      {
+        tempUserStats[x].playerFlag=1;
+      }
+      else
+      {
+        tempUserStats[x].playerFlag=0;
+      }
 
-      writeStats(tempUserStats, userCount+1);
+      writeStats(tempUserStats, userCount);
     }
   }
   else//found the file
@@ -36,13 +49,13 @@ void readUserStats(userData userData)
     //print specific user stats
     //math
     printf("Math Quiz:\n\t%-20s%-10s%-10s\n", "Username", "Wins", "Losses");
-    printf("\t%-20s%-10i%-10i\n", userData.username, tempUserStats[userData.uid].mathWins, tempUserStats[userData.uid].mathLosses);
+    printf("\t%-20s%-10i%-10i\n", currentUserData.username, tempUserStats[currentUserData.uid].mathWins, tempUserStats[currentUserData.uid].mathLosses);
     //tic tac toe
     printf("Tic-Tac-Toe:\n\t%-20s%-10s%-10s\n", "Username", "Wins", "Losses");
-    printf("\t%-20s%-10i%-10i\n", userData.username, tempUserStats[userData.uid].tttWins, tempUserStats[userData.uid].tttLosses);
+    printf("\t%-20s%-10i%-10i\n", currentUserData.username, tempUserStats[currentUserData.uid].tttWins, tempUserStats[currentUserData.uid].tttLosses);
     //hangman
     printf("Hangman:\n\t%-20s%-10s%-10s\n", "Username", "Wins", "Losses");
-    printf("\t%-20s%-10i%-10i\n", userData.username, tempUserStats[userData.uid].hangmanWins, tempUserStats[userData.uid].hangmanLosses);
+    printf("\t%-20s%-10i%-10i\n", currentUserData.username, tempUserStats[currentUserData.uid].hangmanWins, tempUserStats[currentUserData.uid].hangmanLosses);
   }
 }
 
@@ -100,6 +113,7 @@ static int readStats(userStats tempUserStats[])
   while (!feof(fp))
   {
     fscanf(fp, "%i", &tempUserStats[x].uid);
+    fscanf(fp, "%i", &tempUserStats[x].playerFlag);
     //math
     fscanf(fp, "%i", &tempUserStats[x].mathWins);
     fscanf(fp, "%i", &tempUserStats[x].mathLosses);
@@ -125,9 +139,10 @@ static void writeStats(userStats allUserStats[], int userCount)
   int x=0;
 
   //write all stats
-  while (x!=userCount-1)
+  while (x!=userCount)
   {
     fprintf(fp, "%i ", allUserStats[x].uid);
+    fprintf(fp, "%i ", allUserStats[x].playerFlag);
     //math
     fprintf(fp, "%i ", allUserStats[x].mathWins);
     fprintf(fp, "%i ", allUserStats[x].mathLosses);

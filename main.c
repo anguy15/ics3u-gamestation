@@ -19,14 +19,14 @@ int main(void) {
   login(&userData);
   userStats.uid = userData.uid;
 
-  printf("%i %s %i", userData.uid, userData.username, userData.usertype);
+  printf("%i %s %i\n", userData.uid, userData.username, userData.usertype);
   // debug
   // printf("%i %s %i", userData.uid, userData.username, userData.usertype);
 
-  // readUserStats(userData);
+  readUserStats(userData);
 
   // mainMenu(&userData, &userStats);
-  addUser(1);
+  // addUser(1);
 
   return(0);
 }

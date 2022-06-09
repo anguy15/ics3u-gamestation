@@ -118,7 +118,7 @@ void updateUserData(tempUserData newUserData)
   writeUsers(userData, userCount);
 }
 
-void getAllUserInfo(userData userData[])
+void getAllUsersInfo(userData userData[])
 {
   int userCount = getUserCount();
   tempUserData tempUserData[userCount];//required to bypass the password reads
@@ -152,26 +152,12 @@ static int checkPassword(tempUserData *userData, char username[], char password[
   tempUserData tempUserData[userCount];
   readUsers(tempUserData);
   int userFound=0;
-  int userMatches[userCount];
-  //set usermatches to 0
-  for(int x=0; x<userCount; x++)
-  {
-    userMatches[x]=0;
-  }
-
-  for (int x=0; x<userCount; x++)
-  {
-    if (strcmp(tempUserData[x].username,username)==0)
-    {
-      userMatches[x]=1;
-    }
-  }
   
   //return whether the password was correct
   encryptStr(password);
   for (int x=0; x<userCount; x++)
   {
-    if (userMatches[x]==1)
+    if (strcmp(tempUserData[x].username,username)==0)
     {
       if (strcmp(tempUserData[x].password, password)==0)
       {
@@ -179,12 +165,9 @@ static int checkPassword(tempUserData *userData, char username[], char password[
         strcpy(userData->password, tempUserData[x].password);
         return 1;
       }
-      else
-      {
-        return 0;
-      }
     }
   }
+  return 0;//no found user/password
 }
 
 static int readUsers(tempUserData userData[])

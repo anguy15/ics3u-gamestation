@@ -29,7 +29,7 @@ typedef struct
 void printUserFile();
 
 //return an updated array of user data
-void getAllUserInfo(userData userData[]);
+void getAllUsersInfo(userData userData[]);
 
 //return user data
 void getUserData(userData *userData);
