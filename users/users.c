@@ -58,16 +58,18 @@ void addUser(int usertype)
   userData tempUserData;
   userStats userStats;
   int userCount = getUserCount();
+  //uid will indicate a number one more than current amount, therefore adding a user
   tempUserData.uid = userCount;
   
   //add the new user
   makeUser(usertype);
+  //get the user's data for later
   getUserData(&tempUserData);
   
   //update stats file
   //setup add
   userStats.uid = userCount;
-  userStats.playerFlag = (tempUserData.usertype==0);//if it is a play then playerflag is one
+  userStats.playerFlag = (usertype==0);//if it is a play then playerflag is one
   //math
   userStats.mathWins = 0;
   userStats.mathLosses = 0;
@@ -79,6 +81,64 @@ void addUser(int usertype)
   userStats.hangmanLosses = 0;
   
   addUserStats(userStats, userCount);
+}
+
+void editUser(int uid)
+{
+  //read all users to write to file later
+  int userCount = getUserCount();
+  tempUserData tempUserData[userCount];
+  readUsers(tempUserData);
+
+  int userChoice=0;
+  int invalidInputFlag=0;
+  //get new data
+  printf("1. Username\n2. Password\n3. Admin Level\n");
+  printf("What would you like to edit: ");
+  scanf("%i", &userChoice);
+
+  system("clear");
+  //setup new data
+  switch (userChoice)
+  {
+    case 1:
+      printf("Enter a username (no spaces): ");
+      scanf("%s", tempUserData[uid].username);
+      getchar();
+      break;
+    
+    case 2:
+      printf("Enter a password (no spaces): ");
+      scanf("%s", tempUserData[uid].password);
+      encryptStr(tempUserData[uid].password);
+      getchar();
+      break;
+
+    
+    case 3:
+      //while the input is invalid
+      do
+      {
+        if(invalidInputFlag == 1)
+        {
+          printf("Invalid user type\n");
+        }
+        invalidInputFlag=0;
+
+        //get input
+        printf("1. Regular User\n2. Admin");
+        printf("Enter a admin level: ");
+        scanf("%i", &tempUserData[uid].usertype);
+        tempUserData[uid].usertype--;
+        getchar();
+
+        invalidInputFlag=1;
+      }while(tempUserData[uid].usertype!=1 && tempUserData[uid].usertype!=0);
+      break;
+  }
+
+  //save data
+  writeUsers(tempUserData, userCount);
 }
 
 void printUserFile()

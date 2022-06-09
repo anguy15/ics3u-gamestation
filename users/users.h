@@ -25,6 +25,9 @@ void updateUserData(tempUserData newUserData);
 //adds a user
 void addUser(int usertype);
 
+//edits a user given a userid
+void editUser(int uid);
+
 //return if logged in, and return the user id in userData.userID[]
 int login(userData *userData);
 

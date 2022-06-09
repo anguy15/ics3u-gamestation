@@ -132,7 +132,7 @@ static char getGuessLetter(hangmanGameInfo *hangmanInfo, int userGuessLetterArr[
     userLChoice = tolower(userLChoice);
     
     inputFlag++;
-  }while(userGuessLetterArr[userLChoice-97]!=0 && userLChoice<97 && userLChoice>122);
+  }while(userGuessLetterArr[userLChoice-97]!=0 && userLChoice<97 && userLChoice>122);//make sure they havent inputted an invalid input or a previously guessed input
 
   //write choice to array
   userGuessLetterArr[userLChoice-97]=1;

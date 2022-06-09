@@ -6,7 +6,7 @@ int playMathQuiz()
   int gameMode=0;
   int difficulty=0;
   printf("Welcome to the Math Quiz\n");
-  printf("1. Addition\n2. Subtraction\n3. Multiplication\n4. Division (rounded)\n");
+  printf("1. Addition\n2. Subtraction\n3. Multiplication\n4. Division\n");
   //get game mode
   printf("Which game mode would you like to play? ");
   scanf("%i", &gameMode);
@@ -36,7 +36,7 @@ static int quizGame(int difficulty, char gameMode)
 {
   int arrLen;
   int values[5];
-  double answerExact=0;
+  int answerExact=0;
   int answerCheck=0;
   int userInput;
 
@@ -57,39 +57,58 @@ static int quizGame(int difficulty, char gameMode)
   }
 
   //calculate value
-  for (int x=0; x<arrLen; x++)
+  for (int x=0; x<=arrLen; x++)
   {
     values[x] = rand()%(arrLen*arrLen)+1;
     //calculate answer depending on game mode
     switch (gameMode)
     {
-      case '+':
-        answerExact+=values[x];break;
+      case '+'://get sum of all variables
+        if (x!=arrLen)
+        {
+          answerExact+=values[x];
+        }
+        else if (x==arrLen)
+        {
+          answerCheck = answerExact;//for consistency with print
+        }
+        break;
       
-      case '-':
+      case '-'://start with a positive
         if (x==0)
           answerExact=values[x];
-        else
+        else if (x==arrLen)//save for print
+        {
+          answerCheck = answerExact;
+        }
+        else//subtract from positive
           answerExact-=values[x];
         break;
 
       case '*':
-        if (x==0)
+        if (x==0)//set starting variable
           answerExact=values[x];
-        else
+        else if (x==arrLen)//save variable
+        {
+          answerCheck = answerExact;
+        }
+        else//multiply to start
           answerExact*=values[x];
         break;
 
-      case '/':
+      case '/'://set first variable, becasue you cant do 0/var
         if (x==0)
           answerExact=values[x];
-        else
-          answerExact/=values[x];
+        else if (x==arrLen)//set multiple of all variables but the first as the first, and the first as the answer
+        {
+          answerCheck = values[0];
+          values[0]=answerExact;
+        }
+        else//get the starting variable
+          answerExact*=values[x];
         break;
     }
   }
-  //round answers to int
-  answerCheck = round(answerExact);
   
   //print values
   for (int x=0; x<arrLen; x++)

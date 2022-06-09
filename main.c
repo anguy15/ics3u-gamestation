@@ -25,9 +25,12 @@ int main(void) {
 
   // readUserStats(userData);
 
+  playMathQuiz();
+  
   // mainMenu(&userData, &userStats);
-  addUser(0);
-
+  // addUser(0);
+  // editUser(userData.uid);
+  
   return(0);
 }
 
