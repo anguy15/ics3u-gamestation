@@ -28,7 +28,6 @@ void readUserStats(userData currentUserData)
       tempUserStats[x].hangmanLosses = 0;
       tempUserStats[x].uid = x;
       //setting a flag for if the user is a player, dependent on whether they are admin
-      printf("%i", tempUserData[x].usertype);
       if (tempUserData[x].usertype==0)
       {
         tempUserStats[x].playerFlag=1;

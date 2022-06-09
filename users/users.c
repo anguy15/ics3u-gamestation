@@ -228,29 +228,29 @@ static int makeUser(int usertype)
   //storing temp data to write later
   //new usercount
   int userCount=getUserCount();
-  tempUserData userData[userCount+1];
+  tempUserData tempUserData[userCount+1];
   if (userCount != 0)//there are users
   {
-    readUsers(userData);
+    readUsers(tempUserData);
   }
   
   //setup uid and usertype
-  userData[userCount].uid = userCount;
-  userData[userCount].usertype = usertype;
-
+  tempUserData[userCount].uid = userCount;
+  tempUserData[userCount].usertype = usertype;
+  
   //setup username and password
   printf("Username (no spaces): ");
-  scanf("%s", userData[userCount].username);
+  scanf("%s", tempUserData[userCount].username);
   getchar();
 
   printf("Password (no spaces): ");
-  scanf("%s", userData[userCount].password);
+  scanf("%s", tempUserData[userCount].password);
   getchar();
 
-  encryptStr(userData[userCount].password);
+  encryptStr(tempUserData[userCount].password);
 
   //write all data back to file
-  writeUsers(userData, userCount+1);
+  writeUsers(tempUserData, userCount+1);
   
   return(0);
 }

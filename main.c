@@ -26,7 +26,7 @@ int main(void) {
   readUserStats(userData);
 
   // mainMenu(&userData, &userStats);
-  // addUser(1);
+  // addUser(0);
 
   return(0);
 }
