@@ -20,7 +20,6 @@ int main(void) {
   //set same id for stats as data
   userStats.uid = userData.uid;
 
-  printf("%i %s %i\n", userData.uid, userData.username, userData.usertype);
   // debug
   // printf("%i %s %i", userData.uid, userData.username, userData.usertype);
 

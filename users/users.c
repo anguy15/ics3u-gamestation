@@ -1,7 +1,7 @@
 #include "users.h"
 
 //functions
-int login(userData *userData)
+int login(userData *currentUserData)
 {  
   system("clear");
   int userCount = getUserCount();
@@ -13,8 +13,8 @@ int login(userData *userData)
   if (userCount == 0)//no user exists
   {
     addUser(2);//make a admin user
-    userData->uid=0;
-    getUserData(userData);
+    currentUserData->uid=0;
+    getUserData(currentUserData);
     
     return 0;
   }
@@ -41,9 +41,9 @@ int login(userData *userData)
     }while(checkPassword(&tempUserData, username, password)==0);
 
     //copy temp data to program data
-    userData->uid = tempUserData.uid;
-    strcpy(userData->username, tempUserData.username);
-    userData->usertype = tempUserData.usertype;
+    currentUserData->uid = tempUserData.uid;
+    strcpy(currentUserData->username, tempUserData.username);
+    currentUserData->usertype = tempUserData.usertype;
     
     
   
@@ -148,22 +148,22 @@ void getAllUsersInfo(userData userData[])
   }
 }
 
-void getUserData(userData *userData)
+void getUserData(userData *currentUserData)
 {
   int userCount = getUserCount();
   tempUserData tempUserData[userCount];
   readUsers(tempUserData);
   for (int x=0; x<userCount; x++)
   {
-    if (x==userData->uid)
+    if (x==currentUserData->uid)
     {
-      strcpy(userData->username,tempUserData[x].username);
-      userData->usertype=tempUserData[x].usertype;
+      strcpy(currentUserData->username,tempUserData[x].username);
+      currentUserData->usertype=tempUserData[x].usertype;
     }
   }
 }
 
-static int checkPassword(tempUserData *userData, char username[], char password[])
+static int checkPassword(tempUserData *currentUserData, char username[], char password[])
 {
   int userCount = getUserCount();
   tempUserData tempUserData[userCount];
@@ -178,8 +178,8 @@ static int checkPassword(tempUserData *userData, char username[], char password[
     {
       if (strcmp(tempUserData[x].password, password)==0)
       {
-        strcpy(userData->username, tempUserData[x].username);
-        strcpy(userData->password, tempUserData[x].password);
+        strcpy(currentUserData->username, tempUserData[x].username);
+        strcpy(currentUserData->password, tempUserData[x].password);
         return 1;
       }
     }
