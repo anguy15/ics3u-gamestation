@@ -12,7 +12,8 @@ int login(userData *userData)
   
   if (userCount == 0)//no user exists
   {
-    makeUser(2);//make a admin user
+    addUser(2);//make a admin user
+    userData->uid=0;
     getUserData(userData);
     
     return 0;
@@ -55,13 +56,29 @@ void addUser(int usertype)
 {
   //update user file
   userData tempUserData;
-  tempUserData.uid = getUserCount();
+  userStats userStats;
+  int userCount = getUserCount();
+  tempUserData.uid = userCount;
   
   //add the new user
   makeUser(usertype);
   getUserData(&tempUserData);
   
   //update stats file
+  //setup add
+  userStats.uid = userCount;
+  userStats.playerFlag = userCount;
+  //math
+  userStats.mathWins = 0;
+  userStats.mathLosses = 0;
+  //tictactoe
+  userStats.tttWins = 0;
+  userStats.tttLosses = 0;
+  //hangman
+  userStats.hangmanWins = 0;
+  userStats.hangmanLosses = 0;
+  
+  addUserStats(userStats, userCount);
 }
 
 void printUserFile()
@@ -87,12 +104,12 @@ int getUserCount()
 
   if (fp == NULL)//if file does not exist
   {
-    FILE *fp;
-    fp = fopen("./users/user_data", "w");
+    FILE *fptr;
+    fptr = fopen("./users/user_data", "w");
   
-    fprintf(fp, "0\n");
+    fprintf(fptr, "0\n");
     
-    fclose(fp);
+    fclose(fptr);
     return 0;
   }
   else//we find the user count
@@ -208,14 +225,18 @@ static int writeUsers(tempUserData userData[], int userCount)
   fprintf(fp, "%i\n", userCount);
   while (x!=userCount)
   {
-    //read uid
-    fprintf(fp, "%i ", userData[x].uid);
-    //read username
-    fprintf(fp, "%s ", userData[x].username);
-    //read usertype
-    fprintf(fp, "%i ", userData[x].usertype);
-    //read password
-    fprintf(fp, "%s\n", userData[x].password);
+    //if the user has not been deleted
+    if (userData[x].usertype!=-1)
+    {
+      //read uid
+      fprintf(fp, "%i ", userData[x].uid);
+      //read username
+      fprintf(fp, "%s ", userData[x].username);
+      //read usertype
+      fprintf(fp, "%i ", userData[x].usertype);
+      //read password
+      fprintf(fp, "%s\n", userData[x].password);
+    }
     x++;
   }
 

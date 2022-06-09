@@ -2,30 +2,17 @@
 #define stats_h
 
 #include <stdio.h>
-#include "users.h"
-
-//variables
-typedef struct
-{
-  int uid;
-  int playerFlag;
-  //math
-  int mathWins;
-  int mathLosses;
-  //tic-tac-toe
-  int tttWins;
-  int tttLosses;
-  //hangman
-  int hangmanWins;
-  int hangmanLosses;
-}userStats;
+#include "users_info.h"
 
 //  GLOBALS
 //take user id
 //outputs the user's stats
 void readUserStats(userData userData);
 //updates a specific user's stats
-void updateUserStats(userStats userStats);
+void updateUserStats(userStats userStats, int userCount);
+//the function called by adduser to update stats file
+//this function is the same as updateUserStats, and was placed here for readability
+void addUserStats(userStats userStats, int userCount);
 
 //prints add user stats
 void printAllStats();

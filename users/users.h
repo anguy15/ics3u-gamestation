@@ -5,22 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "encryption/simple_crypt.h"
-
-//    variables
-typedef struct
-{
-  int uid;
-  char username[256];
-  int usertype;
-  char password[256];
-}tempUserData;
-
-typedef struct
-{
-  int uid;
-  char username[256];
-  int usertype;
-}userData;
+#include "users_info.h"
 
 //    prototypes
 
@@ -36,6 +21,9 @@ void getUserData(userData *userData);
 
 //updates the data of specific user
 void updateUserData(tempUserData newUserData);
+
+//adds a user
+void addUser(int usertype);
 
 //return if logged in, and return the user id in userData.userID[]
 int login(userData *userData);

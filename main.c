@@ -17,16 +17,17 @@ int main(void) {
   userData userData;
   userStats userStats;
   login(&userData);
+  //set same id for stats as data
   userStats.uid = userData.uid;
 
   printf("%i %s %i\n", userData.uid, userData.username, userData.usertype);
   // debug
   // printf("%i %s %i", userData.uid, userData.username, userData.usertype);
 
-  readUserStats(userData);
+  // readUserStats(userData);
 
   // mainMenu(&userData, &userStats);
-  // addUser(0);
+  addUser(0);
 
   return(0);
 }

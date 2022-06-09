@@ -58,10 +58,13 @@ void readUserStats(userData currentUserData)
   }
 }
 
-void updateStats(userStats newUserStats)
+void addUserStats(userStats newUserStats, int userCount)
 {
-  int userCount = getUserCount();
+  updateUserStats(newUserStats, userCount+1);
+}
 
+void updateUserStats(userStats newUserStats, int userCount)
+{
   userStats userStats[userCount];
   readStats(userStats);
 
@@ -109,26 +112,40 @@ static int readStats(userStats tempUserStats[])
   fp = fopen("./users/games_stats", "r");
   int x=0;
 
-  while (!feof(fp))
+  if (fp == NULL)
   {
-    fscanf(fp, "%i", &tempUserStats[x].uid);
-    fscanf(fp, "%i", &tempUserStats[x].playerFlag);
-    //math
-    fscanf(fp, "%i", &tempUserStats[x].mathWins);
-    fscanf(fp, "%i", &tempUserStats[x].mathLosses);
-    //tic-tac-toe
-    fscanf(fp, "%i", &tempUserStats[x].tttWins);
-    fscanf(fp, "%i", &tempUserStats[x].tttLosses);
-    //hangman
-    fscanf(fp, "%i", &tempUserStats[x].hangmanWins);
-    fscanf(fp, "%i", &tempUserStats[x].hangmanLosses);
-
-    if (feof(fp))
-      break;
-
-    x++;
+    FILE *fptr;
+    fptr = fopen("./users/games_stats", "w");
+  
+    fprintf(fptr, "0\n");
+    
+    fclose(fptr);
+    return 0;
   }
-  fclose(fp);
+  else
+  {
+    while (!feof(fp))
+    {
+      fscanf(fp, "%i", &tempUserStats[x].uid);
+      fscanf(fp, "%i", &tempUserStats[x].playerFlag);
+      //math
+      fscanf(fp, "%i", &tempUserStats[x].mathWins);
+      fscanf(fp, "%i", &tempUserStats[x].mathLosses);
+      //tic-tac-toe
+      fscanf(fp, "%i", &tempUserStats[x].tttWins);
+      fscanf(fp, "%i", &tempUserStats[x].tttLosses);
+      //hangman
+      fscanf(fp, "%i", &tempUserStats[x].hangmanWins);
+      fscanf(fp, "%i", &tempUserStats[x].hangmanLosses);
+  
+      if (feof(fp))
+        break;
+  
+      x++;
+    }
+    fclose(fp);
+  }
+  
   return(x);
 }
 
