@@ -47,8 +47,6 @@ int login(userData *currentUserData)
     strcpy(currentUserData->username, tempUserData.username);
     currentUserData->usertype = tempUserData.usertype;
     
-    
-  
     return(1);
   }
   return(0);

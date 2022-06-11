@@ -124,19 +124,13 @@ static char getGuessLetter(hangmanGameInfo *hangmanInfo, int userGuessLetterArr[
   //loop until valid letter given, not already chosen
   do
   {
-    if (inputFlag!=0)
+    if (userGuessLetterArr[userLChoice-97]!=0)
     {
-      printf("Invalid Guess Letter\n\n");
+      printf("Invalid Letter");
     }
-    inputFlag=0;
-    
-    printf("Which Letter: ");
-    scanf("%c", &userLChoice);
-    clearInput();
-    userLChoice = tolower(userLChoice);
-    
-    inputFlag=1;
-  }while(userGuessLetterArr[userLChoice-97]!=0 && userLChoice<97 && userLChoice>122);//make sure they havent inputted an invalid input or a previously guessed input
+    getInputMenuINT(122, 97, &userLChoice, "Which letter to guess??\n", "Invalid Guess Letter\n");
+  }while(userGuessLetterArr[userLChoice-97]!=0);
+  //make sure they havent inputted a previously guessed input
 
   //write choice to array
   userGuessLetterArr[userLChoice-97]=1;
