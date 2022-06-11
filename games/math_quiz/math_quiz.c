@@ -12,36 +12,12 @@ int playMathQuiz()
   int gameMode=0;
   int difficulty=0;
   printf("Welcome to the Math Quiz\n");
-  printf("1. Addition\n2. Subtraction\n3. Multiplication\n4. Division\n");
-  int inputFlag=0;
   
   //get game mode
-  inputFlag=0;
-  do
-  {
-    if (inputFlag==1)
-    {
-      printf("Invalid Input\n");
-    }
-    printf("Which game mode would you like to play? ");
-    scanf("%i", &gameMode);
-    
-    inputFlag=1;
-  }while(gameMode<1 || gameMode>4);
+  getInputMenuINT(1, 4, &gameMode, "1. Addition\n2. Subtraction\n3. Multiplication\n4. Division\nWhich game mode would you like to play?\n", "Invalid Game Mode\n");
   
   //get difficulty
-  inputFlag=0;
-  do
-  {
-    if (inputFlag==1)
-    {
-      printf("Invalid Input\n");
-    }
-    printf("\n1. Easy\n2. Medium\n3. Hard\nWhich difficulty? ");
-    scanf("%i", &difficulty);
-    
-    inputFlag=1;
-  }while(difficulty<1 || difficulty>3);
+  getInputMenuINT(1, 3, &difficulty, "\n1. Easy\n2. Medium\n3. Hard\nWhich difficulty?\n", "Invalid Difficulty\n");
 
   //finding the game mode, and starting the game
   switch (gameMode)

@@ -59,7 +59,8 @@ static void getUserInputs(int gameBoard[3][3], int winFlags[2][3][3], int player
   userFlags.XFlag = 0;
   userFlags.YFlag = 0;
   userFlags.InputFlag=0;
-  
+
+  //  get inputs  //
   do
   {
     drawGameBoard(gameBoard);
@@ -75,49 +76,26 @@ static void getUserInputs(int gameBoard[3][3], int winFlags[2][3][3], int player
 
     //user choices
     //get column input
-    do
-    {
-      drawGameBoard(gameBoard);
-      if (userFlags.XFlag!=0)
-      {
-        printf("Invalid Column\n\n");
-      }
-      userFlags.XFlag=0;
-      
-      printf("Which column would you like: ");
-      scanf("%i", &userXChoice);
-      clearInput();
-      
-      userFlags.XFlag=1;
-    }while(userXChoice<1 || userXChoice>3);
+    drawGameBoard(gameBoard);
+    getInputMenuINT(1,3, &userXChoice, "Which column would you like: ", "Invalid Column\n");
     userXChoice--;
 
     //get row input
-    do
-    {
-      drawGameBoard(gameBoard);
-      if (userFlags.YFlag!=0)
-      {
-        printf("Invalid Row\n\n");
-      }
-      userFlags.YFlag=0;
-      
-      printf("Which row would you like: ");
-      scanf("%i", &userYChoice);
-      clearInput();
-      
-      userFlags.YFlag=1;
-    }while(userYChoice<1 || userYChoice>3);
+    drawGameBoard(gameBoard);
+    getInputMenuINT(1,3, &userYChoice, "Which row would you like: ", "Invalid row\n");
     userYChoice--;
     
     userFlags.InputFlag=1;
   }while(gameBoard[userYChoice][userXChoice]!=0);
+
   
-  //write valid inputs
+  //  write valid inputs  //
   gameBoard[userYChoice][userXChoice]=player+1;
+  
   //setup flags for x and y
   winFlags[player][0][userXChoice]++;
   winFlags[player][1][userYChoice]++;
+  
   //setup flags from diagonals
   if ((userYChoice == 0 && userXChoice == 0) || (userYChoice == 2 && userXChoice == 2))
   {
@@ -210,7 +188,7 @@ static void drawGameBoard(const int board[3][3])
         }
         printf("\n");
       }
-      else//draw column markers
+      else//draw column numbers
       {
         printf("\n  ");
         for (int z=0; z<3; z++)

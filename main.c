@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include <time.h>
 #include <stdlib.h>
+#include <time.h>
 
 //users
 #include "users/users.h"
@@ -13,6 +13,7 @@
 //tools
 void clearInput();
 void getInputMenuINT(int max, int min, int *userChoice, char question[256], char invalidChoice[256]);
+void getInputMenuCHAR(int max, int min, char *userChoice, char question[256], char invalidChoice[256]);
 
 //menu
 static void mainMenu(userData *userData, userStats *userStats);
@@ -40,7 +41,6 @@ int main(void) {
   getUserData(&userData);
   //set same id for stats as data
   userStats.uid = userData.uid;
-  printf("%i",userData.usertype);
 
   // debug
   // printf("%i %s %i", userData.uid, userData.username, userData.usertype);
@@ -70,7 +70,7 @@ static void mainMenu(userData *userData, userStats *userStats)
 static void adminMenu(userData *userData, userStats *userStats)
 {
   int adminChoice=0;
-  getInputMenuINT(1, 4, &adminChoice, "1. User Stats\n2. Stats\n3. Play Games\n4. Edit Users\nWhat would you like to do?\n", "Invalid Choice\n");
+  getInputMenuINT(1, 4, &adminChoice, "1. User Stats\n2. Stats\n3. Edit Users\n4. Edit Your Account\nWhat would you like to do?\n", "Invalid Choice\n");
   switch (adminChoice)
   {
     case 1://print all users
@@ -95,7 +95,6 @@ static void userMenu(userData *userData, userStats *userStats)
 {
   int userChoice=0;
   getInputMenuINT(1, 4, &userChoice, "1. User Stats\n2. Stats\n3. Play Games\n4. Edit Users\nWhat would you like to do?\n", "Invalid Choice\n");
-  printf("%i", userChoice);getchar();
 
   //swap to game
   switch (userChoice)
@@ -167,5 +166,25 @@ void getInputMenuINT(int max, int min, int *userChoice, char question[256], char
     clearInput();
 
     userChoiceFlag=1;
-  }while((*userChoice)<max||(*userChoice)>min);
+  }while(*userChoice<max||*userChoice>min);
+}
+
+void getInputMenuCHAR(int max, int min, char *userChoice, char question[256], char invalidChoice[256])
+{
+  int userChoiceFlag=0;//flags are for invalid choices
+  do
+  {
+    if (userChoiceFlag==1)
+    {
+      printf("%s", invalidChoice);
+    }
+
+    userChoiceFlag=0;
+    
+    printf("%s", question);
+    scanf("%c", userChoice);
+    clearInput();
+
+    userChoiceFlag=1;
+  }while((*userChoice<max||*userChoice>min));
 }

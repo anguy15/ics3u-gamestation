@@ -28,7 +28,7 @@ int login(userData *currentUserData)
       if (passwordFails!=0) 
       {
         printf("Incorrect password or username\n%i times failed\n", passwordFails);
-      }  
+      }
       //get username
       printf("Username: ");
       scanf("%s", username);
@@ -227,10 +227,12 @@ static int checkPassword(tempUserData *currentUserData, char username[], char pa
   encryptStr(password);
   for (int x=0; x<userCount; x++)
   {
-    if (strcmp(tempUserData[x].username,username)==0)
+    if (strcmp(tempUserData[x].username,username)==0)//if there is a username match
     {
-      if (strcmp(tempUserData[x].password, password)==0)
+      if (strcmp(tempUserData[x].password, password)==0)//if there is a password match
       {
+        currentUserData->uid = tempUserData[x].uid;
+        currentUserData->usertype = tempUserData[x].usertype;
         strcpy(currentUserData->username, tempUserData[x].username);
         strcpy(currentUserData->password, tempUserData[x].password);
         return 1;
