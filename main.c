@@ -70,7 +70,7 @@ static void mainMenu(userData *userData, userStats *userStats)
 static void adminMenu(userData *userData, userStats *userStats)
 {
   int adminChoice=0;
-  getInputMenuINT(1, 5, &adminChoice, "1. User Stats\n2. Stats\n3. Edit Users\n4. Edit Your Account\n5. Add User\nWhat would you like to do?\n", "Invalid Choice\n");
+  getInputMenuINT(1, 5, &adminChoice, "1. All User Stats\n2. A User's Stats\n3. Edit Users\n4. Edit Your Account\n5. Add User\nWhat would you like to do?\n", "Invalid Choice\n");
   switch (adminChoice)
   {
     case 1://print all users
@@ -98,7 +98,7 @@ static void adminMenu(userData *userData, userStats *userStats)
 static void userMenu(userData *userData, userStats *userStats)
 {
   int userChoice=0;
-  getInputMenuINT(1, 4, &userChoice, "1. User Stats\n2. Stats\n3. Play Games\n4. Edit Users\nWhat would you like to do?\n", "Invalid Choice\n");
+  getInputMenuINT(1, 4, &userChoice, "1. All User Stats\n2. My Stats\n3. Play Games\n4. Edit Users\nWhat would you like to do?\n", "Invalid Choice\n");
 
   //swap to game
   switch (userChoice)

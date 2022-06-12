@@ -6,15 +6,15 @@
 typedef struct
 {
   int uid;
-  char username[256];
+  char username[64];
   int usertype;
-  char password[256];
+  char password[64];
 }tempUserData;
 
 typedef struct
 {
   int uid;
-  char username[256];
+  char username[64];
   int usertype;
 }userData;
 

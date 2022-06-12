@@ -49,6 +49,7 @@ void printUserStats(userData currentUserData, int printType)
     readStats(tempUserStats);
 
     printStatTable(currentUserData, tempUserStats[currentUserData.uid], 0);
+    //print stats for every game
     for (int x=1; x<=info_game_count; x++)
     {
       printStatTable(currentUserData, tempUserStats[currentUserData.uid], x);
@@ -69,7 +70,7 @@ void printUserStats(userData currentUserData, int printType)
       //print all users
       for (int y=0; y<userCount; y++)
       {
-        if (tempUserData[x].usertype==0)//0 means user
+        if (tempUserData[y].usertype==0)//0 means user
         {
           printStatTable(tempUserData[y], tempUserStats[y], x);
         }
