@@ -43,7 +43,7 @@ void printUserStats(userData currentUserData, int printType)
       writeStats(tempUserStats, userCount);
     }
   }
-  else if (printType==1)//print 1
+  else if (printType==1)//print 1 user
   {
     //read all stats
     readStats(tempUserStats);
@@ -54,20 +54,25 @@ void printUserStats(userData currentUserData, int printType)
       printStatTable(currentUserData, tempUserStats[currentUserData.uid], x);
     }
   }
-  else if (printType==0)//print all
+  else if (printType==0)//print all users
   {
     //read all file
     getAllUsersData(tempUserData);
     //read all stats
     readStats(tempUserStats);
 
+    //printing header
     printStatTable(currentUserData, tempUserStats[0], 0);//tempUserStats array index does not matter
+    //printing all users, not admins
     for (int x=1; x<=info_game_count; x++)
     {
-      printf("%i\n", x);
+      //print all users
       for (int y=0; y<userCount; y++)
       {
-        printStatTable(tempUserData[y], tempUserStats[y], x);
+        if (tempUserData[x].usertype==0)//0 means user
+        {
+          printStatTable(tempUserData[y], tempUserStats[y], x);
+        }
       }
     }
     //plans
@@ -91,20 +96,23 @@ void updateUserStats(userStats newUserStats, int userCount)
   userStats userStats[userCount];
   readStats(userStats);
 
-  //setup new stats
-  userStats[newUserStats.uid].uid=newUserStats.uid;
-  userStats[newUserStats.uid].playerFlag=newUserStats.playerFlag;
-  //math
-  userStats[newUserStats.uid].mathWins=newUserStats.mathWins;
-  userStats[newUserStats.uid].mathLosses=newUserStats.mathLosses;
-
-  //tic tac toe
-  userStats[newUserStats.uid].tttWins=newUserStats.tttWins;
-  userStats[newUserStats.uid].tttLosses=newUserStats.tttLosses;
-
-  //hangman
-  userStats[newUserStats.uid].hangmanWins=newUserStats.hangmanWins;
-  userStats[newUserStats.uid].hangmanLosses=newUserStats.hangmanLosses;
+  if (newUserStats.playerFlag != -1)//if the user is being deleted
+  {
+    //setup new stats
+    userStats[newUserStats.uid].uid=newUserStats.uid;
+    userStats[newUserStats.uid].playerFlag=newUserStats.playerFlag;
+    //math
+    userStats[newUserStats.uid].mathWins=newUserStats.mathWins;
+    userStats[newUserStats.uid].mathLosses=newUserStats.mathLosses;
+  
+    //tic tac toe
+    userStats[newUserStats.uid].tttWins=newUserStats.tttWins;
+    userStats[newUserStats.uid].tttLosses=newUserStats.tttLosses;
+  
+    //hangman
+    userStats[newUserStats.uid].hangmanWins=newUserStats.hangmanWins;
+    userStats[newUserStats.uid].hangmanLosses=newUserStats.hangmanLosses;
+  }
 
   //save stats
   writeStats(userStats, userCount);
@@ -187,18 +195,22 @@ static void writeStats(userStats allUserStats[], int userCount)
   //write all stats
   while (x!=userCount)
   {
-    fprintf(fp, "%i ", allUserStats[x].uid);
-    fprintf(fp, "%i ", allUserStats[x].playerFlag);
-    //math
-    fprintf(fp, "%i ", allUserStats[x].mathWins);
-    fprintf(fp, "%i ", allUserStats[x].mathLosses);
-    //tic tac toe
-    fprintf(fp, "%i ", allUserStats[x].tttWins);
-    fprintf(fp, "%i ", allUserStats[x].tttLosses);
-    //hangman
-    fprintf(fp, "%i ", allUserStats[x].hangmanWins);
-    fprintf(fp, "%i\n", allUserStats[x].hangmanLosses);
-    x++;
+    //checking if the user has just been deleted
+    if (allUserStats[x].playerFlag!=-1)
+    {
+      fprintf(fp, "%i ", allUserStats[x].uid);
+      fprintf(fp, "%i ", allUserStats[x].playerFlag);
+      //math
+      fprintf(fp, "%i ", allUserStats[x].mathWins);
+      fprintf(fp, "%i ", allUserStats[x].mathLosses);
+      //tic tac toe
+      fprintf(fp, "%i ", allUserStats[x].tttWins);
+      fprintf(fp, "%i ", allUserStats[x].tttLosses);
+      //hangman
+      fprintf(fp, "%i ", allUserStats[x].hangmanWins);
+      fprintf(fp, "%i\n", allUserStats[x].hangmanLosses);
+      x++;
+    }
   }
   fclose(fp);
 }

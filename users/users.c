@@ -22,6 +22,7 @@ int login(userData *currentUserData)
   }
   else//a user exists
   {
+    //get login credentials
     do
     {
       system("clear");
@@ -40,7 +41,7 @@ int login(userData *currentUserData)
       clearInput();
       
       passwordFails++;
-    }while(checkPassword(&tempUserData, username, password)==0);
+    }while(checkLogin(&tempUserData, username, password)==0);//check the login
 
     //copy temp data to program data
     currentUserData->uid = tempUserData.uid;
@@ -50,6 +51,25 @@ int login(userData *currentUserData)
     return(1);
   }
   return(0);
+}
+
+void removeUser(int uid)
+{
+  //update user file
+  int userCount = getUserCount();
+  tempUserData tempUserData[userCount];
+  userStats userStats;
+  readUsers(tempUserData);
+  
+  //setup write stats will check for a -1 when writing, and ignore the stat
+  tempUserData[uid].usertype = -1;
+  writeUsers(tempUserData, userCount);
+  
+  //update stats file
+  //setup write stats will check for a -1 when writing, and ignore the stat
+  userStats.playerFlag = -1;
+  
+  updateUserStats(userStats, userCount);
 }
 
 void addUser(int usertype)
@@ -69,7 +89,7 @@ void addUser(int usertype)
   //update stats file
   //setup add
   userStats.uid = userCount;
-  userStats.playerFlag = (usertype==0);//if it is a play then playerflag is one
+  userStats.playerFlag = (usertype==0);//if it is a player then playerflag is one
   //math
   userStats.mathWins = 0;
   userStats.mathLosses = 0;
@@ -147,22 +167,6 @@ void editUser(int uid)
   writeUsers(tempUserData, userCount);
 }
 
-//debugger
-void printUserFile()
-{
-  FILE *fp;
-  fp = fopen("./data/user_data", "r");
-  char temp[256];
-  
-  while (!feof(fp))
-  {
-    fscanf(fp, "%s", temp);
-    if (!feof(fp))
-      printf("%s\n", temp);
-  }
-  fclose(fp);
-}
-
 int getUserCount()
 {
   FILE *fp;
@@ -216,7 +220,7 @@ void getUserData(userData *currentUserData)
   }
 }
 
-static int checkPassword(tempUserData *currentUserData, char username[], char password[])
+static int checkLogin(tempUserData *currentUserData, char username[], char password[])
 {
   int userCount = getUserCount();
   tempUserData tempUserData[userCount];
@@ -329,4 +333,20 @@ static int makeUser(int usertype)
   writeUsers(tempUserData, userCount+1);
   
   return(0);
+}
+
+//debugger
+static void printUserFile()
+{
+  FILE *fp;
+  fp = fopen("./data/user_data", "r");
+  char temp[256];
+  
+  while (!feof(fp))
+  {
+    fscanf(fp, "%s", temp);
+    if (!feof(fp))
+      printf("%s\n", temp);
+  }
+  fclose(fp);
 }

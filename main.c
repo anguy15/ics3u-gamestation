@@ -70,7 +70,7 @@ static void mainMenu(userData *userData, userStats *userStats)
 static void adminMenu(userData *userData, userStats *userStats)
 {
   int adminChoice=0;
-  getInputMenuINT(1, 4, &adminChoice, "1. User Stats\n2. Stats\n3. Edit Users\n4. Edit Your Account\nWhat would you like to do?\n", "Invalid Choice\n");
+  getInputMenuINT(1, 5, &adminChoice, "1. User Stats\n2. Stats\n3. Edit Users\n4. Edit Your Account\n5. Add User\nWhat would you like to do?\n", "Invalid Choice\n");
   switch (adminChoice)
   {
     case 1://print all users
@@ -87,6 +87,10 @@ static void adminMenu(userData *userData, userStats *userStats)
 
     case 4://edit self
       editUser(userData->uid);
+      break;
+
+    case 5:
+      addUser(0);
       break;
   }
 }

@@ -10,18 +10,15 @@
 
 //    GLOBAL
 //debugging
-void printUserFile();
+static void printUserFile();
 
 //return an updated array of user data
 void getAllUsersData(userData userData[]);
-
 //return user data
 void getUserData(userData *userData);
 
-//adds a user
+void removeUser(int uid);
 void addUser(int usertype);
-
-//edits a user given a userid
 void editUser(int uid);
 
 //return if logged in, and return the user id in userData.userID[]
@@ -31,13 +28,10 @@ int login(userData *userData);
 //return user count
 int checkUserCount();
 
-//clears the stdin
-void clearInput();
-
 //    LOCAL
 
 //return 1 if it is correct
-static int checkPassword(tempUserData *tempUserData, char username[], char password[]);
+static int checkLogin(tempUserData *tempUserData, char username[], char password[]);
 
 //reads all usersdata to a struct
 //returns a 0 if it fails, returns the amount read if it doesn't
