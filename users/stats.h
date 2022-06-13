@@ -21,9 +21,6 @@ void updateUserStats(userStats userStats, int userCount);
 //this function is the same as updateUserStats, and was placed here for readability
 void addUserStats(userStats userStats, int userCount);
 
-//prints add user stats
-void printAllStats();
-
 //  LOCALS
 //reads all stats
 //takes a struct to write stats to

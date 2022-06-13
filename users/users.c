@@ -113,14 +113,7 @@ void editUser(int uid)
   int userChoice=0;
   int invalidInputFlag=0;
 
-  do
-  {
-    //get new data
-    printf("1. Username\n2. Password\n3. Admin Level\n");
-    printf("What would you like to edit: ");
-    scanf("%i", &userChoice);
-    clearInput();
-  }while(userChoice<1 || userChoice>3);
+  getInputMenuINT(1,3, &userChoice, "1. Username\n2. Password\n3. Admin Level\nWhat would you like to edit: ", "Invalid Choice\n");
   
 
   system("clear");
@@ -128,38 +121,19 @@ void editUser(int uid)
   switch (userChoice)
   {
     case 1:
-      printf("Enter a username (no spaces): ");
-      scanf("%s", tempUserData[uid].username);
-      clearInput();
+      //regex says [valid characters], 4 to 64 as min to max amount of characters
+      getInputMenuSTR("^[a-zA-Z0-9._]{4,64}$", tempUserData[uid].username, "Enter a username (no spaces): ", "Invalid username\nUsername must be 4 to 64 characters\n");
       break;
     
     case 2:
-      printf("Enter a password (no spaces): ");
-      scanf("%s", tempUserData[uid].password);
-      encryptStr(tempUserData[uid].password);
-      clearInput();
+      //regex says 4 letters at least, one letter and one number
+      getInputMenuSTR("^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,}$", tempUserData[uid].username, "Enter a username (no spaces): ", "Invalid username\nUsername must be at least 4 characters\n1 letter, and 1 number\n");
       break;
 
     
     case 3:
-      //while the input is invalid
-      do
-      {
-        if(invalidInputFlag == 1)
-        {
-          printf("Invalid user type\n");
-        }
-        invalidInputFlag=0;
-
-        //get input
-        printf("1. Regular User\n2. Admin");
-        printf("Enter a admin level: ");
-        scanf("%i", &tempUserData[uid].usertype);
-        tempUserData[uid].usertype--;
-        clearInput();
-
-        invalidInputFlag=1;
-      }while(tempUserData[uid].usertype!=1 && tempUserData[uid].usertype!=0);
+      getInputMenuINT(1,2, &tempUserData[uid].usertype, "1. Regular User\n2. Admin\nEnter an admin level: ", "Invalid user type\n");
+      tempUserData[uid].usertype--;
       break;
   }
 
@@ -319,13 +293,12 @@ static int makeUser(int usertype)
   tempUserData[userCount].usertype = usertype;
   
   //setup username and password
-  printf("Username (no spaces): ");
-  scanf("%s", tempUserData[userCount].username);
-  clearInput();
+  //regex says [valid characters], 4 to 64 as min to max amount of characters
+  getInputMenuSTR("^[a-zA-Z0-9._]{4,64}$", tempUserData[uid].username, "Enter a username (no spaces): ", "Invalid username\nUsername must be 4 to 64 characters\n");
+  
+  //regex says 4 letters at least, one letter and one number
+  getInputMenuSTR("^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,}$", tempUserData[uid].username, "Enter a username (no spaces): ", "Invalid username\nUsername must be at least 4 characters\n1 letter, and 1 number\n");
 
-  printf("Password (no spaces): ");
-  scanf("%s", tempUserData[userCount].password);
-  clearInput();
 
   encryptStr(tempUserData[userCount].password);
 

@@ -8,12 +8,8 @@
 //game includes
 #include "games/games.h"
 
-//prototypes
-
 //tools
-void clearInput();
-void getInputMenuINT(int max, int min, int *userChoice, char question[256], char invalidChoice[256]);
-void getInputMenuCHAR(int max, int min, char *userChoice, char question[256], char invalidChoice[256]);
+#include "input_handler.h"
 
 //menu
 static void mainMenu(userData *userData, userStats *userStats);
@@ -151,44 +147,4 @@ void clearInput()
   {
     scanf("%c", &buff);
   }
-}
-
-void getInputMenuINT(int max, int min, int *userChoice, char question[256], char invalidChoice[256])
-{
-  int userChoiceFlag=0;//flags are for invalid choices
-  do
-  {
-    if (userChoiceFlag==1)
-    {
-      printf("%s", invalidChoice);
-    }
-
-    userChoiceFlag=0;
-    
-    printf("%s", question);
-    scanf("%i", userChoice);
-    clearInput();
-
-    userChoiceFlag=1;
-  }while(*userChoice<max||*userChoice>min);
-}
-
-void getInputMenuCHAR(int max, int min, char *userChoice, char question[256], char invalidChoice[256])
-{
-  int userChoiceFlag=0;//flags are for invalid choices
-  do
-  {
-    if (userChoiceFlag==1)
-    {
-      printf("%s", invalidChoice);
-    }
-
-    userChoiceFlag=0;
-    
-    printf("%s", question);
-    scanf("%c", userChoice);
-    clearInput();
-
-    userChoiceFlag=1;
-  }while((*userChoice<max||*userChoice>min));
 }

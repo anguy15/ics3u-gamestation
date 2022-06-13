@@ -143,20 +143,8 @@ static void getGuessWord(hangmanGameInfo *hangmanInfo, int userGuessLetterArr[],
   int inputFlag=0;
   char userWChoice[50]={0};
   //loop until word is possibly a valid word
-  do
-  {
-    if (inputFlag!=0)
-    {
-      printf("Invalid Guess Word\n\n");
-    }
-    inputFlag=0;
-    
-    printf("Guess a Word: ");
-    scanf("%s", userWChoice);
-    clearInput();
-    
-    inputFlag=1;
-  }while(strlen(userWChoice)<2);
+  //regex says all english letters
+  getInputMenuSTR("[a-zA-Z]*");
 
   //write choice to array
   strcpy(guessWord, userWChoice);

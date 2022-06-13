@@ -64,6 +64,7 @@ static void getUserInputs(int gameBoard[3][3], int winFlags[2][3][3], int player
   do
   {
     drawGameBoard(gameBoard);
+    printf("Player %i\n", player+1);
     if (userFlags.InputFlag!=0)
     {
       printf("Invalid Coordinate given, please try again\n\n");
@@ -155,7 +156,7 @@ static void drawGameBoard(const int board[3][3])
     {
       if (y==0)
       {
-        //draw row markers
+        //draw row numbers
         printf("%i ", x+1);
       }
       
@@ -173,14 +174,13 @@ static void drawGameBoard(const int board[3][3])
           break;
       }
       
-      //formatting
+      //formatting of walls and rows
       if (y!=2)//not the last column
       {
         printf(" | ");//column separators
       }
       else if(x!=0)//not the last line
       {
-        //draw row separators
         printf("\n  ");
         for (int z=0; z<3; z++)
         {
@@ -193,7 +193,7 @@ static void drawGameBoard(const int board[3][3])
         printf("\n  ");
         for (int z=0; z<3; z++)
         {
-          printf(" %i ",z+1);//numbers for grid
+          printf(" %i ",z+1);//number columns
         }
       }
     }
