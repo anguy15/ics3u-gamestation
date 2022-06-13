@@ -18,12 +18,10 @@ int checkRegex(char string[], char regexComp[])
   //return results
   if (!reti)//correct
   {
-    printf("a");
     return(1);
   }
   else if (reti == REG_NOMATCH)//incorrect
   {
-    printf("b");
     return(0);
   }
 }
@@ -86,7 +84,6 @@ void getInputMenuSTR(char regexCheck[], char userChoice[], char question[256], c
     printf("%s", question);
     scanf("%s", userChoice);
     clearInput();
-    printf("%s\n", userChoice);
 
     userChoiceFlag=1;
   }while(!checkRegex(userChoice, regexCheck));

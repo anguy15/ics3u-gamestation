@@ -122,12 +122,14 @@ void editUser(int uid)
   {
     case 1:
       //regex says [valid characters], 4 to 64 as min to max amount of characters
+      //get a username, and put into tempUserData[uid.username]
       getInputMenuSTR("^[a-zA-Z0-9._]{4,64}$", tempUserData[uid].username, "Enter a username (no spaces): ", "Invalid username\nUsername must be 4 to 64 characters\n");
       break;
     
     case 2:
       //regex says 4 letters at least, one letter and one number
-      getInputMenuSTR("^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,}$", tempUserData[uid].username, "Enter a username (no spaces): ", "Invalid username\nUsername must be at least 4 characters\n1 letter, and 1 number\n");
+      //get a password, and put into tempUserData[uid].password
+      getInputMenuSTR("^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,}$", tempUserData[uid].password, "Enter a username (no spaces): ", "Invalid username\nPassword must be at least 4 characters\n1 letter, and 1 number\n");
       break;
 
     
@@ -294,10 +296,12 @@ static int makeUser(int usertype)
   
   //setup username and password
   //regex says [valid characters], 4 to 64 as min to max amount of characters
-  getInputMenuSTR("^[a-zA-Z0-9._]{4,64}$", tempUserData[uid].username, "Enter a username (no spaces): ", "Invalid username\nUsername must be 4 to 64 characters\n");
+  //get a username, and put into tempUserData[uid.username]
+  getInputMenuSTR("^[a-zA-Z0-9._]{4,64}$", tempUserData[userCount].username, "Enter a username (no spaces): ", "Invalid username\nUsername must be 4 to 64 characters\n");
   
   //regex says 4 letters at least, one letter and one number
-  getInputMenuSTR("^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,}$", tempUserData[uid].username, "Enter a username (no spaces): ", "Invalid username\nUsername must be at least 4 characters\n1 letter, and 1 number\n");
+  //get a password, and put into tempUserData[uid].password
+  getInputMenuSTR("^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,}$", tempUserData[userCount].password, "Enter a username (no spaces): ", "Invalid username\nUsername must be at least 4 characters\n1 letter, and 1 number\n");
 
 
   encryptStr(tempUserData[userCount].password);

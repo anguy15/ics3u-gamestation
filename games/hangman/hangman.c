@@ -144,7 +144,7 @@ static void getGuessWord(hangmanGameInfo *hangmanInfo, int userGuessLetterArr[],
   char userWChoice[50]={0};
   //loop until word is possibly a valid word
   //regex says all english letters
-  getInputMenuSTR("[a-zA-Z]*");
+  getInputMenuSTR("[a-zA-Z]*", &userWChoice, "Enter a Guess Word", "Invalid Guess Word\n");
 
   //write choice to array
   strcpy(guessWord, userWChoice);
