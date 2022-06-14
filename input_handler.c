@@ -24,6 +24,11 @@ int checkRegex(char string[], char regexComp[])
   {
     return(0);
   }
+  else
+  {
+    printf("Unexpected behavior\n");
+    return(-1);//error
+  }
 }
 
 
@@ -69,7 +74,7 @@ void getInputMenuCHAR(int max, int min, char *userChoice, char question[], char 
 
 
 
-void getInputMenuSTR(char regexCheck[], char userChoice[], char question[256], char invalidChoice[256])
+void getInputMenuSTR(char regexCheck[], char userChoice[], char question[], char invalidChoice[])
 {
   int userChoiceFlag=0;//flags are for invalid choices
   do

@@ -40,8 +40,10 @@ int main(void) {
 
   // debug
   // printf("%i %s %i", userData.uid, userData.username, userData.usertype);
+
+  playTicTacToe();
   
-  mainMenu(&userData, &userStats);
+  // mainMenu(&userData, &userStats);
   // addUser(0);
   // editUser(userData.uid);
   

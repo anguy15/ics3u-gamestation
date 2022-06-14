@@ -1,14 +1,9 @@
 #include "tic-tac-toe.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 //variables
-typedef struct
-{
-  int XFlag;
-  int YFlag;
-  int InputFlag;
-}userErrorFlags;
-
 typedef struct
 {
   int winner;
@@ -20,7 +15,7 @@ typedef struct
 int playTicTacToe()
 {
   system("clear");
-  int gameboard[3][3]={0};//[vertical pos][horizontal pos]
+  int gameBoard[3][3]={0};//[vertical pos][horizontal pos]
   
   //X: 0,1,2
   //Y: 0,1,2
@@ -30,14 +25,23 @@ int playTicTacToe()
   winnerInformation winnerInfo;
   winnerInfo.type = -1;//setup the loop to detect when a winner has won
   
-  resetGameBoard(gameboard);
+  resetGameBoard(gameBoard);
   do
   {
     //run a full round
     for (int i=0; i<2; i++)
     {
-      getUserInputs(gameboard, winFlags, i);
+      getAiInputs(gameBoard);
+      getUserInputs(gameBoard, winFlags, i);
+
+      //game over/draw check
+      if (checkGameBoard(gameBoard)==1)
+      {
+        winnerInfo.type=-2;
+        break;
+      }
       
+      //win check
       winnerInfo.type = checkWinFlags(winFlags);//setup the win check
       if (winnerInfo.type!=-1)
       {
@@ -47,33 +51,35 @@ int playTicTacToe()
     }
   }while(winnerInfo.type == -1);
 
-  printf("Player %i won!", winnerInfo.winner+1);
-  return winnerInfo.winner;
+  drawGameBoard(gameBoard);
+  if (winnerInfo.type == 0 || winnerInfo.type == 1)//someone won
+  {
+    printf("Player %i won!", winnerInfo.winner+1);
+    return winnerInfo.winner;
+  }
+  else//draw
+  {
+    printf("Draw Game");
+    return -1;
+  }
 }
 
 static void getUserInputs(int gameBoard[3][3], int winFlags[2][3][3], int player)
 {
   int userXChoice, userYChoice;
   
-  userErrorFlags userFlags;
-  userFlags.XFlag = 0;
-  userFlags.YFlag = 0;
-  userFlags.InputFlag=0;
+  int userInputFlag=0;
 
   //  get inputs  //
   do
   {
     drawGameBoard(gameBoard);
     printf("Player %i\n", player+1);
-    if (userFlags.InputFlag!=0)
+    if (userInputFlag!=0)
     {
       printf("Invalid Coordinate given, please try again\n\n");
     }
-
-    //reset flags
-    userFlags.XFlag = 0;
-    userFlags.YFlag = 0;
-    userFlags.InputFlag=0;
+    userInputFlag=0;
 
     //user choices
     //get column input
@@ -86,13 +92,17 @@ static void getUserInputs(int gameBoard[3][3], int winFlags[2][3][3], int player
     getInputMenuINT(1,3, &userYChoice, "Which row would you like: ", "Invalid row\n");
     userYChoice--;
     
-    userFlags.InputFlag=1;
+    userInputFlag=1;
   }while(gameBoard[userYChoice][userXChoice]!=0);
 
   
-  //  write valid inputs  //
+    //  write valid inputs  //
   gameBoard[userYChoice][userXChoice]=player+1;
-  
+  updateWinFlags(winFlags, userYChoice, userXChoice, player);
+}
+
+static void updateWinFlags(int winFlags[2][3][3], int userYChoice, int userXChoice, int player)
+{
   //setup flags for x and y
   winFlags[player][0][userXChoice]++;
   winFlags[player][1][userYChoice]++;
@@ -123,7 +133,7 @@ static int checkWinFlags(const int winFlags[2][3][3])
       {
         if(winFlags[x][y][t]>=3)
         {
-          return y;//true
+          return x;//return play number
         }
       }
     }
@@ -210,4 +220,88 @@ static void resetGameBoard(int gameBoard[3][3])
       gameBoard[x][y]=0;
     }
   }
+}
+
+static int checkGameBoard(int gameBoard[3][3])
+{
+  int spotPlacedCount=0;
+  for (int x=0; x<3; x++)
+  {
+    for (int y=0; y<3; y++)
+    {
+      if (gameBoard[x][y]!=0)//spot was placed on
+      {
+        spotPlacedCount++;
+      }
+    }
+  }
+  if (spotPlacedCount!=9)//not all spots filled
+  {
+    return(0);
+  }
+  else//all spots filled
+  {
+    return(1);
+  }
+}
+
+
+static void getAiInputs(int gameBoard[3][3])
+{
+  int board[3][3];
+  int winCheck=0;
+  int posX, posY;
+  srand(time(0));
+
+
+  //simulate
+  while (winCheck!=1000)//max random checks
+  {    
+    //copy the board to a temp board
+    for (int x=0; x<3; x++)
+    {
+      for (int y=0; y<3; y++)
+      {
+        board[x][y]=gameBoard[x][y];
+      }
+    }
+    if(simulateAiGame(board, &posX, &posY) == 1)//ai sim won
+    {
+      break;
+    }
+    winCheck++;
+  }
+  printf("%i, %i\n", posX, posY);clearInput();
+}
+
+static int simulateAiGame(int gameBoard[3][3], int *firstX, int *firstY)
+{
+  int firstPlay=0;
+  int player = 1;
+  int winFlags[2][3][3]={0};//flags for user wins
+  do
+  {
+    int choiceX, choiceY;
+    do
+    {
+      choiceX = rand()%3;
+      choiceY = rand()%3;
+    }while(gameBoard[choiceY][choiceX]!=0);//space is not open
+
+    //save the first play
+    if (firstPlay==0)
+    {
+      firstPlay=1;
+      *firstX = choiceX;
+      *firstY = choiceY;
+    }
+    
+    //  write valid inputs  //
+    gameBoard[choiceY][choiceX]=player+1;
+    updateWinFlags(winFlags, choiceY, choiceX, player);
+    
+    player = !player;//swap players
+  }while(checkGameBoard(gameBoard)!=1);//simulation has not ended
+  
+  return(checkWinFlags(winFlags));//return the player that won
 }
