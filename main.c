@@ -41,8 +41,6 @@ int main(void) {
   // printf("%i %s %i", userData.uid, userData.username, userData.usertype);
   
   mainMenu(&userData, userStats);
-  // addUser(0);
-  // editUser(userData.uid);
   
   return(0);
 }
@@ -65,55 +63,83 @@ static void mainMenu(userData *userData, userStats userStats[])
 static void adminMenu(userData *userData, userStats userStats[])
 {
   int adminChoice=0;
-  getInputMenuINT(1, 5, &adminChoice, "1. All User Stats\n2. A User's Stats\n3. Edit Users\n4. Edit Your Account\n5. Add User\nWhat would you like to do?\n", "Invalid Choice\n");
-  switch (adminChoice)
+  char exitChoice='n';
+
+  do
   {
-    case 1://print all users
-      printAllStats(*userData, userStats);
-      break;
-    
-    case 2://print a specific user's stats
-      printUserStats(*userData, userStats, 1);
-      break;
-    
-    case 3:
-      //edit users
-      break;
+    getInputMenuINT(1, 5+1, &adminChoice, "1. All User Stats\n2. A User's Stats\n3. Edit Users\n4. Edit Your Account\n5. Add User\n6. Return\nWhat would you like to do?\n", "Invalid Choice\n");
+    switch (adminChoice)
+    {
+      case 1://print all users
+        printAllStats(*userData, userStats);
+        break;
+      
+      case 2://print a specific user's stats
+        printUserStats(*userData, userStats, 1);
+        break;
+      
+      case 3:
+        //edit users
+        break;
+  
+      case 4://edit self
+        editUser(userData->uid);
+        break;
+  
+      case 5:
+        addUser(0);
+        break;
 
-    case 4://edit self
-      editUser(userData->uid);
-      break;
+      case 6:
+        return;
+    }
 
-    case 5:
-      addUser(0);
-      break;
-  }
+    printf("Press Enter to Continue ...");
+    getchar();
+    //get any typeable letter/char
+    system("clear");
+    getInputMenuCHAR(65,122, &exitChoice, "Do you wish to exit? y/n\n", "Invalid Input\n");
+  }while(tolower(exitChoice)!='y');
 }
 
 static void userMenu(userData *userData, userStats userStats[])
 {
   int userChoice=0;
-  getInputMenuINT(1, 4, &userChoice, "1. All User Stats\n2. My Stats\n3. Play Games\n4. Edit Users\nWhat would you like to do?\n", "Invalid Choice\n");
-
-  //swap to game
-  switch (userChoice)
+  char exitChoice='n';
+  
+  do
   {
-    case 1://print all users
-      printAllStats(*userData, userStats);
-      break;
-    
-    case 2://print a specific user's stats
-      printUserStats(*userData, userStats, 1);
-      break;
-    
-    case 3://play games
-      gameMenu(userData, userStats, getUserCount());
-      break;
+    getInputMenuINT(1, 4+1, &userChoice, "1. All User Stats\n2. My Stats\n3. Play Games\n4. Edit Users\n5. Return\nWhat would you like to do?\n", "Invalid Choice\n");
+  
+    //swap to game
+    switch (userChoice)
+    {
+      case 1://print all users
+        printAllStats(*userData, userStats);
+        break;
+      
+      case 2://print a specific user's stats
+        printUserStats(*userData, userStats, 1);
+        break;
+      
+      case 3://play games
+        gameMenu(userData, userStats, getUserCount());
+        break;
+  
+      case 4://edit self
+        editUser(userData->uid);
+        break;
 
-    case 4://edit self
-      editUser(userData->uid);
-      break;
-  }
+      case 5:
+        return;
+    }
+
+    printf("Press Enter to Continue ...");
+    getchar();
+    //get any typeable letter/char
+    system("clear");
+    getInputMenuCHAR(65,122, &exitChoice, "Do you wish to exit? y/n\n", "Invalid Input\n");
+  }while(tolower(exitChoice)!='y');
 }
 
 static void gameMenu(userData *userData, userStats userStats[], int userCount)
@@ -124,7 +150,7 @@ static void gameMenu(userData *userData, userStats userStats[], int userCount)
   int gameStat=0;
   do
   {
-    getInputMenuINT(1, 3, &gameChoice, "1. Hangman\n2. Math Quiz\n3. Tic-Tac-Toe\nWhich game would you like to play?\n", "Invalid Game\n");
+    getInputMenuINT(1, 3+1, &gameChoice, "1. Hangman\n2. Math Quiz\n3. Tic-Tac-Toe\n4. Return\nWhich game would you like to play?\n", "Invalid Game\n");
 
     gameStat=0;
     //swap to game
@@ -153,6 +179,9 @@ static void gameMenu(userData *userData, userStats userStats[], int userCount)
         else
           userStats[userData->uid].tttLosses++;
         break;
+
+      case 4:
+        return;
     }
     
     updateUserStats(userStats, userCount);
