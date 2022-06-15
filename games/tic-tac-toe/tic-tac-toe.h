@@ -45,6 +45,6 @@ static void checkUserPlacement(int board[3][3], int xCoord, int yCoord);
 //AI
 static void getAiInputs(int gameBoard[3][3]);
 
-static int simulateAiGame(int gameBoard[3][3], int *firstX, int *firstY);
+static int simulateAiGame(int gameBoard[3][3], int firstX, int firstY, int player);
 
 #endif

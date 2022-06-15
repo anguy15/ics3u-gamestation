@@ -3,7 +3,7 @@
 
 //functions
 
-void printUserStats(userData currentUserData, int printType)
+void printUserStats(userData currentUserData, userStats userStats[], int printType)
 {
   system("clear");
   FILE *fp;
@@ -11,8 +11,6 @@ void printUserStats(userData currentUserData, int printType)
   int userCount=0;
 
   userCount = getUserCount();
-  //temporary storage for data prints
-  userStats tempUserStats[userCount];
   //required for getting userflags through ids
   userData tempUserData[userCount];
 
@@ -23,47 +21,45 @@ void printUserStats(userData currentUserData, int printType)
     for (int x=0; x<userCount; x++)
     {
       //setup all variables as 0
-      tempUserStats[x].mathWins = 0;
-      tempUserStats[x].mathLosses = 0;
-      tempUserStats[x].tttWins = 0;
-      tempUserStats[x].tttLosses = 0;
-      tempUserStats[x].hangmanWins = 0;
-      tempUserStats[x].hangmanLosses = 0;
-      tempUserStats[x].uid = x;
+      userStats[x].mathWins = 0;
+      userStats[x].mathLosses = 0;
+      userStats[x].tttWins = 0;
+      userStats[x].tttLosses = 0;
+      userStats[x].hangmanWins = 0;
+      userStats[x].hangmanLosses = 0;
+      userStats[x].uid = x;
       //setting a flag for if the user is a player, dependent on whether they are admin
       if (tempUserData[x].usertype==0)
       {
-        tempUserStats[x].playerFlag=1;
+        userStats[x].playerFlag=1;
       }
       else
       {
-        tempUserStats[x].playerFlag=0;
+        userStats[x].playerFlag=0;
       }
 
-      writeStats(tempUserStats, userCount);
+      writeStats(userStats, userCount);
+      //read the new stats
+      readStats(userStats);
     }
   }
   else if (printType==1)//print 1 user
   {
-    //read all stats
-    readStats(tempUserStats);
 
-    printStatTable(currentUserData, tempUserStats[currentUserData.uid], 0);
+    printStatTable(currentUserData, userStats[currentUserData.uid], 0);
     //print stats for every game
     for (int x=1; x<=info_game_count; x++)
     {
-      printStatTable(currentUserData, tempUserStats[currentUserData.uid], x);
+      printStatTable(currentUserData, userStats[currentUserData.uid], x);
     }
   }
   else if (printType==0)//print all users
   {
     //read all file
     getAllUsersData(tempUserData);
-    //read all stats
-    readStats(tempUserStats);
 
     //printing header
-    printStatTable(currentUserData, tempUserStats[0], 0);//tempUserStats array index does not matter
+    printStatTable(currentUserData, userStats[0], 0);//tempUserStats array index does not matter
     //printing all users, not admins
     for (int x=1; x<=info_game_count; x++)
     {
@@ -72,7 +68,7 @@ void printUserStats(userData currentUserData, int printType)
       {
         if (tempUserData[y].usertype==0)//0 means user
         {
-          printStatTable(tempUserData[y], tempUserStats[y], x);
+          printStatTable(tempUserData[y], userStats[y], x);
         }
       }
     }
@@ -82,41 +78,21 @@ void printUserStats(userData currentUserData, int printType)
   }
 }
 
-void printAllStats(userData currentUserData)
+void printAllStats(userData currentUserData, userStats userStats[])
 {
-  printUserStats(currentUserData, 0);
+  printUserStats(currentUserData, userStats, 0);
 }
 
-void addUserStats(userStats newUserStats, int userCount)
+void addUserStats(userStats newUserStats[], int userCount)
 {
   updateUserStats(newUserStats, userCount+1);
 }
 
-void updateUserStats(userStats newUserStats, int userCount)
+void updateUserStats(userStats newUserStats[], int userCount)
 {
-  userStats userStats[userCount];
-  readStats(userStats);
-
-  if (newUserStats.playerFlag != -1)//if the user is being deleted
-  {
-    //setup new stats
-    userStats[newUserStats.uid].uid=newUserStats.uid;
-    userStats[newUserStats.uid].playerFlag=newUserStats.playerFlag;
-    //math
-    userStats[newUserStats.uid].mathWins=newUserStats.mathWins;
-    userStats[newUserStats.uid].mathLosses=newUserStats.mathLosses;
-  
-    //tic tac toe
-    userStats[newUserStats.uid].tttWins=newUserStats.tttWins;
-    userStats[newUserStats.uid].tttLosses=newUserStats.tttLosses;
-  
-    //hangman
-    userStats[newUserStats.uid].hangmanWins=newUserStats.hangmanWins;
-    userStats[newUserStats.uid].hangmanLosses=newUserStats.hangmanLosses;
-  }
-
   //save stats
-  writeStats(userStats, userCount);
+  writeStats(newUserStats, userCount);
+  readStats(newUserStats);
 }
 
 static void printStatTable(userData currentUserData, userStats currentUserStats, int table)
@@ -143,6 +119,11 @@ static void printStatTable(userData currentUserData, userStats currentUserStats,
       printf("\t%-20s%-10i%-10i\n", currentUserData.username, currentUserStats.tttWins, currentUserStats.tttLosses);
       break;
   }
+}
+
+void getUserStats(userStats tempUserStats[])
+{
+  readStats(tempUserStats);
 }
 
 static int readStats(userStats tempUserStats[])

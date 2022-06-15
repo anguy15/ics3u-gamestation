@@ -31,7 +31,7 @@ int playTicTacToe()
     //run a full round
     for (int i=0; i<2; i++)
     {
-      getAiInputs(gameBoard);
+      // getAiInputs(gameBoard);
       getUserInputs(gameBoard, winFlags, i);
 
       //game over/draw check
@@ -55,12 +55,12 @@ int playTicTacToe()
   if (winnerInfo.type == 0 || winnerInfo.type == 1)//someone won
   {
     printf("Player %i won!", winnerInfo.winner+1);
-    return winnerInfo.winner;
+    return !winnerInfo.winner;//winner will be 0 or 1, 0 for player one. the stats will track if player one wins
   }
   else//draw
   {
     printf("Draw Game");
-    return -1;
+    return 0;
   }
 }
 
@@ -250,6 +250,7 @@ static void getAiInputs(int gameBoard[3][3])
 {
   int board[3][3];
   int winCheck=0;
+  int winSum=0;
   int posX, posY;
   srand(time(0));
 
@@ -265,43 +266,58 @@ static void getAiInputs(int gameBoard[3][3])
         board[x][y]=gameBoard[x][y];
       }
     }
-    if(simulateAiGame(board, &posX, &posY) == 1)//ai sim won
-    {
-      break;
-    }
+    winSum = simulateAiGame(board, posX, posY, 1);//ai sim won
+    
     winCheck++;
   }
-  printf("%i, %i\n", posX, posY);clearInput();
+  printf("%i\n", winSum);clearInput();
 }
 
-static int simulateAiGame(int gameBoard[3][3], int *firstX, int *firstY)
+static int simulateAiGame(int board[3][3], int firstX, int firstY, int player)
 {
-  int firstPlay=0;
-  int player = 1;
   int winFlags[2][3][3]={0};//flags for user wins
-  do
-  {
-    int choiceX, choiceY;
-    do
-    {
-      choiceX = rand()%3;
-      choiceY = rand()%3;
-    }while(gameBoard[choiceY][choiceX]!=0);//space is not open
+  int gameBoard[3][3]={0};
+  int winSum=0;
 
-    //save the first play
-    if (firstPlay==0)
+  if (checkGameBoard(gameBoard)!=1)
+  {
+    return(checkWinFlags(winFlags));
+  }
+  else
+  {
+    //copy the board to a temp board
+    for (int x=0; x<3; x++)
     {
-      firstPlay=1;
-      *firstX = choiceX;
-      *firstY = choiceY;
+      for (int y=0; y<3; y++)
+      {
+        gameBoard[x][y]=board[x][y];
+      }
+    }
+  
+    //this permutation does not exist
+    if (gameBoard[firstY][firstX]!=0)
+    {
+      return(0);//return ai did not win
+    }
+    else//start the permutation
+    {
+      gameBoard[firstY][firstX]=1;
     }
     
     //  write valid inputs  //
-    gameBoard[choiceY][choiceX]=player+1;
-    updateWinFlags(winFlags, choiceY, choiceX, player);
+    gameBoard[firstY][firstX]=player+1;
+    updateWinFlags(winFlags, firstY, firstX, player);
     
     player = !player;//swap players
-  }while(checkGameBoard(gameBoard)!=1);//simulation has not ended
-  
-  return(checkWinFlags(winFlags));//return the player that won
+
+    //get and return results
+    for (int x=0; x<3; x++)
+    {
+      for (int y=0; y<3; y++)
+      {
+        winSum+=simulateAiGame(gameBoard, x, y, player);
+      }
+    }
+    return(winSum);
+  }
 }

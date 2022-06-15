@@ -12,14 +12,16 @@
 //case 0: no file is found, make a file
 //case 1: print one user
 //case 2: print all users
-void printUserStats(userData userData, int printType);
+void printUserStats(userData userData, userStats userStats[], int printType);
 //outputs all user stats
-void printAllStats(userData currentUserData);
+void printAllStats(userData currentUserData, userStats userStats[]);
 //updates a specific user's stats
-void updateUserStats(userStats userStats, int userCount);
+void updateUserStats(userStats userStats[], int userCount);
 //the function called by adduser to update stats file
 //this function is the same as updateUserStats, and was placed here for readability
-void addUserStats(userStats userStats, int userCount);
+void addUserStats(userStats userStats[], int userCount);
+//function to read all users to stats array, useful during overhauls of code, to transfer between styles of reads
+void getUserStats(userStats tempUserStats[]);
 
 //  LOCALS
 //reads all stats

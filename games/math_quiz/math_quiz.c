@@ -45,74 +45,96 @@ static int quizGame(int difficulty, char gameMode)
   int answerExact=0;
   int answerCheck=0;
   int userInput;
+  int numberSize=0;
 
   //setup the difficulty
+  //and the limits for the random number
   switch (difficulty)
   {
     case 1:
       arrLen=2;
+      numberSize=10;
       break;
     
     case 2:
       arrLen=3;
+      numberSize=20;
       break;
     
     case 3:
       arrLen=5;
+      numberSize=30;
       break;
   }
 
-  //calculate value
-  for (int x=0; x<=arrLen; x++)
+  //add or subtract
+  if (gameMode=='+' || gameMode=='-')
   {
-    values[x] = rand()%(arrLen*arrLen)+2;
-    //calculate answer depending on game mode
-    switch (gameMode)
+    //calculate value
+    for (int x=0; x<=arrLen; x++)
     {
-      case '+'://get sum of all variables
-        if (x!=arrLen)
-        {
-          answerExact+=values[x];
-        }
-        else if (x==arrLen)
-        {
-          answerCheck = answerExact;//for consistency with print
-        }
-        break;
-      
-      case '-'://start with a positive
-        if (x==0)
-          answerExact=values[x];
-        else if (x==arrLen)//save for print
-        {
-          answerCheck = answerExact;
-        }
-        else//subtract from positive
-          answerExact-=values[x];
-        break;
-
-      case '*':
-        if (x==0)//set starting variable
-          answerExact=values[x];
-        else if (x==arrLen)//save variable
-        {
-          answerCheck = answerExact;
-        }
-        else//multiply to start
-          answerExact*=values[x];
-        break;
-
-      case '/'://set first variable, becasue you cant do 0/var
-        if (x==0)
-          answerExact=values[x];
-        else if (x==arrLen)//set multiple of all variables but the first as the first, and the first as the answer
-        {
-          answerCheck = values[0];
-          values[0]=answerExact;
-        }
-        else//get the starting variable
-          answerExact*=values[x];
-        break;
+      //get the random numbers
+      values[x] = rand()%numberSize+2;
+      //calculate answer depending on game mode
+      switch (gameMode)
+      {
+        case '+'://get sum of all variables
+          if (x!=arrLen)
+          {
+            answerExact+=values[x];
+          }
+          else if (x==arrLen)
+          {
+            answerCheck = answerExact;//for consistency with print
+          }
+          break;
+        
+        case '-'://start with a positive
+          if (x==0)
+            answerExact=values[x];
+          else if (x==arrLen)//save for print
+          {
+            answerCheck = answerExact;
+          }
+          else//subtract from positive
+            answerExact-=values[x];
+          break;
+      }
+    }
+  }
+  else//multiply or divide
+  {
+    //calculate value
+    for (int x=0; x<=arrLen; x++)
+    {
+      //get the random numbers
+      values[x] = rand()%(numberSize/4)+2;
+      //calculate answer depending on game mode
+      switch (gameMode)
+      {
+        case '*':
+          if (x==0)//set starting variable
+            answerExact=values[x];
+          else if (x==arrLen)//save variable
+          {
+            answerCheck = answerExact;
+          }
+          else//multiply to start
+            answerExact*=values[x];
+          break;
+  
+        case '/'://set first variable, becasue you cant do 0/var
+          if (x==0)
+            answerExact=values[x];
+          else if (x==arrLen)//set multiple of all variables but the first as the first, and the first as the answer
+          {
+            answerCheck = values[0];
+            values[0]=answerExact;
+          }
+          else//get the starting variable
+            answerExact*=values[x];
+          break;
+      }
     }
   }
   
