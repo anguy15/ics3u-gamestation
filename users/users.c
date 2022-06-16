@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 //functions
-int login(userData *currentUserData)
+int login(userData *currentUserData, userStats userStats[])
 {  
   system("clear");
   int userCount = getUserCount();
@@ -14,7 +14,7 @@ int login(userData *currentUserData)
   
   if (userCount == 0)//no user exists
   {
-    addUser(2);//make a admin user
+    addUser(2, userStats);//make a admin user
     currentUserData->uid=0;
     getUserData(currentUserData);
     
@@ -53,12 +53,11 @@ int login(userData *currentUserData)
   return(0);
 }
 
-void removeUser(int uid)
+void removeUser(int uid, userStats userStats[])
 {
   //update user file
   int userCount = getUserCount();
   tempUserData tempUserData[userCount];
-  userStats userStats;
   readUsers(tempUserData);
   
   //setup write stats will check for a -1 when writing, and ignore the stat
@@ -67,19 +66,16 @@ void removeUser(int uid)
   
   //update stats file
   //setup write stats will check for a -1 when writing, and ignore the stat
-  userStats.playerFlag = -1;
+  userStats[uid].playerFlag = -1;
   
   updateUserStats(userStats, userCount);
 }
 
-void addUser(int usertype)
+void addUser(int usertype, userStats userStats[])
 {
   //update user file
-  userData tempUserData;
-  userStats userStats;
   int userCount = getUserCount();
-  //uid will indicate a number one more than current amount, therefore adding a user
-  tempUserData.uid = userCount;
+  userData tempUserData;
   
   //add the new user
   makeUser(usertype);
@@ -87,18 +83,19 @@ void addUser(int usertype)
   getUserData(&tempUserData);
   
   //update stats file
+  getUserStats(userStats);
   //setup add
-  userStats.uid = userCount;
-  userStats.playerFlag = (usertype==0);//if it is a player then playerflag is one
+  userStats[userCount].uid = userCount;
+  userStats[userCount].playerFlag = (usertype==0);//if it is a player then playerflag is one
   //math
-  userStats.mathWins = 0;
-  userStats.mathLosses = 0;
+  userStats[userCount].mathWins = 0;
+  userStats[userCount].mathLosses = 0;
   //tictactoe
-  userStats.tttWins = 0;
-  userStats.tttLosses = 0;
+  userStats[userCount].tttWins = 0;
+  userStats[userCount].tttLosses = 0;
   //hangman
-  userStats.hangmanWins = 0;
-  userStats.hangmanLosses = 0;
+  userStats[userCount].hangmanWins = 0;
+  userStats[userCount].hangmanLosses = 0;
   
   addUserStats(userStats, userCount);
 }
@@ -181,7 +178,7 @@ void getAllUsersData(userData userData[])
   }
 }
 
-void getUserData(userData *currentUserData)
+int getUserData(userData *currentUserData)
 {
   int userCount = getUserCount();
   tempUserData tempUserData[userCount];
@@ -194,6 +191,7 @@ void getUserData(userData *currentUserData)
       currentUserData->usertype=tempUserData[x].usertype;
     }
   }
+  return userCount;
 }
 
 static int checkLogin(tempUserData *currentUserData, char username[], char password[])

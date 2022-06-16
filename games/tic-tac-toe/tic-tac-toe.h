@@ -43,8 +43,8 @@ static void printDebugWinFlags(const int winFlags[2][3][3]);
 static void checkUserPlacement(int board[3][3], int xCoord, int yCoord);
 
 //AI
-static void getAiInputs(int gameBoard[3][3]);
+static void getAiInputs(int gameBoard[3][3], int winFlags[2][3][3]);
 
-static int simulateAiGame(int gameBoard[3][3], int firstX, int firstY, int player);
+static int simulateAiGame(int board[3][3], int winnerFlags[2][3][3], int firstY, int firstX, int player);
 
 #endif

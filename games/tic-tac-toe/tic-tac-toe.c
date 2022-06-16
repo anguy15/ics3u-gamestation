@@ -31,8 +31,14 @@ int playTicTacToe()
     //run a full round
     for (int i=0; i<2; i++)
     {
-      // getAiInputs(gameBoard);
-      getUserInputs(gameBoard, winFlags, i);
+      if (i==1)
+      {
+        getAiInputs(gameBoard, winFlags);
+      }
+      else
+      {
+        getUserInputs(gameBoard, winFlags, i);
+      }
 
       //game over/draw check
       if (checkGameBoard(gameBoard)==1)
@@ -74,7 +80,6 @@ static void getUserInputs(int gameBoard[3][3], int winFlags[2][3][3], int player
   do
   {
     drawGameBoard(gameBoard);
-    printf("Player %i\n", player+1);
     if (userInputFlag!=0)
     {
       printf("Invalid Coordinate given, please try again\n\n");
@@ -84,11 +89,13 @@ static void getUserInputs(int gameBoard[3][3], int winFlags[2][3][3], int player
     //user choices
     //get column input
     drawGameBoard(gameBoard);
+    printf("Player %i\n", player+1);
     getInputMenuINT(1,3, &userXChoice, "Which column would you like: ", "Invalid Column\n");
     userXChoice--;
 
     //get row input
     drawGameBoard(gameBoard);
+    printf("Player %i\n", player+1);
     getInputMenuINT(1,3, &userYChoice, "Which row would you like: ", "Invalid row\n");
     userYChoice--;
     
@@ -246,54 +253,82 @@ static int checkGameBoard(int gameBoard[3][3])
 }
 
 
-static void getAiInputs(int gameBoard[3][3])
+static void getAiInputs(int gameBoard[3][3], int winFlags[2][3][3])
 {
   int board[3][3];
   int winCheck=0;
   int winSum=0;
-  int posX, posY;
   srand(time(0));
+
+  int winningX=0, winningY=0, tempWinSum=0;
 
 
   //simulate
-  while (winCheck!=1000)//max random checks
-  {    
-    //copy the board to a temp board
-    for (int x=0; x<3; x++)
+  while (winCheck!=1)//max random checks
+  {
+    //simulate al posibilities
+    for (int posY=0; posY<3; posY++)
     {
-      for (int y=0; y<3; y++)
+      for (int posX=0; posX<3; posX++)
       {
-        board[x][y]=gameBoard[x][y];
+        //copy the board to a temp board
+        for (int x=0; x<3; x++)
+        {
+          for (int y=0; y<3; y++)
+          {
+            board[x][y]=gameBoard[x][y];
+          }
+        }
+        tempWinSum = simulateAiGame(board, winFlags, posY, posX, 1);//ai sim won
+        if (tempWinSum>winSum)
+        {
+          winSum=tempWinSum;
+          winningX=posX;
+          winningY=posY;
+        }
       }
     }
-    winSum = simulateAiGame(board, posX, posY, 1);//ai sim won
     
     winCheck++;
   }
-  printf("%i\n", winSum);clearInput();
+  
+  //  write valid inputs  //
+  gameBoard[winningY][winningX]=1+1;//player 2
+  updateWinFlags(winFlags, winningY, winningX, 1);
 }
 
-static int simulateAiGame(int board[3][3], int firstX, int firstY, int player)
+static int simulateAiGame(int board[3][3], int winnerFlags[2][3][3], int firstY, int firstX, int player)
 {
   int winFlags[2][3][3]={0};//flags for user wins
   int gameBoard[3][3]={0};
   int winSum=0;
 
-  if (checkGameBoard(gameBoard)!=1)
+  //copy the winflags to temp flags
+  for (int x=0; x<2; x++)
+  {
+    for (int y=0; y<3; y++)
+    {
+      for (int z=0; z<3; z++)
+      {
+        winFlags[x][y][z]=winnerFlags[x][y][z];
+      }
+    }
+  }
+  //copy the board to a temp board
+  for (int x=0; x<3; x++)
+  {
+    for (int y=0; y<3; y++)
+    {
+      gameBoard[x][y]=board[x][y];
+    }
+  }
+  //base case
+  if (checkGameBoard(gameBoard)==1 || checkWinFlags(winFlags)!=-1)
   {
     return(checkWinFlags(winFlags));
   }
   else
   {
-    //copy the board to a temp board
-    for (int x=0; x<3; x++)
-    {
-      for (int y=0; y<3; y++)
-      {
-        gameBoard[x][y]=board[x][y];
-      }
-    }
-  
     //this permutation does not exist
     if (gameBoard[firstY][firstX]!=0)
     {
@@ -301,11 +336,10 @@ static int simulateAiGame(int board[3][3], int firstX, int firstY, int player)
     }
     else//start the permutation
     {
-      gameBoard[firstY][firstX]=1;
+      gameBoard[firstY][firstX]=player+1;
     }
     
     //  write valid inputs  //
-    gameBoard[firstY][firstX]=player+1;
     updateWinFlags(winFlags, firstY, firstX, player);
     
     player = !player;//swap players
@@ -315,7 +349,7 @@ static int simulateAiGame(int board[3][3], int firstX, int firstY, int player)
     {
       for (int y=0; y<3; y++)
       {
-        winSum+=simulateAiGame(gameBoard, x, y, player);
+        winSum+=simulateAiGame(gameBoard, winFlags, x, y, player);
       }
     }
     return(winSum);

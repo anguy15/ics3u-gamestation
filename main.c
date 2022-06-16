@@ -11,56 +11,51 @@
 //tools
 #include "input_handler.h"
 
-//menu
-static void mainMenu(userData *userData, userStats userStats[]);
 
 //LOCALS
-//all
-  //read all stats
-  //change self userData
-  
+
+//menu
+static void mainMenu(userData *userData, userStats userStats[], int *userCount);
     //admin
-    static void adminMenu(userData *userData, userStats userStats[]);
-    
+    static void adminMenu(userData *userData, userStats userStats[], int *userCount);
     //user
-    static void userMenu(userData *userData, userStats userStats[]);
+    static void userMenu(userData *userData, userStats userStats[], int *userCount);
       //game menu
-      static void gameMenu(userData *userData, userStats userStats[], int userCount);
-      //my stats
+      static void gameMenu(userData *userData, userStats userStats[], int *userCount);
 
 int main(void) {
   srand(time(0));
 
   userData userData;
   userStats userStats[getUserCount()];
-  login(&userData);
-  getUserData(&userData);
+  login(&userData, userStats);
+  int userCount = getUserData(&userData);
   getUserStats(userStats);
 
   // debug
   // printf("%i %s %i", userData.uid, userData.username, userData.usertype);
   
-  mainMenu(&userData, userStats);
+  mainMenu(&userData, userStats, &userCount);
   
   return(0);
 }
 
-static void mainMenu(userData *userData, userStats userStats[])
+static void mainMenu(userData *userData, userStats userStats[], int *userCount)
 {
   switch (userData->usertype)
   {
     case 0:
-      userMenu(userData, userStats);
+      userMenu(userData, userStats, userCount);
       break;
 
     case 1:
     case 2:
-      adminMenu(userData, userStats);
+      adminMenu(userData, userStats, userCount);
       break;
   }
 }
 
-static void adminMenu(userData *userData, userStats userStats[])
+static void adminMenu(userData *userData, userStats userStats[], int *userCount)
 {
   int adminChoice=0;
   char exitChoice='n';
@@ -87,14 +82,14 @@ static void adminMenu(userData *userData, userStats userStats[])
         break;
   
       case 5:
-        addUser(0);
+        addUser(0, userStats);
         break;
 
       case 6:
         return;
     }
 
-    printf("Press Enter to Continue ...");
+    printf("\nPress Enter to Continue ...");
     getchar();
     //get any typeable letter/char
     system("clear");
@@ -102,7 +97,7 @@ static void adminMenu(userData *userData, userStats userStats[])
   }while(tolower(exitChoice)!='y');
 }
 
-static void userMenu(userData *userData, userStats userStats[])
+static void userMenu(userData *userData, userStats userStats[], int *userCount)
 {
   int userChoice=0;
   char exitChoice='n';
@@ -123,7 +118,7 @@ static void userMenu(userData *userData, userStats userStats[])
         break;
       
       case 3://play games
-        gameMenu(userData, userStats, getUserCount());
+        gameMenu(userData, userStats, userCount);
         break;
   
       case 4://edit self
@@ -134,7 +129,7 @@ static void userMenu(userData *userData, userStats userStats[])
         return;
     }
 
-    printf("Press Enter to Continue ...");
+    printf("\nPress Enter to Continue ...");
     getchar();
     //get any typeable letter/char
     system("clear");
@@ -142,7 +137,7 @@ static void userMenu(userData *userData, userStats userStats[])
   }while(tolower(exitChoice)!='y');
 }
 
-static void gameMenu(userData *userData, userStats userStats[], int userCount)
+static void gameMenu(userData *userData, userStats userStats[], int *userCount)
 {
   int gameChoice=0;
   int gameChoiceFlag=0;
@@ -156,6 +151,7 @@ static void gameMenu(userData *userData, userStats userStats[], int userCount)
     //swap to game
     switch (gameChoice)
     {
+      //hangman
       case 1:
         gameStat=playHangman();
         if (gameStat==1)
@@ -163,7 +159,8 @@ static void gameMenu(userData *userData, userStats userStats[], int userCount)
         else
           userStats[userData->uid].hangmanLosses++;
         break;
-      
+
+      //math
       case 2:
         gameStat=playMathQuiz();
         if (gameStat==1)
@@ -171,7 +168,8 @@ static void gameMenu(userData *userData, userStats userStats[], int userCount)
         else
           userStats[userData->uid].mathLosses++;
         break;
-      
+
+      //tic tac toe
       case 3:
         gameStat=playTicTacToe();
         if (gameStat==1)
@@ -184,9 +182,9 @@ static void gameMenu(userData *userData, userStats userStats[], int userCount)
         return;
     }
     
-    updateUserStats(userStats, userCount);
+    updateUserStats(userStats, *userCount);
 
-    printf("Press Enter to Continue ...");
+    printf("\nPress Enter to Continue ...");
     getchar();
     //get any typeable letter/char
     system("clear");

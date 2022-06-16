@@ -15,14 +15,15 @@ static void printUserFile();
 //return an updated array of user data
 void getAllUsersData(userData userData[]);
 //return user data
-void getUserData(userData *userData);
+int getUserData(userData *userData);
 
-void removeUser(int uid);
-void addUser(int usertype);
+void removeUser(int uid, userStats userStats[]);
+//if you are adding a user, make a new larger array, data will be read for you
+void addUser(int usertype, userStats userStats[]);
 void editUser(int uid);
 
 //return if logged in, and return the user id in userData.userID[]
-int login(userData *userData);
+int login(userData *currentUserData, userStats userStats[]);
 
 //checks the user count
 //return user count
