@@ -4,8 +4,9 @@
 
 //functions
 int login(userData *currentUserData, userStats userStats[])
-{  
+{
   system("clear");
+  
   int userCount = getUserCount();
   char username[256];
   char password[256];
@@ -59,6 +60,13 @@ void removeUser(int uid, userStats userStats[])
   int userCount = getUserCount();
   tempUserData tempUserData[userCount];
   readUsers(tempUserData);
+
+  //cant edit a su
+  if (tempUserData[uid].usertype==2)
+  {
+    printf("Invalid user\n");
+    return;
+  }
   
   //setup write stats will check for a -1 when writing, and ignore the stat
   tempUserData[uid].usertype = -1;
@@ -108,6 +116,13 @@ void editUser(int uid)
   tempUserData tempUserData[userCount];
   readUsers(tempUserData);
 
+  //cant edit a su
+  if (tempUserData[uid].usertype==2)
+  {
+    printf("Invalid user\n");
+    return;
+  }
+  
   int userChoice=0;
   int invalidInputFlag=0;
   
@@ -128,7 +143,8 @@ void editUser(int uid)
     case 2:
       //regex says 4 letters at least, one letter and one number
       //get a password, and put into tempUserData[uid].password
-      getInputMenuSTR("^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,}$", tempUserData[uid].password, "EDIT USER:\n\nEnter a username (no spaces): ", "Invalid username\nPassword must be at least 4 characters\n1 letter, and 1 number\n");
+      getInputMenuSTR("^([1-zA-Z0-1@.]{4,255})$", tempUserData[uid].password, "EDIT USER:\n\nEnter a password (no spaces): ", "Invalid username\nPassword must be 4-255 characters\n1 letter, and 1 number\n");
+      encryptStr(tempUserData[uid].password);
       break;
     
     case 3:
@@ -222,6 +238,26 @@ static int checkLogin(tempUserData *currentUserData, char username[], char passw
     }
   }
   return 0;//no found user/password
+}
+
+int getUserID(char username[], int uidReturn[])
+{
+  int userCount = getUserCount();
+  tempUserData tempUserData[userCount];
+  readUsers(tempUserData);
+  int userFound=0;
+  int y=0;
+  
+  for (int x=0; x<userCount; x++)
+  {
+    if (strcmp(tempUserData[x].username,username)==0)//if there is a username match
+    {
+      uidReturn[y] = tempUserData[x].uid;
+      y++;
+    }
+  }
+  
+  return y;//usercount
 }
 
 static int readUsers(tempUserData userData[])

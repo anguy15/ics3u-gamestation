@@ -73,13 +73,14 @@ void getInputMenuCHAR(int max, int min, char *userChoice, char question[], char 
     clearInput();
 
     userChoiceFlag=1;
-  }while((*userChoice<max||*userChoice>min));
+     }while((*userChoice<max||*userChoice>min));
 }
 
 
 
 void getInputMenuSTR(char regexCheck[], char userChoice[], char question[], char invalidChoice[])
 {
+  printf("%s\n", question);
   int userChoiceFlag=0;//flags are for invalid choices
   do
   {
@@ -90,7 +91,6 @@ void getInputMenuSTR(char regexCheck[], char userChoice[], char question[], char
 
     userChoiceFlag=0;
 
-    printf("%s", question);
     scanf("%s", userChoice);
     clearInput();
 

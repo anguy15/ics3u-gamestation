@@ -4,9 +4,13 @@
 #include "users/users_info.h"
 
 //globals
-static userData *_userDataPtr;
-static userStats (*_userStatsPtr)[1000];
-static int *_userCountPtr;
+// static userData *_userDataPtr;
+// static userStats (*_userStatsPtr)[1000];
+// static int *_userCountPtr;
+
+static int getUidInput();
+
+static void constructor(userData *userData, userStats userStats[], int *userCount);
 
 void mainMenu(userData *userData, userStats userStats[], int *userCount);
 //menu

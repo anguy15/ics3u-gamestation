@@ -49,7 +49,7 @@ static int mainGame(hangmanGameInfo *hangmanInfo)
     // get Guess Type
     do
     {
-      drawGame(*hangmanInfo, userGuessLetter);
+      drawGame(*hangmanInfo, userGuessLetterArr);
       if (inputFlag!=0)
       {
         printf("Invalid Guess Type\n\n");
@@ -74,10 +74,10 @@ static int mainGame(hangmanGameInfo *hangmanInfo)
         break;
       
       case 2://word
-        getGuessWord(hangmanInfo, userGuessLetter, userGuessWord);
+        getGuessWord(hangmanInfo, userGuessLetterArr, userGuessWord);
         if (strcmp(hangmanInfo->wordGen,userGuessWord)==0)
         {
-          drawGame(*hangmanInfo, userGuessLetter);
+          drawGame(*hangmanInfo, userGuessLetterArr);
           return(1);//player won
         }
         break;
@@ -85,7 +85,7 @@ static int mainGame(hangmanGameInfo *hangmanInfo)
     //check if the user won
     if (strcmp(hangmanInfo->wordGen,hangmanInfo->wordGenCorrect)==0)
     {
-      drawGame(*hangmanInfo, userGuessLetter);
+      drawGame(*hangmanInfo, userGuessLetterArr);
       return(1);//player won
     }
 
@@ -94,7 +94,7 @@ static int mainGame(hangmanGameInfo *hangmanInfo)
     //   printf("%i", userGuessLetter[x]);
     // printf("\n%s", userGuessWord);getchar();
     
-    drawGame(*hangmanInfo, userGuessLetter);
+    drawGame(*hangmanInfo, userGuessLetterArr);
 
     inputFlag=1;
   }while(hangmanInfo->incorrectGuesses!=5);//5 incorrect guesses
@@ -124,11 +124,13 @@ static char getGuessLetter(hangmanGameInfo *hangmanInfo, int userGuessLetterArr[
   //loop until valid letter given, not already chosen
   do
   {
+    system("clear");
     if (userGuessLetterArr[userLChoice-97]!=0)
     {
-      printf("Invalid Letter");
+      printf("Letter has been guessed before\n");
     }
-    getInputMenuCHAR(97, 122, &userLChoice, "Which letter to guess??\n", "Invalid Guess Letter\n");
+    getInputMenuCHAR(65, 122, &userLChoice, "Which letter to guess??\n", "Invalid Guess Letter\n");
+    userLChoice=tolower(userLChoice);
   }while(userGuessLetterArr[userLChoice-97]!=0);
   //make sure they havent inputted a previously guessed input
 
@@ -162,11 +164,12 @@ static void drawGame(hangmanGameInfo hangmanInfo, int userGuessLetterArr[])
 {
   system("clear");
   
-  printf("%s", hangmanInfo.wordGenCorrect);
+  printf("%s\n", hangmanInfo.wordGenCorrect);
 
   for (int x=0; x<26; x++)
   {
-    // printf("%i ", userGuessLetterArr[x]);
+    if (userGuessLetterArr[x]==1)
+      printf("%c ", x+97);
   }
   
   printf("\n");

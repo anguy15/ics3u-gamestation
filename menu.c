@@ -2,11 +2,21 @@
 #include "users/stats.h"
 #include "input_handler.h"
 
-void mainMenu(userData *userData, userStats userStats[], int *userCount)
+//globals
+static userData *_userDataPtr;
+static userStats (*_userStatsPtr)[1000];
+static int *_userCountPtr;
+
+static void constructor(userData *userData, userStats userStats[], int *userCount)
 {
   _userDataPtr=userData;
   _userStatsPtr=userStats;
   _userCountPtr=userCount;
+}
+
+void mainMenu(userData *userData, userStats userStats[], int *userCount)
+{
+  constructor(userData, userStats, userCount);
   
   switch (_userDataPtr->usertype)
   {
@@ -29,11 +39,11 @@ static void adminMenu()
 
   do
   {
-    getInputMenuINT(1, 3+1, &adminChoice, "MAIN MENU:\n\n1. View Stats\n2. Users\n3. Edit Your Account\n4. Return\n\nWhat would you like to do?\n", "Invalid Choice\n");
+    getInputMenuINT(1, 3+1, &adminChoice, "MAIN MENU:\n\n1. View All User Stats\n2. Users\n3. Edit Your Account\n4. Return\n\nWhat would you like to do?\n", "Invalid Choice\n");
     switch (adminChoice)
     {
       case 1://print all users
-        statsMenu();
+        printAllStats(_userStatsPtr, *_userDataPtr);
         break;
       
       case 2:
@@ -41,7 +51,7 @@ static void adminMenu()
         break;
   
       case 3:
-        //edit self
+        editUser(_userDataPtr->uid);
         break;
 
       case 4:
@@ -184,7 +194,7 @@ static void editUsersMenu()
   
   do
   {
-    getInputMenuINT(1, 2+1, &userChoice, "USER MENU:\n\n1. Add a User\n2. Edit User\n3. Remove User\n4. Return\n\nWhat would you like to do?\n", "Invalid Choice\n");
+    getInputMenuINT(1, 3+1, &userChoice, "USER MENU:\n\n1. Add a User\n2. Edit User\n3. Remove User\n4. Return\n\nWhat would you like to do?\n", "Invalid Choice\n");
 
     //swap to game
     switch (userChoice)
@@ -194,11 +204,11 @@ static void editUsersMenu()
         break;
       
       case 2:
-        editUser(_userDataPtr->uid);
+        editUser(getUidInput());
         break;
       
       case 3:
-        removeUser(_userDataPtr->uid, _userStatsPtr);
+        removeUser(getUidInput(), _userStatsPtr);
         break;
 
       case 4:
@@ -207,4 +217,35 @@ static void editUsersMenu()
     //get any typeable letter/char
     system("clear");
   }while(tolower(exitChoice)!='y');
+}
+
+static int getUidInput()
+{
+  int userChoice=0;
+  char userChoiceStr[64];
+  int uidMatches[*_userCountPtr];
+  int uidMatchCount=0;
+  
+  do
+  {
+    getInputMenuSTR("", &userChoiceStr, "\nWhich User?\n", "Invalid User\n");
+  
+    //print all matches
+    uidMatchCount = getUserID(userChoiceStr, uidMatches);
+    
+    if (uidMatchCount>1)
+    {
+      printf("%-10s %-10s\n", "uid", "username");
+      for (int x=0; x<uidMatchCount; x++)
+      {
+        printf("%-10i %-10s\n", uidMatches[x], userChoiceStr);
+      }
+      getInputMenuINT(1, *_userCountPtr, &userChoice, "Which user?\n", "Invalid Choice\n");
+    }
+    else if(uidMatchCount==1)
+    {
+      userChoice = uidMatches[0];
+    }
+  }while(uidMatchCount==0);
+  return(userChoice);
 }
