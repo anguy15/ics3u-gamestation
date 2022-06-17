@@ -24,22 +24,36 @@ int playTicTacToe()
   int winFlags[2][3][3]={0};//flags for user wins
   winnerInformation winnerInfo;
   winnerInfo.type = -1;//setup the loop to detect when a winner has won
+  int gameMode=0;
   
   resetGameBoard(gameBoard);
+
+  getInputMenuINT(1,2, &gameMode, "1. One Player\n2. Two Player\nWhich game mode? ", "Invalid Game Mode\n");
+  system("clear");
+  
   do
   {
     //run a full round
     for (int i=0; i<2; i++)
     {
+      //getting inputs
       if (i==1)
       {
-        getAiInputs(gameBoard, winFlags);
+        //  get the inputs depending on game mode  //
+        switch (gameMode)
+        {
+          case 1:
+            getAiInputs(gameBoard, winFlags);break;
+          case 2:
+            getUserInputs(gameBoard, winFlags, i);break;
+        }
       }
       else
       {
         getUserInputs(gameBoard, winFlags, i);
       }
 
+      //  checking input results  //
       //game over/draw check
       if (checkGameBoard(gameBoard)==1)
       {
@@ -256,41 +270,71 @@ static int checkGameBoard(int gameBoard[3][3])
 static void getAiInputs(int gameBoard[3][3], int winFlags[2][3][3])
 {
   int board[3][3];
+  int tempWinFlags[2][3][3];
   int winCheck=0;
   int winSum=0;
   srand(time(0));
 
-  int winningX=0, winningY=0, tempWinSum=0;
+  int blockCheck=0, winningBlock=0;
+  int winningX=0, winningY=0, tempWinSum=0, winInOne=0;
 
 
   //simulate
-  while (winCheck!=1)//max random checks
+  //simulate al posibilities
+  for (int posY=0; posY<3; posY++)
   {
-    //simulate al posibilities
-    for (int posY=0; posY<3; posY++)
+    for (int posX=0; posX<3; posX++)
     {
-      for (int posX=0; posX<3; posX++)
+      //copy the board to a temp board
+      copyGameBoard(board, gameBoard);
+
+      //  check for blocks  //
+      //if this placement was by the enemy
+      copyWinFlags(tempWinFlags, winFlags);
+      updateWinFlags(tempWinFlags, posY, posX, 0);
+      //reverse the check results for check and replace
+      blockCheck = !checkWinFlags(tempWinFlags);//returns one when ai wins
+      
+      //  win in one move  //
+      //if this placement was by ai
+      copyWinFlags(tempWinFlags, winFlags);
+      updateWinFlags(tempWinFlags, posY, posX, 1);
+      winInOne = checkWinFlags(tempWinFlags);        
+      
+      //  simulate the winning chances  //
+      tempWinSum = simulateAiGame(board, winFlags, posY, posX, 1);//ai sim won
+
+      //  check if it was better  //
+      //this does not work
+      if (tempWinSum==0)
       {
-        //copy the board to a temp board
-        for (int x=0; x<3; x++)
-        {
-          for (int y=0; y<3; y++)
-          {
-            board[x][y]=gameBoard[x][y];
-          }
-        }
-        tempWinSum = simulateAiGame(board, winFlags, posY, posX, 1);//ai sim won
-        if (tempWinSum>winSum)
-        {
-          winSum=tempWinSum;
-          winningX=posX;
-          winningY=posY;
-        }
+        continue;
+      }
+      //if we block one prioritize this, and prefer better win chances
+      if (tempWinSum>winSum && blockCheck>=winningBlock)
+      {
+        winningBlock=blockCheck;
+        winSum=tempWinSum;
+        winningX=posX;
+        winningY=posY;
+      }
+      //if we win in one use this
+      if (winInOne==1)
+      {
+        winningX=posX;
+        winningY=posY;
+        break;
       }
     }
-    
-    winCheck++;
   }
+  //if there were no win posibilities
+  if (winSum==0)
+  {
+    generateRandomInputs(gameBoard, &winningY, &winningX);
+  }
+
+  //debug
+  // drawGameBoard(gameBoard);printf("\n%i, %i %i, %i %i\n", winSum, winningY+1, winningX+1, winningBlock, winInOne);getchar();
   
   //  write valid inputs  //
   gameBoard[winningY][winningX]=1+1;//player 2
@@ -304,28 +348,17 @@ static int simulateAiGame(int board[3][3], int winnerFlags[2][3][3], int firstY,
   int winSum=0;
 
   //copy the winflags to temp flags
-  for (int x=0; x<2; x++)
-  {
-    for (int y=0; y<3; y++)
-    {
-      for (int z=0; z<3; z++)
-      {
-        winFlags[x][y][z]=winnerFlags[x][y][z];
-      }
-    }
-  }
+  copyWinFlags(winFlags, winnerFlags);
   //copy the board to a temp board
-  for (int x=0; x<3; x++)
-  {
-    for (int y=0; y<3; y++)
-    {
-      gameBoard[x][y]=board[x][y];
-    }
-  }
+  copyGameBoard(gameBoard, board);
+  
   //base case
   if (checkGameBoard(gameBoard)==1 || checkWinFlags(winFlags)!=-1)
   {
-    return(checkWinFlags(winFlags));
+    if (checkWinFlags(winFlags)==1)//ai won
+      return(1);
+    else
+      return(0);
   }
   else
   {
@@ -345,13 +378,47 @@ static int simulateAiGame(int board[3][3], int winnerFlags[2][3][3], int firstY,
     player = !player;//swap players
 
     //get and return results
-    for (int x=0; x<3; x++)
+    for (int y=0; y<3; y++)
     {
-      for (int y=0; y<3; y++)
+      for (int x=0; x<3; x++)
       {
-        winSum+=simulateAiGame(gameBoard, winFlags, x, y, player);
+        winSum+=simulateAiGame(gameBoard, winFlags, y, x, player);
       }
     }
     return(winSum);
   }
+}
+
+static void copyGameBoard(int dest[3][3], int from[3][3])
+{
+  for (int x=0; x<3; x++)
+  {
+    for (int y=0; y<3; y++)
+    {
+      dest[x][y]=from[x][y];
+    }
+  }
+}
+
+static void copyWinFlags(int dest[2][3][3], int from[2][3][3])
+{
+  for (int x=0; x<2; x++)
+  {
+    for (int y=0; y<3; y++)
+    {
+      for (int z=0; z<3; z++)
+      {
+        dest[x][y][z]=from[x][y][z];
+      }
+    }
+  }
+}
+
+static void generateRandomInputs(int gameBoard[3][3], int *userYChoice, int *userXChoice)
+{
+  do
+  {
+    *userYChoice=rand()%3;
+    *userXChoice=rand()%3;
+  }while(gameBoard[*userYChoice][*userXChoice]!=0);
 }

@@ -47,4 +47,10 @@ static void getAiInputs(int gameBoard[3][3], int winFlags[2][3][3]);
 
 static int simulateAiGame(int board[3][3], int winnerFlags[2][3][3], int firstY, int firstX, int player);
 
+static void generateRandomInputs(int gameBoard[3][3], int *userYChoice, int *userXChoice);
+
+//copying temp data
+static void copyGameBoard(int arrayd[3][3], int array[3][3]);
+static void copyWinFlags(int arrayd[2][3][3], int array[2][3][3]);
+
 #endif
