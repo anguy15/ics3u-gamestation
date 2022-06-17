@@ -185,7 +185,7 @@ static void editUsersMenu()
   do
   {
     getInputMenuINT(1, 2+1, &userChoice, "USER MENU:\n\n1. Add a User\n2. Edit User\n3. Remove User\n4. Return\n\nWhat would you like to do?\n", "Invalid Choice\n");
-  
+
     //swap to game
     switch (userChoice)
     {

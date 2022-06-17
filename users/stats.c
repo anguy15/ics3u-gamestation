@@ -14,7 +14,6 @@ void printUserStats(userStats userStats[], userData currentUserData, int printTy
   //required for getting userflags through ids
   userData tempUserData[userCount];
 
-  printf("%i ", printType);
   if (fp == NULL)//file does not exist
   {
     getAllUsersData(tempUserData);
@@ -182,6 +181,7 @@ static void writeStats(userStats allUserStats[], int userCount)
 {
   FILE *fp = fopen("./data/games_stats", "w");
   int x=0;
+  int y=0;
 
   //write all stats
   while (x!=userCount)
@@ -189,7 +189,8 @@ static void writeStats(userStats allUserStats[], int userCount)
     //checking if the user has just been deleted
     if (allUserStats[x].playerFlag!=-1)
     {
-      fprintf(fp, "%i ", allUserStats[x].uid);
+      // fprintf(fp, "%i ", allUserStats[x].uid);
+      fprintf(fp, "%i ", y);//uid counts up from 0, because thats easier
       fprintf(fp, "%i ", allUserStats[x].playerFlag);
       //math
       fprintf(fp, "%i ", allUserStats[x].mathWins);
@@ -200,8 +201,9 @@ static void writeStats(userStats allUserStats[], int userCount)
       //hangman
       fprintf(fp, "%i ", allUserStats[x].hangmanWins);
       fprintf(fp, "%i\n", allUserStats[x].hangmanLosses);
-      x++;
+      y++;
     }
+    x++;
   }
   fclose(fp);
 }

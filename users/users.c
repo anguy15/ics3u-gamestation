@@ -62,7 +62,7 @@ void removeUser(int uid, userStats userStats[])
   
   //setup write stats will check for a -1 when writing, and ignore the stat
   tempUserData[uid].usertype = -1;
-  writeUsers(tempUserData, userCount);
+  writeUsers(tempUserData, userCount-1);
   
   //update stats file
   //setup write stats will check for a -1 when writing, and ignore the stat
@@ -258,6 +258,7 @@ static int writeUsers(tempUserData userData[], int userCount)
   FILE *fp;
   fp = fopen("./data/user_data", "w");
   int x=0;
+  int y=0;
 
   fprintf(fp, "%i\n", userCount);
   while (x!=userCount)
@@ -266,13 +267,19 @@ static int writeUsers(tempUserData userData[], int userCount)
     if (userData[x].usertype!=-1)
     {
       //read uid
-      fprintf(fp, "%i ", userData[x].uid);
+      // fprintf(fp, "%i ", userData[x].uid);
+      fprintf(fp, "%i ", y);//uid counts up from 0, because thats easier
       //read username
       fprintf(fp, "%s ", userData[x].username);
       //read usertype
       fprintf(fp, "%i ", userData[x].usertype);
       //read password
       fprintf(fp, "%s\n", userData[x].password);
+      y++;
+    }
+    else//if they have been the userCount is one less than it was, maybe leaving a user out
+    {
+      userCount++;
     }
     x++;
   }
