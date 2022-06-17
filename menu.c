@@ -35,7 +35,6 @@ static void adminMenu()
 {
   system("clear");
   int adminChoice=0;
-  char exitChoice='n';
 
   do
   {
@@ -58,18 +57,14 @@ static void adminMenu()
         return;
     }
 
-    printf("\nPress Enter to Continue ...");
-    clearInput();//wait for enter key
-    //get any typeable letter/char
     system("clear");
-  }while(tolower(exitChoice)!='y');
+  }while(1);
 }
 
 static void userMenu()
 {
   system("clear");
   int userChoice=0;
-  char exitChoice='n';
   
   do
   {
@@ -93,9 +88,9 @@ static void userMenu()
       case 4:
         return;
     }
-    //get any typeable letter/char
+    
     system("clear");
-  }while(tolower(exitChoice)!='y');
+  }while(1);
 }
 
 static void gameMenu()
@@ -146,11 +141,9 @@ static void gameMenu()
     
     updateUserStats(_userStatsPtr, *_userCountPtr);
 
-    printf("\nPress Enter to Continue ...");
-    clearInput();//wait for enter key
     //get any typeable letter/char
+    getInputMenuCHAR(65,122, &exitChoice, "\nDo you wish to exit the game menu? y/n\n", "Invalid Input\n");
     system("clear");
-    getInputMenuCHAR(65,122, &exitChoice, "Do you wish to exit the game? y/n\n", "Invalid Input\n");
   }while(tolower(exitChoice)!='y');
 }
 
@@ -181,6 +174,7 @@ static void statsMenu()
     {
       getInputMenuINT(1, 1+1, &userChoice, "STATS MENU:\n\n1. My Stats\n2. Return\n\nWhat would you like to do?\n", "Invalid Choice\n");
       //print all stats is part of admin
+      //2 is not actually return, change it if necessary
       userChoice = userChoice==1 ? 1 : 4;
       //copy the user to a temp user to keep it consistent with printuserstats 
       chosenUserData.uid = _userDataPtr->uid;
@@ -204,9 +198,8 @@ static void statsMenu()
         return;
     }
 
-    printf("\nPress Enter to Continue ...");
-    clearInput();//wait for enter key
     //get any typeable letter/char
+    getInputMenuCHAR(65,122, &exitChoice, "\nDo you wish to exit the stats menu? y/n\n", "Invalid Input\n");
     system("clear");
   }while(tolower(exitChoice)!='y');
 }
@@ -240,6 +233,7 @@ static void editUsersMenu()
         return;
     }
     //get any typeable letter/char
+    getInputMenuCHAR(65,122, &exitChoice, "\nDo you wish to exit the edit users menu? y/n\n", "Invalid Input\n");
     system("clear");
   }while(tolower(exitChoice)!='y');
 }

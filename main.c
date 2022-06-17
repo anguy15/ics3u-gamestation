@@ -21,7 +21,7 @@ int main(void) {
   do
   {
     baseMenuLoop();
-    getInputMenuCHAR(65,122, &userLeave, "Would you like to leave? y/n\n", "Invalid Input\n");
+    getInputMenuCHAR(65,122, &userLeave, "Would you like to exit the program? y/n\n", "Invalid Input\n");
   }while(tolower(userLeave)!='y');
   
   return(0);

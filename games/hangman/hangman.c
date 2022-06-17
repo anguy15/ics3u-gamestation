@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+
+//globals
 const char hangmanBoard[7][64] = {
 {"  +---+\n  |   |\n      |\n      |\n      |\n      |\n=========\n"}, 
 {"  +---+\n  |   |\n  O   |\n      |\n      |\n      |\n=========\n"}, 
