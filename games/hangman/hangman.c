@@ -3,6 +3,16 @@
 #include <stdlib.h>
 #include <time.h>
 
+const char hangmanBoard[7][64] = {
+{"  +---+\n  |   |\n      |\n      |\n      |\n      |\n=========\n"}, 
+{"  +---+\n  |   |\n  O   |\n      |\n      |\n      |\n=========\n"}, 
+{"  +---+\n  |   |\n  O   |\n  |   |\n      |\n      |\n=========\n"}, 
+{"  +---+\n  |   |\n  O   |\n /|   |\n      |\n      |\n=========\n"}, 
+{"  +---+\n  |   |\n  O   |\n /|\\  |\n      |\n      |\n=========\n"}, 
+{"  +---+\n  |   |\n  O   |\n /|\\  |\n /    |\n      |\n=========\n"}, 
+{"  +---+\n  |   |\n  O   |\n /|\\  |\n / \\  |\n      |\n=========\n"}
+};
+
 //functions
 int playHangman()
 {
@@ -36,13 +46,7 @@ static int mainGame(hangmanGameInfo *hangmanInfo)
   //main game loop
   do
   {
-    if (inputFlag!=0)
-    {
-      printf("Invalid Coordinate given, please try again\n\n");
-    }
-
     //reset flags
-    inputFlag=0;
     userGuessType=-1;
 
     //user choices
@@ -95,10 +99,10 @@ static int mainGame(hangmanGameInfo *hangmanInfo)
     // printf("\n%s", userGuessWord);getchar();
     
     drawGame(*hangmanInfo, userGuessLetterArr);
-
-    inputFlag=1;
-  }while(hangmanInfo->incorrectGuesses!=5);//5 incorrect guesses
+    
+  }while(hangmanInfo->incorrectGuesses!=6);//7 incorrect guesses
   
+  drawGame(*hangmanInfo, userGuessLetterArr);
   return(0);
 }
 
@@ -124,7 +128,6 @@ static char getGuessLetter(hangmanGameInfo *hangmanInfo, int userGuessLetterArr[
   //loop until valid letter given, not already chosen
   do
   {
-    system("clear");
     if (userGuessLetterArr[userLChoice-97]!=0)
     {
       printf("Letter has been guessed before\n");
@@ -163,6 +166,11 @@ static void setupCorrectGuesses(hangmanGameInfo *hangmanInfo)
 static void drawGame(hangmanGameInfo hangmanInfo, int userGuessLetterArr[])
 {
   system("clear");
+
+  for (int x=0; x<58; x++)
+  {
+    printf("%c", hangmanBoard[hangmanInfo.incorrectGuesses][x]);
+  }
   
   printf("%s\n", hangmanInfo.wordGenCorrect);
 
