@@ -3,7 +3,7 @@
 
 //functions
 
-void printUserStats(userData currentUserData, userStats userStats[], int printType)
+void printUserStats(userStats userStats[], userData currentUserData, int printType)
 {
   system("clear");
   FILE *fp;
@@ -14,6 +14,7 @@ void printUserStats(userData currentUserData, userStats userStats[], int printTy
   //required for getting userflags through ids
   userData tempUserData[userCount];
 
+  printf("%i ", printType);
   if (fp == NULL)//file does not exist
   {
     getAllUsersData(tempUserData);
@@ -78,13 +79,21 @@ void printUserStats(userData currentUserData, userStats userStats[], int printTy
   }
 }
 
-void printAllStats(userData currentUserData, userStats userStats[])
+void printAllStats(userStats userStats[], userData currentUserData)
 {
-  printUserStats(currentUserData, userStats, 0);
+  printUserStats(userStats, currentUserData, 0);
 }
 
-void addUserStats(userStats newUserStats[], int userCount)
+void addUserStats(userStats newUserStats[], userData newUserData, int userCount)
 {
+  newUserStats[userCount].uid=userCount;
+  newUserStats[userCount].playerFlag=newUserData.usertype<1;
+  newUserStats[userCount].mathWins = 0;
+  newUserStats[userCount].mathLosses = 0;
+  newUserStats[userCount].tttWins = 0;
+  newUserStats[userCount].tttLosses = 0;
+  newUserStats[userCount].hangmanWins = 0;
+  newUserStats[userCount].hangmanLosses = 0;
   updateUserStats(newUserStats, userCount+1);
 }
 

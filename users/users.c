@@ -30,15 +30,15 @@ int login(userData *currentUserData, userStats userStats[])
       {
         printf("Incorrect password or username\n%i times failed\n", passwordFails);
       }
+
+      //empty fields for regex, since we dont really care what they put
       //get username
-      printf("Username: ");
-      scanf("%s", username);
-      clearInput();
-  
+      getInputMenuSTR("", username, "LOGIN:\n\nUsername: ", "Invalid username\nUsername must be 4 to 64 characters\n");
+
       //get password
-      printf("Password: ");
-      scanf("%s", password);
-      clearInput();
+      system("clear");
+      getInputMenuSTR("", password, "LOGIN:\n\nPassword: ", "Invalid username\nPassword must be at least 4 characters\n1 letter, and 1 number\n");
+      system("clear");
       
       passwordFails++;
     }while(checkLogin(&tempUserData, username, password)==0);//check the login
@@ -97,11 +97,12 @@ void addUser(int usertype, userStats userStats[])
   userStats[userCount].hangmanWins = 0;
   userStats[userCount].hangmanLosses = 0;
   
-  addUserStats(userStats, userCount);
+  addUserStats(userStats, tempUserData, userCount);
 }
 
 void editUser(int uid)
 {
+  system("clear");
   //read all users to write to file later
   int userCount = getUserCount();
   tempUserData tempUserData[userCount];
@@ -109,31 +110,34 @@ void editUser(int uid)
 
   int userChoice=0;
   int invalidInputFlag=0;
-
-  getInputMenuINT(1,3, &userChoice, "1. Username\n2. Password\n3. Admin Level\nWhat would you like to edit: ", "Invalid Choice\n");
   
-
+  //get user menu choice
+  getInputMenuINT(1,3+1, &userChoice, "EDIT USER:\n\n1. Username\n2. Password\n3. Admin Level\n4. Return\n\nWhat would you like to edit: ", "Invalid Choice\n");
+  
   system("clear");
+  
   //setup new data
   switch (userChoice)
   {
     case 1:
       //regex says [valid characters], 4 to 64 as min to max amount of characters
       //get a username, and put into tempUserData[uid.username]
-      getInputMenuSTR("^[a-zA-Z0-9._]{4,64}$", tempUserData[uid].username, "Enter a username (no spaces): ", "Invalid username\nUsername must be 4 to 64 characters\n");
+      getInputMenuSTR("^[a-zA-Z0-9._]{4,64}$", tempUserData[uid].username, "EDIT USER:\n\nEnter a username (no spaces): ", "Invalid username\nUsername must be 4 to 64 characters\n");
       break;
     
     case 2:
       //regex says 4 letters at least, one letter and one number
       //get a password, and put into tempUserData[uid].password
-      getInputMenuSTR("^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,}$", tempUserData[uid].password, "Enter a username (no spaces): ", "Invalid username\nPassword must be at least 4 characters\n1 letter, and 1 number\n");
+      getInputMenuSTR("^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,}$", tempUserData[uid].password, "EDIT USER:\n\nEnter a username (no spaces): ", "Invalid username\nPassword must be at least 4 characters\n1 letter, and 1 number\n");
       break;
-
     
     case 3:
-      getInputMenuINT(1,2, &tempUserData[uid].usertype, "1. Regular User\n2. Admin\nEnter an admin level: ", "Invalid user type\n");
+      getInputMenuINT(1,2, &tempUserData[uid].usertype, "EDIT USER:\n\n1. Regular User\n2. Admin\n\nEnter an admin level: ", "Invalid user type\n");
       tempUserData[uid].usertype--;
       break;
+
+    case 4:
+      return;
   }
 
   //save data
@@ -295,12 +299,14 @@ static int makeUser(int usertype)
   //setup username and password
   //regex says [valid characters], 4 to 64 as min to max amount of characters
   //get a username, and put into tempUserData[uid.username]
-  getInputMenuSTR("^[a-zA-Z0-9._]{4,64}$", tempUserData[userCount].username, "Enter a username (no spaces): ", "Invalid username\nUsername must be 4 to 64 characters\n");
+  system("clear");
+  getInputMenuSTR("^[a-zA-Z0-9._]{4,64}$", tempUserData[userCount].username, "ADD USER\n\nEnter a username (no spaces): ", "Invalid username\nUsername must be 4 to 64 characters\n");
   
   //regex says 4 letters at least, one letter and one number
   //get a password, and put into tempUserData[uid].password
-  getInputMenuSTR("^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,}$", tempUserData[userCount].password, "Enter a username (no spaces): ", "Invalid username\nUsername must be at least 4 characters\n1 letter, and 1 number\n");
-
+  system("clear");
+  getInputMenuSTR("^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,}$", tempUserData[userCount].password, "ADD USER\n\nEnter a password (no spaces): ", "Invalid username\nUsername must be at least 4 characters\n1 letter, and 1 number\n");
+  system("clear");
 
   encryptStr(tempUserData[userCount].password);
 
