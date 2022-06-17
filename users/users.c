@@ -30,6 +30,7 @@ int login(userData *currentUserData, userStats userStats[])
       if (passwordFails!=0) 
       {
         printf("Incorrect password or username\n%i times failed\n", passwordFails);
+        printMenuBar();
       }
 
       //empty fields for regex, since we dont really care what they put
@@ -108,7 +109,7 @@ void addUser(int usertype, userStats userStats[])
   addUserStats(userStats, tempUserData, userCount);
 }
 
-void editUser(int uid)
+void editUser(userData currentUserData, int uid)
 {
   system("clear");
   //read all users to write to file later
@@ -116,8 +117,9 @@ void editUser(int uid)
   tempUserData tempUserData[userCount];
   readUsers(tempUserData);
 
-  //cant edit a su
-  if (tempUserData[uid].usertype==2)
+  //cant edit a su, unless it is su
+  //editing admin, can only happen if you are you
+  if (tempUserData[uid].usertype!=0 && (uid != currentUserData.uid))
   {
     printf("Invalid user\n");
     return;
@@ -127,7 +129,17 @@ void editUser(int uid)
   int invalidInputFlag=0;
   
   //get user menu choice
-  getInputMenuINT(1,3+1, &userChoice, "EDIT USER:\n\n1. Username\n2. Password\n3. Admin Level\n4. Return\n\nWhat would you like to edit: ", "Invalid Choice\n");
+  //you are admin
+  if (currentUserData.usertype!=0)
+  {
+    getInputMenuINT(1,3+1, &userChoice, "EDIT USER:\n\n1. Username\n2. Password\n3. Admin Level\n4. Return\n\nWhat would you like to edit: ", "Invalid Choice\n");
+  }
+  //you are user
+  else
+  {
+    getInputMenuINT(1,2+1, &userChoice, "EDIT USER:\n\n1. Username\n2. Password\n3. Return\n\nWhat would you like to edit: ", "Invalid Choice\n");
+  }
+  
   
   system("clear");
   
@@ -152,7 +164,7 @@ void editUser(int uid)
       tempUserData[uid].usertype--;
       break;
 
-    case 4:
+    default:
       return;
   }
 

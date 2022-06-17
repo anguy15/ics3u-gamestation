@@ -35,7 +35,6 @@ int checkRegex(char string[], char regexComp[])
   }
 }
 
-
 void getInputMenuINT(int max, int min, int *userChoice, char question[], char invalidChoice[])
 {
   int userChoiceFlag=0;//flags are for invalid choices
@@ -43,6 +42,7 @@ void getInputMenuINT(int max, int min, int *userChoice, char question[], char in
   {
     if (userChoiceFlag==1)
     {
+      printMenuBar();
       printf("%s", invalidChoice);
     }
 
@@ -63,6 +63,7 @@ void getInputMenuCHAR(int max, int min, char *userChoice, char question[], char 
   {
     if (userChoiceFlag==1)
     {
+      printMenuBar();
       printf("%s", invalidChoice);
     }
 
@@ -86,6 +87,7 @@ void getInputMenuSTR(char regexCheck[], char userChoice[], char question[], char
   {
     if (userChoiceFlag==1)
     {
+      printMenuBar();
       printf("%s", invalidChoice);
     }
 
@@ -96,4 +98,21 @@ void getInputMenuSTR(char regexCheck[], char userChoice[], char question[], char
 
     userChoiceFlag=1;
   }while(!checkRegex(userChoice, regexCheck));
+}
+
+void clearInput()
+{
+  char buff;
+  while (buff!='\n')
+  {
+    scanf("%c", &buff);
+  }
+}
+
+void printMenuBar()
+{
+  printf("\n");
+  for (int x=0; x<40; x++)
+    printf("-");
+  printf("\n");
 }

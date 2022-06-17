@@ -20,7 +20,7 @@ int getUserData(userData *userData);
 void removeUser(int uid, userStats userStats[]);
 //if you are adding a user, make a new larger array, data will be read for you
 void addUser(int usertype, userStats userStats[]);
-void editUser(int uid);
+void editUser(userData userData, int uid);
 int getUserID(char username[], int uidReturn[]);
 
 //return if logged in, and return the user id in userData.userID[]

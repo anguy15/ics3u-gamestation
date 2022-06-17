@@ -50,6 +50,15 @@ void printUserStats(userStats userStats[], userData currentUserData, int printTy
     //print stats for every game
     for (int x=1; x<=info_game_count; x++)
     {
+      switch (x)
+      {
+        case 1:
+          printf("\nHangman\n");break;
+        case 2:
+          printf("\nMath\n");break;
+        case 3:
+          printf("\nTicTacToe\n");break;
+      }
       printStatTable(currentUserData, userStats[currentUserData.uid], x);
     }
   }
@@ -63,6 +72,15 @@ void printUserStats(userStats userStats[], userData currentUserData, int printTy
     //printing all users, not admins
     for (int x=1; x<=info_game_count; x++)
     {
+      switch (x)
+      {
+        case 1:
+          printf("\nHangman\n");break;
+        case 2:
+          printf("\nMath\n");break;
+        case 3:
+          printf("\nTicTacToe\n");break;
+      }
       //print all users
       for (int y=0; y<userCount; y++)
       {
@@ -109,22 +127,22 @@ static void printStatTable(userData currentUserData, userStats currentUserStats,
   {
     case 0:
       //header
-      printf("\t%-20s%-10s%-10s\n", "Username", "Wins", "Losses");
+      printf("\t\t%-20s%-10s%-10s\n", "Username", "Wins", "Losses");
       break;
     
     case 1:
       //hangman
-      printf("\t%-20s%-10i%-10i\n", currentUserData.username, currentUserStats.hangmanWins, currentUserStats.hangmanLosses);
+      printf("\t\t%-20s%-10i%-10i\n", currentUserData.username, currentUserStats.hangmanWins, currentUserStats.hangmanLosses);
       break;
     
     case 2:
       //math
-      printf("\t%-20s%-10i%-10i\n", currentUserData.username, currentUserStats.mathWins, currentUserStats.mathLosses);
+      printf("\t\t%-20s%-10i%-10i\n", currentUserData.username, currentUserStats.mathWins, currentUserStats.mathLosses);
       break;
 
     case 3:
       //tic tac toe
-      printf("\t%-20s%-10i%-10i\n", currentUserData.username, currentUserStats.tttWins, currentUserStats.tttLosses);
+      printf("\t\t%-20s%-10i%-10i\n", currentUserData.username, currentUserStats.tttWins, currentUserStats.tttLosses);
       break;
   }
 }

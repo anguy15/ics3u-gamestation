@@ -11,5 +11,6 @@ void getInputMenuSTR(char regexCheck[], char userChoice[], char question[], char
 //checks a string with regex
 //returns 1 if match
 static int checkRegex(char string[], char regexComp[]);
+void printMenuBar();
 
 #endif

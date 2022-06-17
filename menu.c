@@ -39,11 +39,11 @@ static void adminMenu()
 
   do
   {
-    getInputMenuINT(1, 3+1, &adminChoice, "MAIN MENU:\n\n1. View All User Stats\n2. Users\n3. Edit Your Account\n4. Return\n\nWhat would you like to do?\n", "Invalid Choice\n");
+    getInputMenuINT(1, 3+1, &adminChoice, "MAIN MENU:\n\n1. User Stats\n2. Users\n3. Edit Your Account\n4. Return\n\nWhat would you like to do?\n", "Invalid Choice\n");
     switch (adminChoice)
     {
-      case 1://print all users
-        printAllStats(_userStatsPtr, *_userDataPtr);
+      case 1:
+        statsMenu();
         break;
       
       case 2:
@@ -51,7 +51,7 @@ static void adminMenu()
         break;
   
       case 3:
-        editUser(_userDataPtr->uid);
+        editUser(*_userDataPtr, _userDataPtr->uid);
         break;
 
       case 4:
@@ -73,7 +73,7 @@ static void userMenu()
   
   do
   {
-    getInputMenuINT(1, 3+1, &userChoice, "MAIN MENU:\n\n1. View Stats\n2. Play Games\n3. Edit Users\n4. Return\n\nWhat would you like to do?\n", "Invalid Choice\n");
+    getInputMenuINT(1, 3+1, &userChoice, "MAIN MENU:\n\n1. View Stats\n2. Play Games\n3. Edit Your Account\n4. Return\n\nWhat would you like to do?\n", "Invalid Choice\n");
   
     //swap to game
     switch (userChoice)
@@ -87,7 +87,7 @@ static void userMenu()
         break;
   
       case 3://edit self
-        editUser(_userDataPtr->uid);
+        editUser(*_userDataPtr, _userDataPtr->uid);
         break;
 
       case 4:
@@ -159,23 +159,48 @@ static void statsMenu()
   system("clear");
   int userChoice=0;
   char exitChoice='n';
+  userData chosenUserData;
   
   do
   {
-    getInputMenuINT(1, 2+1, &userChoice, "STATS MENU:\n\n1. All User Stats\n2. My Stats\n3. Return\n\nWhat would you like to do?\n", "Invalid Choice\n");
+    
+    //you are admin
+    if (_userDataPtr->usertype!=0)
+    {
+      getInputMenuINT(1, 2+1, &userChoice, "STATS MENU:\n\n1. User Stats\n2. All User Stats\n3. Return\n\nWhat would you like to do?\n", "Invalid Choice\n");
+      //printing a specific user's stats
+      if (userChoice == 1)
+      {
+        //find that user's uid
+        chosenUserData.uid=getUidInput();
+        getUserData(&chosenUserData);
+      }
+    }
+    //you are user
+    else
+    {
+      getInputMenuINT(1, 1+1, &userChoice, "STATS MENU:\n\n1. My Stats\n2. Return\n\nWhat would you like to do?\n", "Invalid Choice\n");
+      //print all stats is part of admin
+      userChoice = userChoice==1 ? 1 : 4;
+      //copy the user to a temp user to keep it consistent with printuserstats 
+      chosenUserData.uid = _userDataPtr->uid;
+      chosenUserData.usertype = _userDataPtr->usertype;
+      strcpy(chosenUserData.username, _userDataPtr->username);
+    }
+    
   
     //swap to game
     switch (userChoice)
     {
-      case 1://print all users
-        printAllStats(_userStatsPtr, *_userDataPtr);
+      case 1://print a specific user's stats
+        printUserStats(_userStatsPtr, chosenUserData, 1);
         break;
       
-      case 2://print a specific user's stats
-        printUserStats(_userStatsPtr, *_userDataPtr, 1);
+      case 2://print all users for all games
+        printAllStats(_userStatsPtr, *_userDataPtr);
         break;
 
-      case 3:
+      default:
         return;
     }
 
@@ -204,7 +229,7 @@ static void editUsersMenu()
         break;
       
       case 2:
-        editUser(getUidInput());
+        editUser(*_userDataPtr, getUidInput());
         break;
       
       case 3:
@@ -225,10 +250,17 @@ static int getUidInput()
   char userChoiceStr[64];
   int uidMatches[*_userCountPtr];
   int uidMatchCount=0;
+  int choiceFlag=0;
   
   do
   {
-    getInputMenuSTR("", &userChoiceStr, "\nWhich User?\n", "Invalid User\n");
+    if (choiceFlag==1)
+    {
+      printf("Invalid User\n");
+    }
+    choiceFlag=0;
+    
+    getInputMenuSTR("", &userChoiceStr, "\nWhich User?\n", "");
   
     //print all matches
     uidMatchCount = getUserID(userChoiceStr, uidMatches);
@@ -246,6 +278,8 @@ static int getUidInput()
     {
       userChoice = uidMatches[0];
     }
+
+    choiceFlag=1;
   }while(uidMatchCount==0);
   return(userChoice);
 }
