@@ -7,7 +7,6 @@ void mainMenu(userData *userData, userStats userStats[], int *userCount)
   _userDataPtr=userData;
   _userStatsPtr=userStats;
   _userCountPtr=userCount;
-  printf("%p ", _userStatsPtr);getchar();
   
   switch (_userDataPtr->usertype)
   {

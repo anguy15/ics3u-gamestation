@@ -9,6 +9,10 @@ int checkRegex(char string[], char regexComp[])
 
   //compile the compare
   reti = regcomp(&regex, regexComp, REG_EXTENDED);
+  if (reti)
+  {
+    return(0);
+  }
 
   //compare
   reti = regexec(&regex, string, 0, NULL, 0);
@@ -27,7 +31,7 @@ int checkRegex(char string[], char regexComp[])
   else
   {
     printf("Unexpected behavior\n");
-    return(-1);//error
+    return(0);//error
   }
 }
 
@@ -85,7 +89,7 @@ void getInputMenuSTR(char regexCheck[], char userChoice[], char question[], char
     }
 
     userChoiceFlag=0;
-    
+
     printf("%s", question);
     scanf("%s", userChoice);
     clearInput();

@@ -73,7 +73,6 @@ void removeUser(int uid, userStats userStats[])
 
 void addUser(int usertype, userStats userStats[])
 {
-  printf("%p ", userStats);getchar();
   //update user file
   int userCount = getUserCount();
   userData tempUserData;
@@ -306,7 +305,7 @@ static int makeUser(int usertype)
   //regex says 4 letters at least, one letter and one number
   //get a password, and put into tempUserData[uid].password
   system("clear");
-  getInputMenuSTR("^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,}$", tempUserData[userCount].password, "ADD USER\n\nEnter a password (no spaces): ", "Invalid username\nUsername must be at least 4 characters\n1 letter, and 1 number\n");
+  getInputMenuSTR("^([1-zA-Z0-1@.]{4,255})$", tempUserData[userCount].password, "ADD USER\n\nEnter a password (no spaces): ", "Invalid username\nUsername must be at least 4-63 characters\n");
   system("clear");
 
   encryptStr(tempUserData[userCount].password);
