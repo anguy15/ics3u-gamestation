@@ -73,6 +73,7 @@ void removeUser(int uid, userStats userStats[])
 
 void addUser(int usertype, userStats userStats[])
 {
+  printf("%p ", userStats);getchar();
   //update user file
   int userCount = getUserCount();
   userData tempUserData;
