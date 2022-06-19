@@ -29,17 +29,19 @@ int login(userData *currentUserData, userStats userStats[])
       system("clear");
       if (passwordFails!=0) 
       {
-        printf("Incorrect password or username\n%i times failed\n", passwordFails);
+        //fix the grammar
+        //time(s)
+        printf("Incorrect password or username\n%i time%s failed\n", passwordFails, passwordFails==1 ? "" : "s");
         printMenuBar();
       }
 
       //empty fields for regex, since we dont really care what they put
       //get username
-      getInputMenuSTR("", username, "LOGIN:\n\nUsername: ", "Invalid username\nUsername must be 4 to 64 characters\n");
+      getInputMenuSTR("", username, "LOGIN:\n\nUsername: ", "");
 
       //get password
       system("clear");
-      getInputMenuSTR("", password, "LOGIN:\n\nPassword: ", "Invalid username\nPassword must be at least 4 characters\n1 letter, and 1 number\n");
+      getInputMenuSTR("", password, "LOGIN:\n\nPassword: ", "");
       system("clear");
       
       passwordFails++;
@@ -138,6 +140,8 @@ void editUser(userData currentUserData, int uid)
   else
   {
     getInputMenuINT(1,2+1, &userChoice, "EDIT USER:\n\n1. Username\n2. Password\n3. Return\n\nWhat would you like to edit: ", "Invalid Choice\n");
+    //return is not actually 3, change it to 4 if needed
+    userChoice = (userChoice==3) ? 4 : userChoice;
   }
   
   

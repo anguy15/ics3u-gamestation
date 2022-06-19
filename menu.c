@@ -14,10 +14,21 @@ static void constructor(userData *userData, userStats userStats[], int *userCoun
   _userCountPtr=userCount;
 }
 
-void mainMenu(userData *userData, userStats userStats[], int *userCount)
+void mainMenu()
 {
-  constructor(userData, userStats, userCount);
+  //login
+  int userCount = getUserCount();
+  userData userData;
+  userStats userStats[userCount+10];
   
+  login(&userData, userStats);
+  getUserData(&userData);
+  getUserStats(userStats);
+
+  //save data for later
+  constructor(&userData, userStats, &userCount);
+
+  //start menu
   switch (_userDataPtr->usertype)
   {
     case 0:
@@ -38,7 +49,7 @@ static void adminMenu()
 
   do
   {
-    getInputMenuINT(1, 3+1, &adminChoice, "MAIN MENU:\n\n1. User Stats\n2. Users\n3. Edit Your Account\n4. Return\n\nWhat would you like to do?\n", "Invalid Choice\n");
+    getInputMenuINT(1, 3+1, &adminChoice, "MAIN MENU:\n\n1. User Stats\n2. Edit Users\n3. Edit Your Account\n4. Return\n\nWhat would you like to do?\n", "Invalid Choice\n");
     switch (adminChoice)
     {
       case 1:
@@ -113,7 +124,7 @@ static void gameMenu()
         gameStat=playHangman();
         if (gameStat==1)
           (*_userStatsPtr)[_userDataPtr->uid].hangmanWins++;
-        else
+        else if (gameStat==0)
           (*_userStatsPtr)[_userDataPtr->uid].hangmanLosses++;
         break;
 
@@ -122,7 +133,7 @@ static void gameMenu()
         gameStat=playMathQuiz();
         if (gameStat==1)
           (*_userStatsPtr)[_userDataPtr->uid].mathWins++;
-        else
+        else if (gameStat==0)
           (*_userStatsPtr)[_userDataPtr->uid].mathLosses++;
         break;
 
@@ -131,7 +142,7 @@ static void gameMenu()
         gameStat=playTicTacToe();
         if (gameStat==1)
           (*_userStatsPtr)[_userDataPtr->uid].tttWins++;
-        else
+        else if (gameStat==0)
           (*_userStatsPtr)[_userDataPtr->uid].tttLosses++;
         break;
 
@@ -160,7 +171,7 @@ static void statsMenu()
     //you are admin
     if (_userDataPtr->usertype!=0)
     {
-      getInputMenuINT(1, 2+1, &userChoice, "STATS MENU:\n\n1. User Stats\n2. All User Stats\n3. Return\n\nWhat would you like to do?\n", "Invalid Choice\n");
+      getInputMenuINT(1, 3+1, &userChoice, "STATS MENU:\n\n1. User Stats\n2. All User Stats\n3. Specific Game Stats\n4. Return\n\nWhat would you like to do?\n", "Invalid Choice\n");
       //printing a specific user's stats
       if (userChoice == 1)
       {
@@ -192,6 +203,10 @@ static void statsMenu()
       
       case 2://print all users for all games
         printAllStats(_userStatsPtr, *_userDataPtr);
+        break;
+      
+      case 3://print all users for all games
+        printUserStats(_userStatsPtr, chosenUserData, 2);
         break;
 
       default:

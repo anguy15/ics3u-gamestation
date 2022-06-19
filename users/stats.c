@@ -9,6 +9,7 @@ void printUserStats(userStats userStats[], userData currentUserData, int printTy
   FILE *fp;
   fp = fopen("./data/games_stats", "r");
   int userCount=0;
+  int gameChoice=0;
 
   userCount = getUserCount();
   //required for getting userflags through ids
@@ -48,7 +49,7 @@ void printUserStats(userStats userStats[], userData currentUserData, int printTy
 
     printStatTable(currentUserData, userStats[currentUserData.uid], 0);
     //print stats for every game
-    for (int x=1; x<=info_game_count; x++)
+    for (int x=1; x<=INFO_GAME_COUNT; x++)
     {
       switch (x)
       {
@@ -62,6 +63,36 @@ void printUserStats(userStats userStats[], userData currentUserData, int printTy
       printStatTable(currentUserData, userStats[currentUserData.uid], x);
     }
   }
+  else if (printType==2)//print 1 game
+  {
+    getInputMenuINT(1,3, &gameChoice, "STATS MENU:\n\n1. Hangman\n2. Math\n3. Tic Tac Toe\n\nWhat would you like to edit: ", "Invalid Choice\n");
+    system("clear");
+    
+    //printing all users, not admins
+    switch (gameChoice)
+    {
+      case 1:
+        printf("\nHangman\n");break;
+      case 2:
+        printf("\nMath\n");break;
+      case 3:
+        printf("\nTicTacToe\n");break;
+    }
+    
+    //read all file
+    getAllUsersData(tempUserData);
+
+    //printing header
+    printStatTable(currentUserData, userStats[0], 0);//tempUserStats array index does not matter
+    //print all users
+    for (int y=0; y<userCount; y++)
+    {
+      if (tempUserData[y].usertype==0)//0 means user
+      {
+        printStatTable(tempUserData[y], userStats[y], gameChoice);
+      }
+    }
+  }
   else if (printType==0)//print all users
   {
     //read all file
@@ -70,7 +101,7 @@ void printUserStats(userStats userStats[], userData currentUserData, int printTy
     //printing header
     printStatTable(currentUserData, userStats[0], 0);//tempUserStats array index does not matter
     //printing all users, not admins
-    for (int x=1; x<=info_game_count; x++)
+    for (int x=1; x<=INFO_GAME_COUNT; x++)
     {
       switch (x)
       {
@@ -90,10 +121,8 @@ void printUserStats(userStats userStats[], userData currentUserData, int printTy
         }
       }
     }
-    //plans
-    //make sorted index for <game>
-    //print <game>
   }
+  fclose(fp);
 }
 
 void printAllStats(userStats userStats[], userData currentUserData)

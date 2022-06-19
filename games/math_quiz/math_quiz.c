@@ -46,6 +46,8 @@ static int quizGame(int difficulty, char gameMode)
   int answerCheck=0;
   int userInput;
   int numberSize=0;
+  
+  system("clear");
 
   //setup the difficulty
   //and the limits for the random number

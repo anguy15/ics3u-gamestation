@@ -5,15 +5,6 @@
 
 
 //globals
-const char hangmanBoard[7][64] = {
-{"  +---+\n  |   |\n      |\n      |\n      |\n      |\n=========\n"}, 
-{"  +---+\n  |   |\n  O   |\n      |\n      |\n      |\n=========\n"}, 
-{"  +---+\n  |   |\n  O   |\n  |   |\n      |\n      |\n=========\n"}, 
-{"  +---+\n  |   |\n  O   |\n /|   |\n      |\n      |\n=========\n"}, 
-{"  +---+\n  |   |\n  O   |\n /|\\  |\n      |\n      |\n=========\n"}, 
-{"  +---+\n  |   |\n  O   |\n /|\\  |\n /    |\n      |\n=========\n"}, 
-{"  +---+\n  |   |\n  O   |\n /|\\  |\n / \\  |\n      |\n=========\n"}
-};
 
 //functions
 int playHangman()
@@ -32,8 +23,6 @@ int playHangman()
     case 1:
       printf("You Won!");break;
   }
-  
-  // }while(gameEndCheck()==0 && turnCount!=5);
 }
 
 static int mainGame(hangmanGameInfo *hangmanInfo)
@@ -73,6 +62,7 @@ static int mainGame(hangmanGameInfo *hangmanInfo)
     {
       case 1://letter
         userGuessLetter = getGuessLetter(hangmanInfo, userGuessLetterArr);
+        //incorrect
         if (checkCorrectGuess(hangmanInfo, userGuessLetter) == 0)
         {
           hangmanInfo->incorrectGuesses++;
@@ -81,11 +71,14 @@ static int mainGame(hangmanGameInfo *hangmanInfo)
       
       case 2://word
         getGuessWord(hangmanInfo, userGuessLetterArr, userGuessWord);
-        if (strcmp(hangmanInfo->wordGen,userGuessWord)==0)
+        if (compareStrCaseI(hangmanInfo->wordGen,userGuessWord)==0)
         {
-          drawGame(*hangmanInfo, userGuessLetterArr);
+          drawGame(*hangmanInfo, userGuessWord);
           return(1);//player won
         }
+          //incorrect
+        else
+          hangmanInfo->incorrectGuesses++;
         break;
     }
     //check if the user won
@@ -111,15 +104,30 @@ static int mainGame(hangmanGameInfo *hangmanInfo)
 static int checkCorrectGuess(hangmanGameInfo *hangmanInfo, char guessLetter)
 {
   int check=0;
+  //check if any letters match the word generated
   for (int x=0; x<strlen(hangmanInfo->wordGen); x++)
   {
     if (tolower(hangmanInfo->wordGen[x])==guessLetter)
     {
+      //update the printed word generated
       hangmanInfo->wordGenCorrect[x] = hangmanInfo->wordGen[x];
       check=1;
     }
   }
   return check;
+}
+
+static int compareStrCaseI(char arr1[], char arr2[])
+{
+  //get the longer string
+  int longer = strlen(arr1)>strlen(arr2) ? strlen(arr1) : strlen(arr2);
+  for (int x=0; x<longer; x++)
+  {
+    //if they are not equal
+    if(tolower(arr1[x])!=tolower(arr2[x]))
+      return tolower(arr1[x])-tolower(arr2[x]);
+  }
+  return 0;
 }
 
 static char getGuessLetter(hangmanGameInfo *hangmanInfo, int userGuessLetterArr[])
@@ -167,15 +175,24 @@ static void setupCorrectGuesses(hangmanGameInfo *hangmanInfo)
 
 static void drawGame(hangmanGameInfo hangmanInfo, int userGuessLetterArr[])
 {
+  const char hangmanBoard[7][64] = {
+  {"  +---+\n  |   |\n      |\n      |\n      |\n      |\n=========\n"}, 
+  {"  +---+\n  |   |\n  O   |\n      |\n      |\n      |\n=========\n"}, 
+  {"  +---+\n  |   |\n  O   |\n  |   |\n      |\n      |\n=========\n"}, 
+  {"  +---+\n  |   |\n  O   |\n /|   |\n      |\n      |\n=========\n"}, 
+  {"  +---+\n  |   |\n  O   |\n /|\\  |\n      |\n      |\n=========\n"}, 
+  {"  +---+\n  |   |\n  O   |\n /|\\  |\n /    |\n      |\n=========\n"}, 
+  {"  +---+\n  |   |\n  O   |\n /|\\  |\n / \\  |\n      |\n=========\n"}
+  };
   system("clear");
 
-  for (int x=0; x<58; x++)
-  {
-    printf("%c", hangmanBoard[hangmanInfo.incorrectGuesses][x]);
-  }
-  
+  //print the gallow
+  printf("%s", hangmanBoard[hangmanInfo.incorrectGuesses]);
+
+  //print the amount guess from the word
   printf("%s\n", hangmanInfo.wordGenCorrect);
 
+  //print the letters guessed
   for (int x=0; x<26; x++)
   {
     if (userGuessLetterArr[x]==1)

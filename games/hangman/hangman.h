@@ -30,6 +30,9 @@ static int chooseWord(hangmanGameInfo *hangmanInfo);
 //makes a new word node
 static struct wordList *makeWordNode();
 
+//compare 2 strings insensitive
+static int compareStrCaseI(char arr1[], char arr2[]);
+
 //get user's inputs
 //return win or loss
 static int mainGame(hangmanGameInfo *hangmanInfo);

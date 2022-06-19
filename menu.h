@@ -12,7 +12,7 @@ static int getUidInput();
 
 static void constructor(userData *userData, userStats userStats[], int *userCount);
 
-void mainMenu(userData *userData, userStats userStats[], int *userCount);
+void mainMenu();
 //menu
 static void statsMenu();
 static void editUsersMenu();

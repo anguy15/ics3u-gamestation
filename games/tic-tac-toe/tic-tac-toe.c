@@ -80,7 +80,7 @@ int playTicTacToe()
   else//draw
   {
     printf("Draw Game");
-    return 0;
+    return 2;
   }
 }
 

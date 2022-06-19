@@ -3,7 +3,7 @@
 #include "users_info.h"
 
 //  GLOBAL CONST VARS
-#define info_game_count 3
+#define INFO_GAME_COUNT 3
 
 //  GLOBALS
 //take user id
