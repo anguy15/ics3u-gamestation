@@ -17,9 +17,9 @@ void getAllUsersData(userData userData[]);
 //return user data
 int getUserData(userData *userData);
 
-void removeUser(int uid, userStats userStats[]);
+void removeUser(userStats userStats[], int uid);
 //if you are adding a user, make a new larger array, data will be read for you
-void addUser(int usertype, userStats userStats[]);
+void addUser(userStats userStats[], int usertype);
 void editUser(userData userData, int uid);
 int getUserID(char username[], int uidReturn[]);
 

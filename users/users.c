@@ -15,7 +15,7 @@ int login(userData *currentUserData, userStats userStats[])
   
   if (userCount == 0)//no user exists
   {
-    addUser(2, userStats);//make a admin user
+    addUser(userStats, 2);//make a admin user
     currentUserData->uid=0;
     getUserData(currentUserData);
     
@@ -57,7 +57,7 @@ int login(userData *currentUserData, userStats userStats[])
   return(0);
 }
 
-void removeUser(int uid, userStats userStats[])
+void removeUser(userStats userStats[], int uid)
 {
   //update user file
   int userCount = getUserCount();
@@ -82,7 +82,7 @@ void removeUser(int uid, userStats userStats[])
   updateUserStats(userStats, userCount);
 }
 
-void addUser(int usertype, userStats userStats[])
+void addUser(userStats userStats[], int usertype)
 {
   //update user file
   int userCount = getUserCount();
@@ -134,12 +134,12 @@ void editUser(userData currentUserData, int uid)
   //you are admin
   if (currentUserData.usertype!=0)
   {
-    getInputMenuINT(1,3+1, &userChoice, "EDIT USER:\n\n1. Username\n2. Password\n3. Admin Level\n4. Return\n\nWhat would you like to edit: ", "Invalid Choice\n");
+    getInputMenuINT(1,3+1, &userChoice, "\033[33mEDIT USER\033[0m:\n\n1. Username\n2. Password\n3. Admin Level\n4. Return\n\nWhat would you like to edit: ", "Invalid Choice\n");
   }
   //you are user
   else
   {
-    getInputMenuINT(1,2+1, &userChoice, "EDIT USER:\n\n1. Username\n2. Password\n3. Return\n\nWhat would you like to edit: ", "Invalid Choice\n");
+    getInputMenuINT(1,2+1, &userChoice, "\033[33mEDIT USER\033[0m:\n\n1. Username\n2. Password\n3. Return\n\nWhat would you like to edit: ", "Invalid Choice\n");
     //return is not actually 3, change it to 4 if needed
     userChoice = (userChoice==3) ? 4 : userChoice;
   }
@@ -153,18 +153,18 @@ void editUser(userData currentUserData, int uid)
     case 1:
       //regex says [valid characters], 4 to 64 as min to max amount of characters
       //get a username, and put into tempUserData[uid.username]
-      getInputMenuSTR("^[a-zA-Z0-9._]{4,64}$", tempUserData[uid].username, "EDIT USER:\n\nEnter a username (no spaces): ", "Invalid username\nUsername must be 4 to 64 characters\n");
+      getInputMenuSTR("^[a-zA-Z0-9._]{4,64}$", tempUserData[uid].username, "\033[33mEDIT USER\033[0m:\n\nEnter a username (no spaces): ", "Invalid username\nUsername must be 4 to 64 characters\n");
       break;
     
     case 2:
       //regex says 4 letters at least, one letter and one number
       //get a password, and put into tempUserData[uid].password
-      getInputMenuSTR("^([1-zA-Z0-1@.]{4,255})$", tempUserData[uid].password, "EDIT USER:\n\nEnter a password (no spaces): ", "Invalid username\nPassword must be 4-255 characters\n1 letter, and 1 number\n");
+      getInputMenuSTR("^([1-zA-Z0-1@.]{4,255})$", tempUserData[uid].password, "\033[33mEDIT USER\033[0m:\n\nEnter a password (no spaces): ", "Invalid username\nPassword must be 4-255 characters\n1 letter, and 1 number\n");
       encryptStr(tempUserData[uid].password);
       break;
     
     case 3:
-      getInputMenuINT(1,2, &tempUserData[uid].usertype, "EDIT USER:\n\n1. Regular User\n2. Admin\n\nEnter an admin level: ", "Invalid user type\n");
+      getInputMenuINT(1,2, &tempUserData[uid].usertype, "\033[33mEDIT USER\033[0m:\n\n1. Regular User\n2. Admin\n\nEnter an admin level: ", "Invalid user type\n");
       tempUserData[uid].usertype--;
       break;
 
@@ -359,12 +359,12 @@ static int makeUser(int usertype)
   //regex says [valid characters], 4 to 64 as min to max amount of characters
   //get a username, and put into tempUserData[uid.username]
   system("clear");
-  getInputMenuSTR("^[a-zA-Z0-9._]{4,64}$", tempUserData[userCount].username, "ADD USER\n\nEnter a username (no spaces): ", "Invalid username\nUsername must be 4 to 64 characters\n");
+  getInputMenuSTR("^[a-zA-Z0-9._]{4,64}$", tempUserData[userCount].username, "\033[33mADD USER\033[0m:\n\nEnter a username (no spaces): ", "Invalid username\nUsername must be 4 to 64 characters\n");
   
   //regex says 4 letters at least, one letter and one number
   //get a password, and put into tempUserData[uid].password
   system("clear");
-  getInputMenuSTR("^([1-zA-Z0-1@.]{4,255})$", tempUserData[userCount].password, "ADD USER\n\nEnter a password (no spaces): ", "Invalid username\nUsername must be at least 4-63 characters\n");
+  getInputMenuSTR("^([1-zA-Z0-1@.]{4,255})$", tempUserData[userCount].password, "\033[33mADD USER\033[0m:\n\nEnter a password (no spaces): ", "Invalid username\nUsername must be at least 4-63 characters\n");
   system("clear");
 
   encryptStr(tempUserData[userCount].password);

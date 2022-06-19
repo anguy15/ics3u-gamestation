@@ -10,7 +10,10 @@
 
 static int getUidInput();
 
+//saves all data to public to menu var
 static void constructor(userData *userData, userStats userStats[], int *userCount);
+//changes the arr for stats to new size, does not read the new data
+static void swapUserStatsArr(int changeNum);
 
 void mainMenu();
 //menu

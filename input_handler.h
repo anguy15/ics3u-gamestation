@@ -7,6 +7,7 @@ void clearInput();
 void getInputMenuINT(int max, int min, int *userChoice, char question[], char invalidChoice[]);
 void getInputMenuCHAR(int max, int min, char *userChoice, char question[], char invalidChoice[]);
 void getInputMenuSTR(char regexCheck[], char userChoice[], char question[], char invalidChoice[]);
+void getInputMenuYN(char *userChoice, char question[], char invalidChoice[]);
 
 //checks a string with regex
 //returns 1 if match

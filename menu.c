@@ -1,17 +1,30 @@
 #include "menu.h"
 #include "users/stats.h"
 #include "input_handler.h"
+#include <stdio.h>
 
-//globals
-static userData *_userDataPtr;
-static userStats (*_userStatsPtr)[1000];
-static int *_userCountPtr;
+//  globals  //
+struct mainMenuVars
+{
+  userData *userDataPtr;
+  userStats (*userStatsPtr)[1000];
+  int *userCountPtr;
+};
+struct mainMenuVars MainMenu;
+//           //
 
 static void constructor(userData *userData, userStats userStats[], int *userCount)
 {
-  _userDataPtr=userData;
-  _userStatsPtr=userStats;
-  _userCountPtr=userCount;
+  MainMenu.userDataPtr=userData;
+  MainMenu.userStatsPtr=userStats;
+  MainMenu.userCountPtr=userCount;
+}
+
+static void swapUserStatsArr(int changeNum)
+{
+  MainMenu.userStatsPtr=NULL;
+  userStats userStats[(*MainMenu.userCountPtr)+changeNum];
+  MainMenu.userStatsPtr=userStats;
 }
 
 void mainMenu()
@@ -29,7 +42,7 @@ void mainMenu()
   constructor(&userData, userStats, &userCount);
 
   //start menu
-  switch (_userDataPtr->usertype)
+  switch (MainMenu.userDataPtr->usertype)
   {
     case 0:
       userMenu();
@@ -61,7 +74,7 @@ static void adminMenu()
         break;
   
       case 3:
-        editUser(*_userDataPtr, _userDataPtr->uid);
+        editUser(*MainMenu.userDataPtr, MainMenu.userDataPtr->uid);
         break;
 
       case 4:
@@ -93,7 +106,7 @@ static void userMenu()
         break;
   
       case 3://edit self
-        editUser(*_userDataPtr, _userDataPtr->uid);
+        editUser(*MainMenu.userDataPtr, MainMenu.userDataPtr->uid);
         break;
 
       case 4:
@@ -113,7 +126,7 @@ static void gameMenu()
   int gameStat=0;
   do
   {
-    getInputMenuINT(1, 3+1, &gameChoice, "GAME MENU:\n\n1. Hangman\n2. Math Quiz\n3. Tic-Tac-Toe\n4. Return\n\nWhich game would you like to play?\n", "Invalid Game\n");
+    getInputMenuINT(1, 3+1, &gameChoice, "\033[36mGAME MENU\033[0m:\n\n1. Hangman\n2. Math Quiz\n3. Tic-Tac-Toe\n4. Return\n\nWhich game would you like to play?\n", "Invalid Game\n");
 
     gameStat=0;
     //swap to game
@@ -123,37 +136,37 @@ static void gameMenu()
       case 1:
         gameStat=playHangman();
         if (gameStat==1)
-          (*_userStatsPtr)[_userDataPtr->uid].hangmanWins++;
+          (*MainMenu.userStatsPtr)[MainMenu.userDataPtr->uid].hangmanWins++;
         else if (gameStat==0)
-          (*_userStatsPtr)[_userDataPtr->uid].hangmanLosses++;
+          (*MainMenu.userStatsPtr)[MainMenu.userDataPtr->uid].hangmanLosses++;
         break;
 
       //math
       case 2:
         gameStat=playMathQuiz();
         if (gameStat==1)
-          (*_userStatsPtr)[_userDataPtr->uid].mathWins++;
+          (*MainMenu.userStatsPtr)[MainMenu.userDataPtr->uid].mathWins++;
         else if (gameStat==0)
-          (*_userStatsPtr)[_userDataPtr->uid].mathLosses++;
+          (*MainMenu.userStatsPtr)[MainMenu.userDataPtr->uid].mathLosses++;
         break;
 
       //tic tac toe
       case 3:
         gameStat=playTicTacToe();
         if (gameStat==1)
-          (*_userStatsPtr)[_userDataPtr->uid].tttWins++;
+          (*MainMenu.userStatsPtr)[MainMenu.userDataPtr->uid].tttWins++;
         else if (gameStat==0)
-          (*_userStatsPtr)[_userDataPtr->uid].tttLosses++;
+          (*MainMenu.userStatsPtr)[MainMenu.userDataPtr->uid].tttLosses++;
         break;
 
       case 4:
         return;
     }
     
-    updateUserStats(_userStatsPtr, *_userCountPtr);
+    updateUserStats(MainMenu.userStatsPtr, *MainMenu.userCountPtr);
 
     //get any typeable letter/char
-    getInputMenuCHAR(65,122, &exitChoice, "\nDo you wish to exit the game menu? y/n\n", "Invalid Input\n");
+    getInputMenuYN(&exitChoice, "\nDo you wish to exit the game menu?", "Invalid Input\n");
     system("clear");
   }while(tolower(exitChoice)!='y');
 }
@@ -169,9 +182,9 @@ static void statsMenu()
   {
     
     //you are admin
-    if (_userDataPtr->usertype!=0)
+    if (MainMenu.userDataPtr->usertype!=0)
     {
-      getInputMenuINT(1, 3+1, &userChoice, "STATS MENU:\n\n1. User Stats\n2. All User Stats\n3. Specific Game Stats\n4. Return\n\nWhat would you like to do?\n", "Invalid Choice\n");
+      getInputMenuINT(1, 3+1, &userChoice, "\033[32mSTATS MENU\033[0m:\n\n1. User Stats\n2. All User Stats\n3. Specific Game Stats\n4. Return\n\nWhat would you like to do?\n", "Invalid Choice\n");
       //printing a specific user's stats
       if (userChoice == 1)
       {
@@ -183,14 +196,14 @@ static void statsMenu()
     //you are user
     else
     {
-      getInputMenuINT(1, 1+1, &userChoice, "STATS MENU:\n\n1. My Stats\n2. Return\n\nWhat would you like to do?\n", "Invalid Choice\n");
+      getInputMenuINT(1, 1+1, &userChoice, "\033[32mSTATS MENU\033[0m:\n\n1. My Stats\n2. Return\n\nWhat would you like to do?\n", "Invalid Choice\n");
       //print all stats is part of admin
       //2 is not actually return, change it if necessary
       userChoice = userChoice==1 ? 1 : 4;
       //copy the user to a temp user to keep it consistent with printuserstats 
-      chosenUserData.uid = _userDataPtr->uid;
-      chosenUserData.usertype = _userDataPtr->usertype;
-      strcpy(chosenUserData.username, _userDataPtr->username);
+      chosenUserData.uid = MainMenu.userDataPtr->uid;
+      chosenUserData.usertype = MainMenu.userDataPtr->usertype;
+      strcpy(chosenUserData.username, MainMenu.userDataPtr->username);
     }
     
   
@@ -198,15 +211,15 @@ static void statsMenu()
     switch (userChoice)
     {
       case 1://print a specific user's stats
-        printUserStats(_userStatsPtr, chosenUserData, 1);
+        printUserStats(MainMenu.userStatsPtr, chosenUserData, 1);
         break;
       
       case 2://print all users for all games
-        printAllStats(_userStatsPtr, *_userDataPtr);
+        printAllStats(MainMenu.userStatsPtr, *MainMenu.userDataPtr);
         break;
       
       case 3://print all users for all games
-        printUserStats(_userStatsPtr, chosenUserData, 2);
+        printUserStats(MainMenu.userStatsPtr, chosenUserData, 2);
         break;
 
       default:
@@ -214,7 +227,7 @@ static void statsMenu()
     }
 
     //get any typeable letter/char
-    getInputMenuCHAR(65,122, &exitChoice, "\nDo you wish to exit the stats menu? y/n\n", "Invalid Input\n");
+    getInputMenuYN(&exitChoice, "\nDo you wish to exit the stats menu?", "Invalid Input\n");
     system("clear");
   }while(tolower(exitChoice)!='y');
 }
@@ -224,31 +237,37 @@ static void editUsersMenu()
   system("clear");
   int userChoice=0;
   char exitChoice='n';
+  int adminType=0;
   
   do
   {
-    getInputMenuINT(1, 3+1, &userChoice, "USER MENU:\n\n1. Add a User\n2. Edit User\n3. Remove User\n4. Return\n\nWhat would you like to do?\n", "Invalid Choice\n");
+    getInputMenuINT(1, 3+1, &userChoice, "\033[33mUSER MENU\033[0m:\n\n1. Add a User\n2. Edit User\n3. Remove User\n4. Return\n\nWhat would you like to do?\n", "Invalid Choice\n");
 
     //swap to game
     switch (userChoice)
     {
       case 1:
-        addUser(0, _userStatsPtr);
+        system("clear");
+        getInputMenuINT(1,2, &adminType, "\033[33mEDIT USER\033[0m:\n\n1. Regular User\n2. Admin\n\nEnter an admin level: ", "Invalid user type\n");
+        adminType--;
+        (*MainMenu.userCountPtr)++;
+        swapUserStatsArr(*MainMenu.userCountPtr);
+        addUser(MainMenu.userStatsPtr, 0);
         break;
       
       case 2:
-        editUser(*_userDataPtr, getUidInput());
+        editUser(*MainMenu.userDataPtr, getUidInput());
         break;
       
       case 3:
-        removeUser(getUidInput(), _userStatsPtr);
+        removeUser(MainMenu.userStatsPtr, getUidInput());
         break;
 
       case 4:
         return;
     }
     //get any typeable letter/char
-    getInputMenuCHAR(65,122, &exitChoice, "\nDo you wish to exit the edit users menu? y/n\n", "Invalid Input\n");
+    getInputMenuYN(&exitChoice, "\nDo you wish to exit the edit users menu?", "Invalid Input\n");
     system("clear");
   }while(tolower(exitChoice)!='y');
 }
@@ -257,7 +276,7 @@ static int getUidInput()
 {
   int userChoice=0;
   char userChoiceStr[64];
-  int uidMatches[*_userCountPtr];
+  int uidMatches[*MainMenu.userCountPtr];
   int uidMatchCount=0;
   int choiceFlag=0;
   
@@ -281,7 +300,7 @@ static int getUidInput()
       {
         printf("%-10i %-10s\n", uidMatches[x], userChoiceStr);
       }
-      getInputMenuINT(1, *_userCountPtr, &userChoice, "Which user?\n", "Invalid Choice\n");
+      getInputMenuINT(1, *MainMenu.userCountPtr, &userChoice, "Which user?\n", "Invalid Choice\n");
     }
     else if(uidMatchCount==1)
     {

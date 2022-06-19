@@ -22,7 +22,7 @@ int main(void) {
     mainMenu();
     system("clear");
     
-    getInputMenuCHAR(65,122, &userLeave, "Would you like to exit the program? y/n\n", "Invalid Input\n");
+    getInputMenuYN(&userLeave, "Would you like to exit the program?", "Invalid Input\n");
     
   }while(tolower(userLeave)!='y');
   
