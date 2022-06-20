@@ -175,7 +175,7 @@ static void printDebugWinFlags(const int winFlags[2][3][3])
     }
     printf("\n");
   }
-  getchar();
+  clearInput();//remove extra inputs
 }
 
 static void drawGameBoard(const int board[3][3])

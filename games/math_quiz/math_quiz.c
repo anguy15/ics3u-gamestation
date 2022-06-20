@@ -151,7 +151,7 @@ static int quizGame(int difficulty, char gameMode)
 
   //user inputs answer
   scanf("%i", &userInput);
-  getchar();
+  clearInput();//remove extra inputs
 
   //check if they were correct
   if (userInput == answerCheck)

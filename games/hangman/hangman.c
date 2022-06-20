@@ -18,10 +18,14 @@ int playHangman()
   switch (mainGame(&hangmanInfo))
   {
     case 0:
-      printf("You lost");break;
+      printf("You lost");
+      return(0);
+      break;
 
     case 1:
-      printf("You Won!");break;
+      printf("You Won!");
+      return(1);
+      break;
   }
 }
 
@@ -53,7 +57,7 @@ static int mainGame(hangmanGameInfo *hangmanInfo)
       printf("1. Letters\n2. Word\n");
       printf("Which Guess Type: ");
       scanf("%i", &userGuessType);
-      clearInput();
+      clearInput();//remove extra inputs
       
     }while(userGuessType<0||userGuessType>2);
 
@@ -140,9 +144,10 @@ static char getGuessLetter(hangmanGameInfo *hangmanInfo, int userGuessLetterArr[
   {
     if (userGuessLetterArr[userLChoice-97]!=0)
     {
-      printf("Letter has been guessed before\n");
+      printMenuBar();
+      printf("\nLetter has been guessed before\n");
     }
-    getInputMenuCHAR(65, 122, &userLChoice, "Which letter to guess??\n", "Invalid Guess Letter\n");
+    getInputMenuCHAR(65, 122, &userLChoice, "Which letter to guess?\n", "Invalid Guess Letter\n");
     userLChoice=tolower(userLChoice);
   }while(userGuessLetterArr[userLChoice-97]!=0);
   //make sure they havent inputted a previously guessed input
