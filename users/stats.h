@@ -20,12 +20,12 @@ void updateUserStats(userStats userStats[], int userCount);
 //the function called by adduser to update stats file
 void addUserStats(userStats newUserStats[], userData newUserData, int userCount);
 //function to read all users to stats array, useful during overhauls of code, to transfer between styles of reads
-void getUserStats(userStats tempUserStats[]);
+void getUserStats(userStats tempUserStats[], int userCount);
 
 //  LOCALS
 //reads all stats
 //takes a struct to write stats to
-static int readStats(userStats allUserStats[]);
+static int readStats(userStats allUserStats[], int userCount);
 //writes all stats
 //takes stats struct, and amount of users
 static void writeStats(userStats allUserStats[], int userCount);

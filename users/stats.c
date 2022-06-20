@@ -41,7 +41,7 @@ void printUserStats(userStats userStats[], userData currentUserData, int printTy
 
       writeStats(userStats, userCount);
       //read the new stats
-      readStats(userStats);
+      readStats(userStats, userCount);
     }
   }
   else if (printType==1)//print 1 user
@@ -140,6 +140,7 @@ void addUserStats(userStats newUserStats[], userData newUserData, int userCount)
   newUserStats[userCount].tttLosses = 0;
   newUserStats[userCount].hangmanWins = 0;
   newUserStats[userCount].hangmanLosses = 0;
+  
   updateUserStats(newUserStats, userCount+1);
 }
 
@@ -147,7 +148,7 @@ void updateUserStats(userStats newUserStats[], int userCount)
 {
   //save stats
   writeStats(newUserStats, userCount);
-  readStats(newUserStats);
+  readStats(newUserStats, userCount);
 }
 
 static void printStatTable(userData currentUserData, userStats currentUserStats, int table)
@@ -176,12 +177,12 @@ static void printStatTable(userData currentUserData, userStats currentUserStats,
   }
 }
 
-void getUserStats(userStats tempUserStats[])
+void getUserStats(userStats tempUserStats[], int userCount)
 {
-  readStats(tempUserStats);
+  readStats(tempUserStats, userCount);
 }
 
-static int readStats(userStats tempUserStats[])
+static int readStats(userStats tempUserStats[], int userCount)
 {
   FILE *fp;
   fp = fopen("./data/games_stats", "r");
@@ -199,7 +200,7 @@ static int readStats(userStats tempUserStats[])
   }
   else//read entire file and save data
   {
-    while (!feof(fp))
+    while (x<userCount)
     {
       fscanf(fp, "%i", &tempUserStats[x].uid);
       fscanf(fp, "%i", &tempUserStats[x].playerFlag);
@@ -214,7 +215,9 @@ static int readStats(userStats tempUserStats[])
       fscanf(fp, "%i", &tempUserStats[x].hangmanLosses);
   
       if (feof(fp))
+      {
         break;
+      }
   
       x++;
     }

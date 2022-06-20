@@ -94,7 +94,9 @@ void addUser(userStats userStats[], int usertype)
   getUserData(&tempUserData);
   
   //update stats file
-  getUserStats(userStats);
+  if (userCount!=0)
+    getUserStats(userStats, userCount);
+  
   //setup add
   userStats[userCount].uid = userCount;
   userStats[userCount].playerFlag = (usertype==0);//if it is a player then playerflag is one
@@ -164,6 +166,7 @@ void editUser(userData currentUserData, int uid)
       break;
     
     case 3:
+      //get an admin type
       getInputMenuINT(1,2, &tempUserData[uid].usertype, "\033[33mEDIT USER\033[0m:\n\n1. Regular User\n2. Admin\n\nEnter an admin level: ", "Invalid user type\n");
       tempUserData[uid].usertype--;
       break;

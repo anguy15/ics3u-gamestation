@@ -77,7 +77,7 @@ static int mainGame(hangmanGameInfo *hangmanInfo)
         getGuessWord(hangmanInfo, userGuessLetterArr, userGuessWord);
         if (compareStrCaseI(hangmanInfo->wordGen,userGuessWord)==0)
         {
-          drawGame(*hangmanInfo, userGuessWord);
+          drawGame(*hangmanInfo, hangmanInfo->wordGen);
           return(1);//player won
         }
           //incorrect

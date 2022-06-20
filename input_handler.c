@@ -58,7 +58,7 @@ void getInputMenuINT(int max, int min, int *userChoice, char question[], char in
     
     printf("%s", question);
     scanf("%i", userChoice);
-    clearInput();
+    clearInput();//remove extra inputs
 
     userChoiceFlag=1;
   }while(*userChoice<max||*userChoice>min);
@@ -79,7 +79,7 @@ void getInputMenuCHAR(int max, int min, char *userChoice, char question[], char 
     
     printf("%s", question);
     scanf("%c", userChoice);
-    clearInput();
+    clearInput();//remove extra inputs
 
     userChoiceFlag=1;
      }while((*userChoice<max||*userChoice>min));
@@ -102,7 +102,7 @@ void getInputMenuSTR(char regexCheck[], char userChoice[], char question[], char
     userChoiceFlag=0;
 
     scanf("%s", userChoice);
-    clearInput();
+    clearInput();//remove extra inputs
 
     userChoiceFlag=1;
   }while(!checkRegex(userChoice, regexCheck));
