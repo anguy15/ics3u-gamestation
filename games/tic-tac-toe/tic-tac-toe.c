@@ -337,9 +337,14 @@ static void getAiInputs(int gameBoard[3][3], int winFlags[2][3][3])
         break;
       }
     }
+    //if we win in one use this
+    if (winInOne==1)
+    {
+      break;
+    }
   }
   //if there were no win posibilities
-  if (winSum==0)
+  if (gameBoard[winningY][winningX]!=0)
   {
     generateRandomInputs(gameBoard, &winningY, &winningX);
   }
