@@ -5,3 +5,8 @@ Password:
 test = ^O]^
 user = ^\N[
 pass = QBTT
+
+current users and passwords
+admin password
+regadmin regpass
+reguser normpass

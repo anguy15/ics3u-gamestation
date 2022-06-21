@@ -62,9 +62,9 @@ int playTicTacToe()
       }
       
       //win check
-      winnerInfo.type = checkWinFlags(winFlags);//setup the win check
-      if (winnerInfo.type!=-1)
+      if (checkWinFlags(winFlags)!=-1)
       {
+        winnerInfo.type=1;
         winnerInfo.winner=i;
         break;
       }
@@ -72,7 +72,7 @@ int playTicTacToe()
   }while(winnerInfo.type == -1);
 
   drawGameBoard(gameBoard);
-  if (winnerInfo.type == 0 || winnerInfo.type == 1)//someone won
+  if (checkWinFlags(winFlags)!=-1)//someone won
   {
     printf("Player %i won!", winnerInfo.winner+1);
     return !winnerInfo.winner;//winner will be 0 or 1, 0 for player one. the stats will track if player one wins
@@ -94,6 +94,7 @@ static void getUserInputs(int gameBoard[3][3], int winFlags[2][3][3], int player
   do
   {
     drawGameBoard(gameBoard);
+    
     if (userInputFlag!=0)
     {
       printf("Invalid Coordinate given, please try again\n\n");
@@ -285,6 +286,11 @@ static void getAiInputs(int gameBoard[3][3], int winFlags[2][3][3])
   {
     for (int posX=0; posX<3; posX++)
     {
+      //if this move does not exist
+      if (board[posY][posX]!=0)
+      {
+        continue;
+      }
       //copy the board to a temp board
       copyGameBoard(board, gameBoard);
 
@@ -293,31 +299,36 @@ static void getAiInputs(int gameBoard[3][3], int winFlags[2][3][3])
       copyWinFlags(tempWinFlags, winFlags);
       updateWinFlags(tempWinFlags, posY, posX, 0);
       //reverse the check results for check and replace
-      blockCheck = !checkWinFlags(tempWinFlags);//returns one when ai wins
+      blockCheck = checkWinFlags(tempWinFlags)==0;//returns one when the enemy will win
       
       //  win in one move  //
       //if this placement was by ai
       copyWinFlags(tempWinFlags, winFlags);
       updateWinFlags(tempWinFlags, posY, posX, 1);
-      winInOne = checkWinFlags(tempWinFlags);        
+      winInOne = checkWinFlags(tempWinFlags)==1;//return one when ai wins   
       
       //  simulate the winning chances  //
       tempWinSum = simulateAiGame(board, winFlags, posY, posX, 1);//ai sim won
 
       //  check if it was better  //
-      //this does not work
-      if (tempWinSum==0)
-      {
-        continue;
-      }
-      //if we block one prioritize this, and prefer better win chances
-      if (tempWinSum>winSum && blockCheck>=winningBlock)
+      //if we have never blocked yet
+      if (blockCheck>winningBlock)
       {
         winningBlock=blockCheck;
         winSum=tempWinSum;
         winningX=posX;
         winningY=posY;
       }
+      //if we block one prioritize this, and prefer better win chances
+      else if (tempWinSum>=winSum && blockCheck>=winningBlock)
+      {
+        winningBlock=blockCheck;
+        winSum=tempWinSum;
+        winningX=posX;
+        winningY=posY;
+      }
+      if (winningBlock==1)
+        printf("lmao\n");
       //if we win in one use this
       if (winInOne==1)
       {
@@ -334,7 +345,7 @@ static void getAiInputs(int gameBoard[3][3], int winFlags[2][3][3])
   }
 
   //debug
-  // drawGameBoard(gameBoard);printf("\n%i, %i %i, %i %i\n", winSum, winningY+1, winningX+1, winningBlock, winInOne);getchar();
+  drawGameBoard(gameBoard);printf("\n%i, %i %i, %i %i\n", winSum, winningY+1, winningX+1, winningBlock, winInOne);getchar();
   
   //  write valid inputs  //
   gameBoard[winningY][winningX]=1+1;//player 2
@@ -355,8 +366,11 @@ static int simulateAiGame(int board[3][3], int winnerFlags[2][3][3], int firstY,
   //base case
   if (checkGameBoard(gameBoard)==1 || checkWinFlags(winFlags)!=-1)
   {
-    if (checkWinFlags(winFlags)==1)//ai won
+    int endResult = checkWinFlags(winFlags);
+    if (endResult==1)//ai won
       return(1);
+    else if (endResult==0)//other player won
+      return(-1);
     else
       return(0);
   }

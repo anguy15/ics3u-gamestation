@@ -13,15 +13,18 @@ static int getUidInput();
 //saves all data to public to menu var
 static void constructor(userData *userData, userStats userStats[], int *userCount);
 
+//prints all known usernames
+static void printAllUsernames(userData userData[], int userCount);
+
 void mainMenu();
 //menu
-static void statsMenu();
-static void editUsersMenu();
-    //admin
-    static void adminMenu();
-    //user
-    static void userMenu();
-      //game menu
-      static void gameMenu();
+static int statsMenu();
+static int editUsersMenu();
+  //admin
+  static void adminMenu();
+  //user
+  static void userMenu();
+    //game menu
+    static int gameMenu();
 
 #endif

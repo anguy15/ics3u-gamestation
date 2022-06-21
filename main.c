@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 
 //users
 #include "users/users.h"
@@ -13,7 +12,6 @@
 #include "menu.h"
 
 int main(void) {
-  srand(time(0));
   char userLeave=0;
 
   //main menu loop

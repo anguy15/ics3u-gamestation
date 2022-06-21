@@ -15,6 +15,7 @@ int playHangman()
   hangmanInfo.incorrectGuesses=0;
   setupCorrectGuesses(&hangmanInfo);
 
+  printf("The word was %s\n", hangmanInfo.wordGen);
   switch (mainGame(&hangmanInfo))
   {
     case 0:
@@ -209,6 +210,7 @@ static void drawGame(hangmanGameInfo hangmanInfo, int userGuessLetterArr[])
 
 static int chooseWord(hangmanGameInfo *hangmanInfo)
 {
+  //FILE READING IS HERE
   FILE *fp;
   fp = fopen("./games/hangman/hangmanList.txt", "r");
   struct wordList *HEAD = makeWordNode();
