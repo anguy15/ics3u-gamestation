@@ -350,7 +350,7 @@ static void getAiInputs(int gameBoard[3][3], int winFlags[2][3][3])
   }
 
   //debug
-  drawGameBoard(gameBoard);printf("\n%i, %i %i, %i %i\n", winSum, winningY+1, winningX+1, winningBlock, winInOne);getchar();
+  //drawGameBoard(gameBoard);printf("\n%i, %i %i, %i %i\n", winSum, winningY+1, winningX+1, winningBlock, winInOne);getchar();
   
   //  write valid inputs  //
   gameBoard[winningY][winningX]=1+1;//player 2
